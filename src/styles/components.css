@@ -1100,6 +1100,89 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   Calculateur de coût
+   -------------------------------------------------------------------------- */
+.calc {
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+  margin: 1.2rem 0;
+}
+
+.calc-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.9rem;
+}
+
+.calc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.calc-field input[type="number"],
+.calc-field select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-hi);
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+}
+
+.calc-field input[type="range"] {
+  accent-color: var(--accent);
+}
+
+.calc-field output {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.calc-period {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+}
+
+.calc-period legend {
+  padding: 0 0.3rem;
+  color: var(--text-mute);
+  font-size: 0.78rem;
+}
+
+.calc-period label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-right: 0.8rem;
+  font-weight: 500;
+}
+
+.calc-period-info {
+  margin: 1rem 0 0.3rem;
+  color: var(--text-mute);
+  font-size: 0.88rem;
+}
+
+.calc-total {
+  margin: 0.2rem 0 1rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.calc-note {
+  margin: 0.9rem 0 0;
+  color: var(--text-mute);
+  font-size: 0.82rem;
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {

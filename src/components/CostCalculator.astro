@@ -1,0 +1,167 @@
+---
+/**
+ * Calculateur de coût DeepSeek — les formules viennent de src/lib/cout.ts,
+ * testées côté serveur ET utilisées côté client (même code, même résultat).
+ */
+import { tarifs } from "../lib/cout";
+
+const tarifFlash = tarifs.flash;
+const tarifPro = tarifs.pro;
+---
+
+<div class="glass calc" data-calc>
+  <div class="calc-fields">
+    <label class="calc-field">
+      <span>Modèle</span>
+      <select data-calc-modele>
+        <option value="flash">{tarifFlash.api} — le plus courant</option>
+        <option value="pro">{tarifPro.api} — le plus puissant</option>
+      </select>
+    </label>
+
+    <label class="calc-field">
+      <span>Tokens d'entrée par requête</span>
+      <input type="number" min="0" step="500" value="4000" data-calc-entree />
+    </label>
+
+    <label class="calc-field">
+      <span>Tokens de sortie par requête</span>
+      <input type="number" min="0" step="100" value="800" data-calc-sortie />
+    </label>
+
+    <label class="calc-field">
+      <span>Nombre de requêtes</span>
+      <input type="number" min="1" step="1" value="20" data-calc-requetes />
+    </label>
+
+    <label class="calc-field">
+      <span>Part du contexte déjà en cache</span>
+      <input type="range" min="0" max="100" step="5" value="50" data-calc-cache />
+      <output data-calc-cache-sortie>50 %</output>
+    </label>
+
+    <fieldset class="calc-field calc-period">
+      <legend>Tarif appliqué</legend>
+      <label><input type="radio" name="calc-periode" value="auto" checked /> maintenant</label>
+      <label><input type="radio" name="calc-periode" value="creux" /> creuses</label>
+      <label><input type="radio" name="calc-periode" value="pointe" /> pleines</label>
+    </fieldset>
+  </div>
+
+  <p class="calc-period-info" data-calc-period-info></p>
+  <p class="calc-total" data-calc-total role="status" aria-live="polite"></p>
+
+  <table class="calc-table">
+    <caption class="sr-only">Comparaison du coût en heures creuses et en heures pleines</caption>
+    <thead>
+      <tr>
+        <th scope="col">Tarif</th>
+        <th scope="col">Entrée</th>
+        <th scope="col">Sortie</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Heures creuses</th>
+        <td data-calc-creux-entree></td>
+        <td data-calc-creux-sortie></td>
+        <td data-calc-creux-total></td>
+      </tr>
+      <tr>
+        <th scope="row">Heures pleines</th>
+        <td data-calc-pointe-entree></td>
+        <td data-calc-pointe-sortie></td>
+        <td data-calc-pointe-total></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="calc-note">
+    Prix publics DeepSeek vérifiés le 29/09/2026 (dollars US, par million de tokens).
+    Le cache est automatique : la part « déjà en cache » reste une estimation.
+    Les heures pleines sont 01 h–04 h et 06 h–10 h UTC, du lundi au vendredi ;
+    tout le reste, week-ends compris, est en heures creuses.
+  </p>
+</div>
+
+<script>
+  import { dollars, estHeurePleine, tarifsPour, type ModeleId } from "../lib/cout";
+
+  const root = document.querySelector<HTMLElement>("[data-calc]");
+
+  if (root) {
+    const champ = <T extends Element>(selecteur: string) => root.querySelector<T>(selecteur);
+
+    const modele = champ<HTMLSelectElement>("[data-calc-modele]");
+    const entree = champ<HTMLInputElement>("[data-calc-entree]");
+    const sortie = champ<HTMLInputElement>("[data-calc-sortie]");
+    const requetes = champ<HTMLInputElement>("[data-calc-requetes]");
+    const cache = champ<HTMLInputElement>("[data-calc-cache]");
+    const cacheSortie = champ<HTMLOutputElement>("[data-calc-cache-sortie]");
+    const periodInfo = champ<HTMLElement>("[data-calc-period-info]");
+    const totalNode = champ<HTMLElement>("[data-calc-total]");
+    const periodes = [...root.querySelectorAll<HTMLInputElement>('input[name="calc-periode"]')];
+
+    const lire = () => ({
+      modele: (modele?.value ?? "flash") as ModeleId,
+      entree: Math.max(0, Number(entree?.value) || 0),
+      sortie: Math.max(0, Number(sortie?.value) || 0),
+      requetes: Math.max(1, Number(requetes?.value) || 1),
+      cache: Math.min(Math.max((Number(cache?.value) || 0) / 100, 0), 1),
+    });
+
+    const pointeChoisie = () => {
+      const choix = periodes.find((radio) => radio.checked)?.value ?? "auto";
+      if (choix === "auto") return estHeurePleine(new Date());
+      return choix === "pointe";
+    };
+
+    /** Détail entrée / sortie / total pour un tarif donné. */
+    const detail = (pointe: boolean, valeurs: ReturnType<typeof lire>) => {
+      const tarif = tarifsPour(valeurs.modele, pointe);
+      const coutEntree =
+        (valeurs.entree * ((1 - valeurs.cache) * tarif.entree + valeurs.cache * tarif.cache)) / 1e6;
+      const coutSortie = (valeurs.sortie * tarif.sortie) / 1e6;
+      const parRequete = coutEntree + coutSortie;
+      return {
+        entree: coutEntree * valeurs.requetes,
+        sortie: coutSortie * valeurs.requetes,
+        total: parRequete * valeurs.requetes,
+      };
+    };
+
+    const ecrire = (selecteur: string, texte: string) => {
+      const noeud = champ<HTMLElement>(selecteur);
+      if (noeud) noeud.textContent = texte;
+    };
+
+    const maj = () => {
+      const valeurs = lire();
+      const pointe = pointeChoisie();
+      const creux = detail(false, valeurs);
+      const plein = detail(true, valeurs);
+
+      if (cacheSortie) cacheSortie.textContent = `${Math.round(valeurs.cache * 100)} %`;
+      if (periodInfo) {
+        periodInfo.textContent = pointe
+          ? "En ce moment, le tarif appliqué est celui des heures pleines."
+          : "En ce moment, le tarif appliqué est celui des heures creuses (moitié prix).";
+      }
+      if (totalNode) {
+        const actif = pointe ? plein : creux;
+        totalNode.textContent = `Coût estimé : ${dollars(actif.total)} pour ${valeurs.requetes} requête(s), soit ${dollars(actif.total / valeurs.requetes)} par requête.`;
+      }
+
+      ecrire("[data-calc-creux-entree]", dollars(creux.entree));
+      ecrire("[data-calc-creux-sortie]", dollars(creux.sortie));
+      ecrire("[data-calc-creux-total]", dollars(creux.total));
+      ecrire("[data-calc-pointe-entree]", dollars(plein.entree));
+      ecrire("[data-calc-pointe-sortie]", dollars(plein.sortie));
+      ecrire("[data-calc-pointe-total]", dollars(plein.total));
+    };
+
+    root.addEventListener("input", maj);
+    maj();
+  }
+</script>

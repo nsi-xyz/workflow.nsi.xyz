@@ -1,0 +1,265 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import CostCalculator from "../components/CostCalculator.astro";
+import { navItems } from "../data/navigation";
+import { fichesModeles, leviersEconomie, reperesTokens, verifications } from "../data/llm";
+import { dollars, tarifs } from "../lib/cout";
+
+const item = navItems.find((entry) => entry.slug === "llm")!;
+const { flash, pro } = tarifs;
+
+const prix = [
+  { label: "Entrée — cache manqué", flash: [flash.entreeCreux, flash.entreePointe], pro: [pro.entreeCreux, pro.entreePointe] },
+  { label: "Entrée — cache touché", flash: [flash.cacheCreux, flash.cachePointe], pro: [pro.cacheCreux, pro.cachePointe] },
+  { label: "Sortie", flash: [flash.sortieCreux, flash.sortiePointe], pro: [pro.sortieCreux, pro.sortiePointe] },
+];
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Un modèle de langage ne réfléchit pas comme vous</h2>
+    <p>
+      Il ne consulte pas une base de connaissances : il <strong>prédit</strong>, un token
+      après l'autre, la suite la plus probable du texte qu'on lui donne. C'est pour cela
+      qu'il peut écrire du code qui a l'air parfait… et qui ne compile pas.
+    </p>
+    <p>Trois conséquences pratiques, à garder en tête en permanence :</p>
+    <ul>
+      <li>
+        <strong>Sans mémoire.</strong> Un modèle ne se souvient de rien entre deux appels :
+        l'agent lui renvoie le contexte (fichiers, historique) à chaque tour. Un fichier
+        qu'on ne lui envoie pas, il ne le voit pas.
+      </li>
+      <li>
+        <strong>Plausible n'est pas vrai.</strong> Une réponse confiante peut être fausse.
+        Seul un test — le serveur qui démarre, la page qui s'affiche — prouve quelque chose.
+      </li>
+      <li>
+        <strong>Le contexte est un budget.</strong> Chaque tour relit tout l'historique et
+        les fichiers. C'est ce qui coûte, et c'est ce qui finit par noyer l'essentiel.
+      </li>
+    </ul>
+    <Callout type="info" title="La formule à retenir">
+      <p>
+        Vous ne payez pas « une réponse » : vous payez <strong>tout ce que le modèle doit
+        lire</strong> avant de répondre.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Les tokens : la monnaie du modèle</h2>
+    <p>
+      Un token est un morceau de mot : environ 3 à 4 caractères en français. Le modèle
+      compte en tokens, facture en tokens, et sa fenêtre de contexte se mesure en tokens.
+    </p>
+    <div class="grid-cards">
+      {
+        reperesTokens.map((repere) => (
+          <article class="glass card">
+            <span class="card-kicker">{repere.titre}</span>
+            <h3>{repere.valeur}</h3>
+            <p>{repere.detail}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>La fenêtre de contexte : la table de travail</h2>
+    <p>
+      La fenêtre de contexte, c'est la quantité maximale de texte que le modèle peut
+      « garder sous les yeux » en une fois : votre question, l'historique, les fichiers
+      lus par l'agent. Les modèles actuels de DeepSeek ouvrent une fenêtre de
+      <strong>1 million de tokens</strong> — de quoi lire un gros projet… et de quoi payer
+      cher si on la remplit sans réfléchir.
+    </p>
+    <div class="grid-cards">
+      {
+        fichesModeles.map((fiche) => (
+          <article class="glass card">
+            <span class="card-kicker">{tarifs[fiche.id].api}</span>
+            <h3>{tarifs[fiche.id].nom}</h3>
+            <p>{fiche.usage}</p>
+            <ul>
+              {fiche.points.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+    <Callout type="warn" title="Pourquoi l'agent « oublie »">
+      <p>
+        Quand la conversation devient longue, l'agent doit résumer ou abandonner une partie
+        du contexte : c'est le rôle du <code>/compact</code> d'OpenCode (voir la section
+        OpenCode). Une session neuve, avec un contexte propre, est parfois plus efficace
+        qu'une session de trois heures.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Effort et qualité : où placer le curseur</h2>
+    <p>
+      Les modèles actuels ont un <strong>mode réflexion</strong> (« thinking ») : avant de
+      répondre, ils rédigent un raisonnement interne, token par token. C'est très efficace
+      sur les problèmes tordus… et inutile pour renommer un fichier. Ces tokens de
+      réflexion sont facturés en sortie, la ligne la plus chère.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Tâche</th>
+          <th>Réglage conseillé</th>
+          <th>Pourquoi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ajouter une section, corriger une faute, renommer</td>
+          <td>Réponse directe</td>
+          <td>La solution est évidente : réfléchir ne fait qu'ajouter des tokens.</td>
+        </tr>
+        <tr>
+          <td>Comprendre une erreur inconnue</td>
+          <td>Réflexion</td>
+          <td>Le modèle doit explorer des hypothèses avant de choisir.</td>
+        </tr>
+        <tr>
+          <td>Concevoir la structure d'un projet</td>
+          <td>Réflexion + mode plan</td>
+          <td>Une erreur de conception coûte beaucoup plus cher que quelques tokens.</td>
+        </tr>
+        <tr>
+          <td>Refaire ce qui vient d'échouer</td>
+          <td>Nouveau prompt, pas plus d'effort</td>
+          <td>Si c'est raté, le problème est dans la demande — pas dans la puissance.</td>
+        </tr>
+      </tbody>
+    </table>
+    <Callout type="ok" title="Le vrai levier de qualité, c'est vous">
+      <p>
+        Passer de Flash à Pro change peu sur une page web. Un objectif clair, un contexte
+        propre et un test après chaque modification changent tout. La qualité vient du
+        pilotage, pas de la taille du modèle.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Combien ça coûte, concrètement</h2>
+    <p>
+      DeepSeek facture au token, avec <strong>deux tarifs</strong> selon l'heure
+      (les heures pleines sont le double des heures creuses) et un tarif très réduit quand
+      le début du contexte est déjà en <strong>cache</strong>. Voici les prix officiels du
+      moment, en dollars par million de tokens :
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Prix (par million de tokens)</th>
+          <th>{flash.api}</th>
+          <th>{pro.api}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          prix.map((ligne) => (
+            <tr>
+              <th scope="row">{ligne.label}</th>
+              <td>
+                {dollars(ligne.flash[0])} creux · {dollars(ligne.flash[1])} pleines
+              </td>
+              <td>
+                {dollars(ligne.pro[0])} creux · {dollars(ligne.pro[1])} pleines
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <p>
+      Un projet d'élève — quelques dizaines de requêtes, un projet de taille modeste —
+      coûte en général <strong>moins d'un dollar</strong>. Ce qui fait exploser la note,
+      ce n'est pas le nombre de questions : c'est le contexte qu'on laisse grossir.
+    </p>
+
+    <h3>Calculez votre propre scénario</h3>
+    <CostCalculator />
+
+    <Callout type="info" title="Deux détails qui changent tout">
+      <ul>
+        <li>
+          <strong>Le cache est automatique.</strong> Le préfixe de contexte déjà envoyé est
+          facturé environ <strong>50 fois moins cher</strong> (0,003 $ contre 0,15 $ par
+          million, sur Flash). C'est pour cela qu'une longue session n'est pas forcément
+          ruineuse — mais seulement si elle réutilise ce qu'elle a déjà lu.
+        </li>
+        <li>
+          <strong>Les heures creuses tombent bien.</strong> Les heures pleines sont
+          01 h–04 h et 06 h–10 h UTC, du lundi au vendredi : en France, cela correspond
+          surtout à la matinée et au milieu de la nuit. Le week-end entier est en tarif
+          réduit, et le créneau 12 h–3 h du matin aussi.
+        </li>
+      </ul>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Cinq leviers pour payer moins</h2>
+    <div class="grid-cards">
+      {
+        leviersEconomie.map((levier) => (
+          <article class="glass card">
+            <h3>{levier.titre}</h3>
+            <p>{levier.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Quatre croyances à vérifier</h2>
+    <div class="myths">
+      {
+        verifications.map((entree) => (
+          <article class="glass card myth">
+            <p class="said">{entree.mythe}</p>
+            <p class="reality">{entree.verite}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompt">
+        <span class="card-kicker">Savoir-faire</span>
+        <h3>Piloter l'agent</h3>
+        <p>Un bon prompt réduit le nombre de tokens… et le nombre d'essais.</p>
+      </a>
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>Suivre le coût d'une session, compacter au bon moment.</p>
+      </a>
+      <a class="glass card" href="/workflow">
+        <span class="card-kicker">Méthode</span>
+        <h3>Le workflow</h3>
+        <p>La boucle qui évite de payer pour du travail jeté.</p>
+      </a>
+      <a class="glass card" href="https://api-docs.deepseek.com/quick_start/pricing">
+        <span class="card-kicker">Source</span>
+        <h3>Prix officiels DeepSeek</h3>
+        <p>La page de référence, à revérifier avant de budgéter.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>
