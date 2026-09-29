@@ -18,6 +18,10 @@ import fs from 'node:fs';
 const FORBIDDEN_TRACKED = [/^\.env$/, /^\.env\./, /^\.dev\.vars$/, /^codes\.csv$/, /^codes-.*\.txt$/, /^\.secret\//];
 const FORBIDDEN_NAMES = [/^\.env$/, /^\.env\.[^/]+$/, /^\.dev\.vars$/, /^codes\.csv$/, /^codes-.*\.txt$/];
 
+/** Modèles commitables : ils ne contiennent AUCUNE valeur, uniquement des noms de clés. */
+const TEMPLATES = [/^\.env\.example$/, /^\.env\.sample$/, /^\.env\.template$/];
+const isTemplate = (file) => TEMPLATES.some((re) => re.test(file));
+
 const PATTERNS = [
   { label: 'jeton Cloudflare (cfut_)', re: /cfut_[A-Za-z0-9_-]{16,}/ },
   { label: 'clé privée PEM', re: /-----BEGIN [A-Z ]*PRIVATE KEY-----/ },
@@ -37,6 +41,7 @@ const problems = [];
 try {
   const tracked = git(['ls-files']).split('\n').filter(Boolean);
   for (const file of tracked) {
+    if (isTemplate(file)) continue;
     if (FORBIDDEN_TRACKED.some((re) => re.test(file))) {
       problems.push(`fichier de secrets suivi par Git : ${file} (retirer du suivi, tourner la valeur)`);
     }
@@ -59,7 +64,7 @@ for (const file of staged) {
   if (!stats.isFile() || stats.size > 512 * 1024) continue;
 
   for (const name of FORBIDDEN_NAMES) {
-    if (name.test(file)) problems.push(`fichier interdit dans le commit : ${file}`);
+    if (!isTemplate(file) && name.test(file)) problems.push(`fichier interdit dans le commit : ${file}`);
   }
 
   const content = fs.readFileSync(file, 'utf8');
