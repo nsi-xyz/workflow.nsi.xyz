@@ -1,0 +1,324 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import SpotTheLeak from "../components/SpotTheLeak.astro";
+import { navItems } from "../data/navigation";
+
+const item = navItems.find((entry) => entry.slug === "securite")!;
+
+const goldenRules = [
+  "Un secret ne se met ni dans un dépôt, ni dans un prompt, ni dans une capture d'écran.",
+  "Le fichier .env s'ignore AVANT le premier commit, jamais après.",
+  "« Privé » ne veut pas dire « secret » : un dépôt peut devenir public en un clic.",
+  "L'agent exécute exactement ce que vous demandez : relisez avant d'accepter, committez avant les grosses modifications.",
+  "En cas de fuite : on tourne la clé d'abord, on nettoie le dépôt ensuite. Jamais l'inverse.",
+];
+
+const checklist = [
+  "<code>.env</code> n'est pas suivi par Git : <code>git check-ignore .env</code> affiche bien <code>.env</code>.",
+  "Aucune clé, aucun jeton, aucun mot de passe dans le code, le README ou les exemples.",
+  "Aucune donnée personnelle (nom, téléphone, adresse, photo, date de naissance) dans le dépôt ni dans un prompt.",
+  "Le dépôt ne contient que ce que vous accepteriez de voir public : un dépôt privé peut le devenir.",
+  "Le mot de passe de l'espace prof n'est écrit nulle part dans le dépôt.",
+  "Le site déployé n'expose pas de page technique (fichiers de configuration, API d'administration) sans protection.",
+  "Vous savez quelle clé tourner en premier si quelque chose fuit.",
+];
+
+const procedure = [
+  {
+    title: "Tourner la clé, immédiatement",
+    text: "Révoquez le secret là où il a été créé (DeepSeek, Cloudflare, GitHub…), puis créez-en un nouveau. Tant que la clé est vivante, considérez qu'elle est déjà utilisée par quelqu'un d'autre : les robots qui scannent GitHub sont plus rapides que vous.",
+  },
+  {
+    title: "Nettoyer le dépôt",
+    text: "Retirez le fichier du suivi (`git rm --cached .env`), ajoutez-le au `.gitignore`, committez un état propre. Cela protège la suite, mais ne l'efface pas du passé.",
+  },
+  {
+    title: "Purger l'historique si nécessaire",
+    text: "Un fichier retiré reste lisible dans les anciens commits. Pour un vrai secret, l'histoire se réécrit avec `git filter-repo`, puis on pousse en force. Pour un projet d'élève, la rotation de la clé règle souvent l'essentiel : une clé morte dans l'historique n'est plus dangereuse.",
+  },
+  {
+    title: "Prévenir, et vérifier les dégâts",
+    text: "Si c'est un secret partagé ou un jeton de compte, prévenez immédiatement l'enseignant. Regardez l'historique des dépenses et des déploiements : une clé peut avoir été utilisée sans que rien ne vous alerte.",
+  },
+];
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Les 5 règles d'or</h2>
+    <p>
+      La sécurité d'un projet ne tient pas à un outil magique : elle tient à quelques
+      réflexes, appliqués <strong>à chaque fois</strong>. Si vous ne lisez qu'une seule
+      partie de cette page, lisez celle-ci.
+    </p>
+    <ol class="rules">
+      {goldenRules.map((rule) => <li>{rule}</li>)}
+    </ol>
+  </section>
+
+  <section>
+    <h2>Un secret n'est pas une information comme les autres</h2>
+    <p>
+      Avant de publier quoi que ce soit, classez l'information. Ce n'est pas la même
+      chose de partager l'adresse de son site et de partager la clé qui permet de le
+      modifier.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Exemples</th>
+          <th>Ce que vous pouvez en faire</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Public</strong></td>
+          <td>L'URL du site, le nom du projet, la liste des outils utilisés</td>
+          <td>Partager librement : c'est fait pour.</td>
+        </tr>
+        <tr>
+          <td><strong>Privé</strong></td>
+          <td>Votre code, vos notes, vos idées, vos prompts</td>
+          <td>Visible seulement par vous ; ne pas le rendre public sans réfléchir.</td>
+        </tr>
+        <tr>
+          <td><strong>Secret</strong></td>
+          <td>Clé d'API, jeton d'accès, mot de passe, cookie de session</td>
+          <td>Ne jamais publier, ne jamais écrire dans un prompt, ne jamais montrer en capture.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <Callout type="warn" title="Trois secrets à reconnaître dans ce projet">
+      <ul>
+        <li>
+          La <strong>clé du modèle</strong> (DeepSeek ou autre) : elle paie chaque requête.
+          Exposée, elle permet à n'importe qui de dépenser sur votre compte.
+        </li>
+        <li>
+          Le <strong>jeton Cloudflare</strong> : il peut déployer, modifier les DNS, créer
+          des ressources. Exposé, c'est votre compte qui est en danger, pas seulement le projet.
+        </li>
+        <li>
+          Les <strong>mots de passe</strong> (compte GitHub, espace prof) : même un mot de
+          passe « pas important » ouvre une porte à laquelle vous n'avez pas pensé.
+        </li>
+      </ul>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Piège n°1 — le secret dans le dépôt</h2>
+    <p>
+      C'est <strong>l'accident numéro un</strong> des projets qui utilisent une IA : le fichier
+      <code>.env</code> qui contient la clé se retrouve poussé sur GitHub. Pourquoi ? Parce que
+      le fichier était là avant, et qu'un <code>git add .</code> ne fait pas la différence.
+    </p>
+    <pre><code># ❌ Ce .env part sur GitHub avec le reste
+DEEPSEEK_API_KEY=sk-9f2c…
+CLOUDFLARE_API_TOKEN=cfut_4b1e…</code></pre>
+    <p>
+      La protection s'écrit <strong>avant</strong> le premier commit, dans <code>.gitignore</code> :
+    </p>
+    <pre><code># ✅ .gitignore — le .env reste sur votre machine
+.env
+.env.*
+!.env.example
+
+# Un modèle sans valeurs peut être commité pour documenter
+# les variables attendues (voir .env.example)</code></pre>
+    <Callout type="ok" title="Les trois réflexes à prendre dès maintenant">
+      <ul>
+        <li>
+          <strong>Ignorer avant de créer :</strong> le <code>.gitignore</code> est le premier
+          fichier d'un projet, pas le dernier.
+        </li>
+        <li>
+          <strong>Vérifier :</strong> <code>git check-ignore .env</code> doit afficher
+          <code>.env</code>. Si la commande n'affiche rien, le fichier est suivi : alerte rouge.
+        </li>
+        <li>
+          <strong>Restreindre :</strong> <code>chmod 600 .env</code> pour que seul votre
+          compte puisse le lire sur la machine.
+        </li>
+      </ul>
+    </Callout>
+    <Callout type="danger" title="Retirer un fichier ne l'efface pas">
+      Un fichier supprimé dans un nouveau commit reste lisible dans l'historique : n'importe
+      qui peut afficher l'ancienne version et y trouver la clé. C'est pour cela qu'on
+      <strong>tourne la clé d'abord</strong> et qu'on nettoie l'historique ensuite.
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Piège n°2 — « privé » ne veut pas dire « secret »</h2>
+    <p>
+      Un dépôt privé est un dépôt <em>fermé au public</em>, pas un coffre-fort. Il peut
+      devenir public en un clic, un collaborateur peut en copier le contenu, et une capture
+      d'écran partagée dans un fil de discussion contourne toutes les protections.
+    </p>
+    <ul>
+      <li>
+        <strong>Le dépôt privé protège le travail, pas les secrets.</strong> Les secrets ne
+        doivent être dans aucun dépôt, privé ou public.
+      </li>
+      <li>
+        <strong>Le site déployé, lui, est public par nature.</strong> Tout ce qui est dans le
+        dossier publié est visible : n'y mettez jamais de données internes ou personnelles.
+      </li>
+      <li>
+        <strong>Les variables d'environnement de la plateforme</strong> sont faites pour ça :
+        chez Cloudflare, les secrets de déploiement se déclarent dans les réglages du projet,
+        pas dans un fichier poussé.
+      </li>
+    </ul>
+    <Callout type="info" title="La bonne question avant chaque envoi">
+      « Si ce contenu devenait public demain matin, que se passerait-il ? » Si la réponse
+      est « rien de grave », envoyez. Sinon, retirez-le.
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Piège n°3 — l'agent exécute exactement ce que vous demandez</h2>
+    <p>
+      Un agent n'est pas prudent : il est obéissant. Si vous demandez « fais fonctionner le
+      site », il peut supprimer un fichier qui le gêne, réinstaller des dépendances,
+      réécrire une configuration ou lancer une commande destructrice. Ce n'est pas de la
+      malveillance : c'est le résultat d'un ordre trop vague.
+    </p>
+    <ul>
+      <li>
+        <strong>Lisez ce qu'il propose</strong> avant d'accepter une modification importante,
+        surtout une suppression ou une commande inhabituelle.
+      </li>
+      <li>
+        <strong>Committez avant les grosses demandes :</strong> un commit est un point de
+        retour. C'est aussi une protection contre l'agent lui-même.
+      </li>
+      <li>
+        <strong>Utilisez le mode plan</strong> (voir la section OpenCode) pour faire décrire
+        la manœuvre avant qu'elle soit exécutée.
+      </li>
+      <li>
+        <strong>Ne collez jamais une commande trouvée sur Internet</strong> sans comprendre
+        ce qu'elle fait, même si elle promet de tout réparer.
+      </li>
+    </ul>
+    <Callout type="warn" title="Un ordre précis vaut mieux qu'un ordre poli">
+      « Supprime les fichiers inutiles » est dangereux. « Liste les fichiers que tu juges
+      inutiles et explique pourquoi, sans rien supprimer » est vérifiable. La précision est
+      une mesure de sécurité.
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Piège n°4 — ce qu'on ne met jamais dans un projet ni dans un prompt</h2>
+    <p>
+      Les données personnelles ne sont pas des secrets : ce sont des informations protégées
+      par le RGPD. Un dépôt GitHub, un prompt envoyé à une IA ou un site publié ne sont pas
+      des endroits pour elles.
+    </p>
+    <ul>
+      <li>
+        <strong>Jamais :</strong> noms et prénoms de camarades, numéros de téléphone,
+        adresses, dates de naissance, notes, photos de personnes, informations de santé.
+      </li>
+      <li>
+        <strong>À la place :</strong> un pseudonyme choisi par la personne, ou un code
+        anonyme (comme les codes de dépôt de ce site).
+      </li>
+      <li>
+        <strong>Pour un site de classe :</strong> demandez l'accord des personnes citées ou
+        photographiées, et ne publiez rien qui permette de les identifier ou de les localiser.
+      </li>
+    </ul>
+    <Callout type="danger" title="Le prompt n'est pas un espace privé">
+      Ce que vous écrivez dans un prompt peut être conservé, analysé ou réutilisé par le
+      service. Un secret ou une donnée personnelle envoyé dans un prompt doit être considéré
+      comme publié.
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Piège n°5 — l'IA se trompe avec assurance</h2>
+    <p>
+      Un modèle de langage produit du texte <em>plausible</em>, pas du texte <em>vrai</em>.
+      Il peut inventer une fonction qui n'existe pas, une bibliothèque imaginaire, une
+      commande dangereuse — avec le même ton confiant que lorsqu'il a raison.
+    </p>
+    <ul>
+      <li><strong>Testez :</strong> une réponse non exécutée n'est pas une réponse vérifiée.</li>
+      <li><strong>Demandez pourquoi :</strong> « explique ce que fait cette ligne et pourquoi tu l'as choisie ».</li>
+      <li><strong>Lisez les erreurs :</strong> le message d'erreur, traduit, dit souvent exactement quoi corriger (voir la page Dépannage).</li>
+      <li><strong>Ne signez jamais ce que vous ne comprenez pas :</strong> le projet est évalué sur votre compréhension, pas sur le volume produit.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Que faire en cas de fuite — la procédure</h2>
+    <p>
+      L'ordre des étapes n'est pas négociable : une clé exposée doit mourir avant qu'on
+      s'occupe du dépôt. Nettoyer d'abord, c'est laisser la porte ouverte pendant ce temps.
+    </p>
+    <ol class="rules rules-steps">
+      {procedure.map((step) => <li><strong>{step.title}.</strong> {step.text}</li>)}
+    </ol>
+  </section>
+
+  <section>
+    <h2>À vous : trouvez la fuite</h2>
+    <p>
+      Sept extraits de fichiers, une seule question : ce contenu peut-il être publié sans
+      danger ? Répondez, puis lisez l'explication.
+    </p>
+    <SpotTheLeak />
+  </section>
+
+  <section>
+    <h2>La checklist avant de publier</h2>
+    <p>
+      À parcourir avant chaque <code>push</code> ou chaque déploiement. Si une case reste
+      vide, ne publiez pas.
+    </p>
+    <ul class="checklist">
+      {
+        checklist.map((line) => (
+          <li>
+            <label>
+              <input type="checkbox" />
+              <span set:html={line} />
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/git-github">
+        <span class="card-kicker">Dépôt</span>
+        <h3>Git et GitHub</h3>
+        <p>Créer un dépôt privé, écrire le .gitignore, relire l'historique.</p>
+      </a>
+      <a class="glass card" href="/prompt">
+        <span class="card-kicker">Prompts</span>
+        <h3>Piloter l'agent</h3>
+        <p>Des ordres précis, et ce qu'on ne colle jamais dans un prompt.</p>
+      </a>
+      <a class="glass card" href="/depannage">
+        <span class="card-kicker">Erreurs</span>
+        <h3>Dépannage</h3>
+        <p>401, clé refusée, accès interdit : reconnaître le signal d'une fuite.</p>
+      </a>
+      <a class="glass card" href="/cloudflare">
+        <span class="card-kicker">Déploiement</span>
+        <h3>Cloudflare Pages</h3>
+        <p>Déclarer un secret côté plateforme, sans jamais le pousser.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

@@ -793,6 +793,155 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   Sécurité — règles numérotées, checklist, jeu « trouvez la fuite »
+   -------------------------------------------------------------------------- */
+.rules {
+  counter-reset: rule;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.rules li {
+  counter-increment: rule;
+  position: relative;
+  padding: 0.95rem 1.1rem 0.95rem 3.1rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.rules li::before {
+  content: counter(rule);
+  position: absolute;
+  left: 0.95rem;
+  top: 0.9rem;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--accent-ink);
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.rules-steps li {
+  padding-left: 1.1rem;
+}
+
+.rules-steps li::before {
+  content: none;
+}
+
+.checklist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: var(--glass);
+  cursor: pointer;
+}
+
+.checklist input {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.3rem;
+  accent-color: var(--accent);
+}
+
+.checklist input:checked + span {
+  color: var(--text-mute);
+  text-decoration: line-through;
+}
+
+.leak-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.leak {
+  padding: 1rem 1.1rem;
+}
+
+.leak-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.leak-file {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--accent);
+}
+
+.leak pre {
+  margin: 0.7rem 0 0.9rem;
+  font-size: 0.8rem;
+}
+
+.leak-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.leak[data-answered] .leak-actions {
+  display: none;
+}
+
+.leak-verdict {
+  margin: 0.6rem 0 0.25rem;
+  font-weight: 700;
+}
+
+.leak-verdict.ok {
+  color: var(--ok);
+}
+
+.leak-verdict.ko {
+  color: var(--danger);
+}
+
+.leak-why {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.94rem;
+}
+
+.leak-score {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: var(--glass);
+  font-weight: 700;
+}
+
+.leak-score-final {
+  border-color: var(--glass-border-hi);
+  box-shadow: var(--shadow-1);
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {

@@ -107,6 +107,31 @@ p {
   margin: 0 0 1em;
 }
 
+/* Tailwind remet les listes à zéro : on restaure le rendu rédactionnel.
+   Les composants (.rules, .checklist, .list-plain) reprennent la main
+   grâce à leur spécificité de classe. */
+ul,
+ol {
+  margin: 0 0 1em;
+  padding-left: 1.5em;
+}
+
+ul {
+  list-style: disc;
+}
+
+ol {
+  list-style: decimal;
+}
+
+li {
+  margin: 0.3em 0;
+}
+
+li::marker {
+  color: var(--accent);
+}
+
 a {
   color: var(--accent);
   text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);

@@ -22,12 +22,20 @@ const FORBIDDEN_NAMES = [/^\.env$/, /^\.env\.[^/]+$/, /^\.dev\.vars$/, /^codes\.
 const TEMPLATES = [/^\.env\.example$/, /^\.env\.sample$/, /^\.env\.template$/];
 const isTemplate = (file) => TEMPLATES.some((re) => re.test(file));
 
+/**
+ * Motifs de secrets RÉELS. Les exemples pédagogiques (valeurs tronquées par « … »,
+ * `<votre-clé>`, « exemple », « placeholder ») sont explicitement ignorés : la page
+ * Sécurité doit pouvoir montrer à quoi ressemble une fuite sans bloquer les commits.
+ */
+const PLACEHOLDER = /…|\.\.\.|<[^>]*>|exemple|placeholder|xxx|redacted|masqu|votre[- ]/i;
+
 const PATTERNS = [
-  { label: 'jeton Cloudflare (cfut_)', re: /cfut_[A-Za-z0-9_-]{16,}/ },
+  { label: 'jeton Cloudflare réel (cfut_)', re: /cfut_[A-Za-z0-9_-]{20,}/ },
   { label: 'clé privée PEM', re: /-----BEGIN [A-Z ]*PRIVATE KEY-----/ },
+  { label: 'jeton en clair (Bearer …)', re: /\bBearer\s+[A-Za-z0-9_.-]{25,}/ },
   {
-    label: 'affectation de secret avec valeur',
-    re: /^\s*(CLOUDFLARE_API_TOKEN|PROF_PASSWORD|SESSION_SECRET|JWT_SECRET|CLOUDFLARE_[A-Z_]+|API_KEY|SECRET|TOKEN)\s*=\s*\S{8,}/m,
+    label: 'affectation de secret avec valeur longue',
+    re: /^\s*[A-Za-z_][A-Za-z0-9_]*(?:TOKEN|SECRET|PASSWORD|PASS|API_KEY|_KEY)\s*=\s*\S{20,}/,
   },
 ];
 
@@ -72,6 +80,7 @@ for (const file of staged) {
 
   const lines = content.split('\n');
   lines.forEach((line, index) => {
+    if (PLACEHOLDER.test(line)) return; // exemple d'illustration, pas un secret
     for (const { label, re } of PATTERNS) {
       if (re.test(line)) problems.push(`${file}:${index + 1} — ${label}`);
     }

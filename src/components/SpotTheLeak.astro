@@ -1,0 +1,137 @@
+---
+/**
+ * Jeu « trouvez la fuite » — le contenu est rendu côté serveur, le script ne
+ * fait que révéler le verdict et compter le score. Sans JavaScript, les
+ * situations restent lisibles et renvoient vers la checklist.
+ */
+import { leakSituations, scoreMessages } from "../data/securite";
+
+const data = JSON.stringify({ situations: leakSituations, scoreMessages });
+---
+
+<div class="leak-grid" data-leak-game>
+  <p class="leak-score" role="status" aria-live="polite" data-leak-score>
+    Score : 0 / 0 — choisissez « Fuite » ou « Pas une fuite » pour chaque situation.
+  </p>
+
+  {
+    leakSituations.map((situation) => (
+      <article class="glass card leak" data-leak-id={situation.id}>
+        <div class="leak-head">
+          <span class="leak-file">{situation.file}</span>
+        </div>
+        <pre><code>{situation.code}</code></pre>
+        <div class="leak-actions">
+          <button class="btn" type="button" data-leak-answer="leak">
+            Fuite
+          </button>
+          <button class="btn btn-ghost" type="button" data-leak-answer="safe">
+            Pas une fuite
+          </button>
+        </div>
+      </article>
+    ))
+  }
+
+  <div class="leak-actions">
+    <button class="btn btn-ghost" type="button" data-leak-reset>Recommencer le jeu</button>
+  </div>
+</div>
+
+<noscript>
+  <p class="callout callout-info">
+    Le jeu a besoin de JavaScript. Les situations ci-dessus restent lisibles : pour
+    chacune, demandez-vous « est-ce que je publierais ce contenu sur GitHub ? ».
+  </p>
+</noscript>
+
+<script type="application/json" data-leak-data set:html={data}></script>
+
+<script>
+  interface LeakSituation {
+    id: string;
+    isLeak: boolean;
+    why: string;
+  }
+  interface ScoreMessage {
+    min: number;
+    max: number;
+    text: string;
+  }
+
+  const root = document.querySelector<HTMLElement>("[data-leak-game]");
+  const dataNode = document.querySelector<HTMLScriptElement>("[data-leak-data]");
+  if (!root || !dataNode?.textContent) {
+    // Rien à piloter : la page reste utilisable sans le jeu.
+  } else {
+    const data = JSON.parse(dataNode.textContent) as {
+      situations: LeakSituation[];
+      scoreMessages: ScoreMessage[];
+    };
+    const scoreNode = root.querySelector<HTMLElement>("[data-leak-score]");
+    const total = data.situations.length;
+    let answered = 0;
+    let correct = 0;
+
+    const refreshScore = () => {
+      if (!scoreNode) return;
+      if (answered === 0) {
+        scoreNode.textContent = `Score : 0 / ${total} — choisissez « Fuite » ou « Pas une fuite » pour chaque situation.`;
+        scoreNode.classList.remove("leak-score-final");
+        return;
+      }
+      scoreNode.textContent = `Score : ${correct} / ${answered}`;
+      if (answered === total) {
+        const message = data.scoreMessages.find((m) => correct >= m.min && correct <= m.max);
+        scoreNode.textContent += ` — ${message?.text ?? ""}`;
+        scoreNode.classList.add("leak-score-final");
+      }
+    };
+
+    root.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      if (target.matches("[data-leak-reset]")) {
+        root.querySelectorAll<HTMLElement>("[data-leak-id]").forEach((card) => {
+          card.removeAttribute("data-answered");
+          card.querySelector(".leak-verdict")?.remove();
+          card.querySelectorAll<HTMLButtonElement>("[data-leak-answer]").forEach((button) => {
+            button.disabled = false;
+          });
+        });
+        answered = 0;
+        correct = 0;
+        refreshScore();
+        return;
+      }
+
+      const button = target.closest<HTMLButtonElement>("[data-leak-answer]");
+      const card = button?.closest<HTMLElement>("[data-leak-id]");
+      if (!button || !card || card.hasAttribute("data-answered")) return;
+
+      const situation = data.situations.find((s) => s.id === card.dataset.leakId);
+      if (!situation) return;
+
+      const saidLeak = button.dataset.leakAnswer === "leak";
+      const isCorrect = saidLeak === situation.isLeak;
+      answered += 1;
+      if (isCorrect) correct += 1;
+
+      card.setAttribute("data-answered", "");
+      card.querySelectorAll<HTMLButtonElement>("[data-leak-answer]").forEach((other) => {
+        other.disabled = true;
+      });
+
+      const verdict = document.createElement("p");
+      verdict.className = `leak-verdict ${isCorrect ? "ok" : "ko"}`;
+      verdict.textContent = `${isCorrect ? "✅ Bonne réponse." : "❌ Raté."} ${
+        situation.isLeak ? "Ce contenu est bien une fuite." : "Ce n'est pas une fuite."
+      }`;
+      const why = document.createElement("p");
+      why.className = "leak-why";
+      why.textContent = situation.why;
+      card.append(verdict, why);
+
+      refreshScore();
+    });
+  }
+</script>

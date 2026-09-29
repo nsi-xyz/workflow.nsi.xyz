@@ -2,11 +2,27 @@
 import DocLayout from "../layouts/DocLayout.astro";
 import { navItems, type NavItem } from "../data/navigation";
 
+/**
+ * Pages « squelette » : elles sont générées depuis navigation.ts tant qu'une
+ * page dédiée n'existe pas dans src/pages/. Dès qu'un fichier .astro est créé
+ * pour une section, elle disparaît d'ici automatiquement (détection ci-dessous).
+ *
+ * Attention : `getStaticPaths` est hoisté par Astro et n'a pas accès aux
+ * variables du frontmatter — la détection vit donc à l'intérieur de la fonction.
+ */
 export function getStaticPaths() {
-  return navItems.map((item) => ({
-    params: { slug: item.slug },
-    props: { item },
-  }));
+  const built = new Set(
+    Object.keys(import.meta.glob("./**/*.astro")).map((path) =>
+      path.replace(/^\.\//, "").replace(/\.astro$/, ""),
+    ),
+  );
+
+  return navItems
+    .filter((item) => !built.has(item.slug))
+    .map((item) => ({
+      params: { slug: item.slug },
+      props: { item },
+    }));
 }
 
 interface Props {

@@ -4,9 +4,11 @@ import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
   item: NavItem;
+  /** false pour les pages rédigées : masque le plan « au programme ». */
+  plan?: boolean;
 }
 
-const { item } = Astro.props;
+const { item, plan = true } = Astro.props;
 const current = `/${item.slug}`;
 ---
 
@@ -42,19 +44,23 @@ const current = `/${item.slug}`;
 
       <slot />
 
-      <section aria-labelledby="plan-de-section">
-        <div class="section-title">
-          <h2 id="plan-de-section">Au programme de cette section</h2>
-          <small>rédaction en cours</small>
-        </div>
-        <div class="glass card">
-          <ul class="list-plain planned">
-            {item.planned.map((line) => (
-              <li>{line}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {
+        plan && (
+          <section aria-labelledby="plan-de-section">
+            <div class="section-title">
+              <h2 id="plan-de-section">Au programme de cette section</h2>
+              <small>rédaction en cours</small>
+            </div>
+            <div class="glass card">
+              <ul class="list-plain planned">
+                {item.planned.map((line) => (
+                  <li>{line}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )
+      }
     </article>
   </div>
 </BaseLayout>
