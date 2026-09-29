@@ -1,0 +1,212 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems, workflowSteps } from "../data/navigation";
+import {
+  agentStrengths,
+  examplePrompts,
+  humanDuties,
+  loopPhases,
+  myths,
+  timeline,
+  workflowRules,
+} from "../data/workflow";
+
+const item = navItems.find((entry) => entry.slug === "workflow")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Pourquoi un workflow ?</h2>
+    <p>
+      Un workflow, c'est la <strong>chaîne d'habitudes</strong> qui transforme une idée en
+      site en ligne : quoi faire d'abord, quoi vérifier, quand s'arrêter, quand recommencer.
+      Sans lui, on demande tout, tout de suite, on obtient un projet qui « marche » deux
+      minutes puis qu'on ne sait plus réparer.
+    </p>
+    <p>
+      Avec lui, l'IA devient ce qu'elle est vraiment : un <strong>exécutant rapide et
+      infatigable</strong>, sous la direction d'un humain qui décide et qui vérifie. Le
+      travail change de nature — moins de frappe, plus de réflexion — mais il ne disparaît
+      jamais.
+    </p>
+    <Callout type="info" title="La règle qui résume tout">
+      <p>
+        L'agent produit, l'humain <strong>décide</strong> et <strong>valide</strong>.
+        Chaque fois que vous inversez les rôles, le projet se dégrade.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>La boucle : cinq temps, à chaque demande</h2>
+    <p>
+      Chaque fois que vous demandez quelque chose à l'agent, le même cycle recommence.
+      Il est court — quelques minutes — et c'est lui qui distingue un projet maîtrisé d'un
+      enchaînement de hasards.
+    </p>
+    <div class="cycle" role="list" aria-label="Les cinq temps de la boucle">
+      {loopPhases.map((phase, index) => (
+        <>
+          <span class="chip" role="listitem">{phase.title}</span>
+          {index < loopPhases.length - 1 ? <span class="cycle-arrow" aria-hidden="true">→</span> : <span class="cycle-arrow" aria-hidden="true">↺</span>}
+        </>
+      ))}
+    </div>
+
+    <div class="phase-grid">
+      {
+        loopPhases.map((phase, index) => (
+          <article class="glass card phase">
+            <span class="card-kicker">Temps {index + 1}</span>
+            <h3>{phase.title}</h3>
+            <p><span class="who">Vous —</span> {phase.you}</p>
+            <p><span class="who-agent">L'agent —</span> {phase.agent}</p>
+            <p class="exit">Feu vert pour la suite : {phase.exit}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Le parcours du projet : cinq étapes</h2>
+    <p>
+      La boucle se répète <em>à l'intérieur</em> d'un parcours plus large : les cinq étapes
+      qui font passer d'une page blanche à une adresse publique. Chacune a un critère de
+      sortie : tant qu'il n'est pas rempli, on ne passe pas à la suivante.
+    </p>
+    <div class="grid-cards">
+      {
+        workflowSteps.map((step, index) => (
+          <a class="glass card" href={step.href}>
+            <span class="card-kicker">Étape {index + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+            <p class="exit">Terminé quand : {step.done}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Qui fait quoi</h2>
+    <p>
+      Répartir les rôles, c'est se protéger de la déception : on ne reproche pas à l'agent
+      ce qu'il n'a jamais su faire. Voici la frontière, en deux colonnes.
+    </p>
+    <div class="grid-cards">
+      <div class="glass card">
+        <span class="card-kicker">Vous — non délégable</span>
+        <ul>
+          {humanDuties.map((duty) => <li>{duty}</li>)}
+        </ul>
+      </div>
+      <div class="glass card">
+        <span class="card-kicker">L'agent — excellent, rapide</span>
+        <ul>
+          {agentStrengths.map((strength) => <li>{strength}</li>)}
+        </ul>
+      </div>
+    </div>
+    <Callout type="warn" title="La ligne rouge">
+      <p>
+        Quatre choses ne se délèguent jamais : <strong>choisir ce qu'on publie</strong>,
+        <strong>protéger les secrets</strong>, <strong>les données personnelles</strong> et
+        <strong>la compréhension</strong> du projet. Un travail que vous ne pouvez pas
+        expliquer n'est pas votre travail.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Un exemple complet, du premier prompt à l'URL</h2>
+    <p>
+      Voici comment la boucle et le parcours s'enchaînent sur un vrai cas : une page
+      d'accueil sur les abeilles. Tout ce qui suit, vous pouvez le refaire.
+    </p>
+    <ol class="timeline">
+      {
+        timeline.map((step) => (
+          <li>
+            <span class="chip">{step.phase}</span>
+            <h3>{step.title}</h3>
+            {step.prompt && <pre><code>{step.prompt}</code></pre>}
+            <p class="result">{step.result}</p>
+            {step.note && <p class="note">💡 {step.note}</p>}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section>
+    <h2>Les règles du jeu</h2>
+    <ol class="rules">
+      {workflowRules.map((rule) => <li>{rule}</li>)}
+    </ol>
+  </section>
+
+  <section>
+    <h2>Quatre idées fausses à jeter</h2>
+    <div class="myths">
+      {
+        myths.map((entry) => (
+          <article class="glass card myth">
+            <p class="said">{entry.myth}</p>
+            <p class="reality">{entry.reality}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Quatre prompts à réutiliser</h2>
+    <p>
+      Ils ne sont pas magiques : ils sont <strong>précis</strong>. Copiez-les, puis adaptez
+      le sujet — jamais l'inverse.
+    </p>
+    <div class="grid-cards">
+      {
+        examplePrompts.map((entry) => (
+          <article class="glass card prompt-card">
+            <span class="card-kicker">{entry.label}</span>
+            <pre><code>{entry.prompt}</code></pre>
+          </article>
+        ))
+      }
+    </div>
+    <p>
+      La promptothèque complète — classée par intention, avec les explications — vit dans
+      la section <a href="/prompts">Promptothèque</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompt">
+        <span class="card-kicker">Savoir-faire</span>
+        <h3>Piloter l'agent</h3>
+        <p>Anatomie d'un prompt, itérations, anti-patterns, constructeur de prompt.</p>
+      </a>
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>Session, dossier de travail, mode plan, suivi du coût.</p>
+      </a>
+      <a class="glass card" href="/git-github">
+        <span class="card-kicker">Mémoire</span>
+        <h3>Git et GitHub</h3>
+        <p>Les points de retour qui rendent le workflow serein.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">À ne pas rater</span>
+        <h3>Sécurité</h3>
+        <p>Les pièges qui coûtent cher, et la procédure en cas de fuite.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

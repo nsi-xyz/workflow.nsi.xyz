@@ -5,28 +5,28 @@
 
 ## Synthèse
 
-- **43 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **4 241 lignes** au total.
+- **46 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **4 898 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/styles/` | 4 | 1 383 |
+| `src/styles/` | 4 | 1 541 |
 | `scripts/` | 18 | 1 201 |
-| `src/pages/` | 3 | 508 |
-| `src/data/` | 2 | 364 |
+| `src/pages/` | 4 | 721 |
+| `src/data/` | 3 | 581 |
 | `src/components/` | 5 | 301 |
 | `./` | 6 | 249 |
+| `tests/` | 3 | 168 |
 | `src/layouts/` | 2 | 130 |
-| `tests/` | 2 | 99 |
 | `src/` | 1 | 6 |
 
 ## Fichiers les plus volumineux (> 400 lignes)
 
 | Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
 |---|---:|---:|---:|---:|---|
-| `src/styles/components.css` | 981 | — | — | 981 | Feuille de style |
+| `src/styles/components.css` | 1139 | — | — | 1139 | Feuille de style |
 
 ## Inventaire complet
 
@@ -60,18 +60,21 @@
 | `src/components/Header.astro` | 53 | Composant UI |
 | `src/components/SpotTheLeak.astro` | 138 | Composant UI |
 | `src/components/ThemeToggle.astro` | 53 | Composant UI |
-| `src/data/navigation.ts` | 276 | Donnée éditoriale |
+| `src/data/navigation.ts` | 281 | Donnée éditoriale |
 | `src/data/securite.ts` | 88 | Donnée éditoriale |
+| `src/data/workflow.ts` | 212 | Donnée éditoriale |
 | `src/layouts/BaseLayout.astro` | 63 | Gabarit de page |
 | `src/layouts/DocLayout.astro` | 67 | Gabarit de page |
 | `src/pages/[...slug].astro` | 45 | Page (route) |
 | `src/pages/index.astro` | 138 | Page (route) |
 | `src/pages/securite.astro` | 325 | Page (route) |
+| `src/pages/workflow.astro` | 213 | Page (route) |
 | `src/styles/base.css` | 287 | Feuille de style |
-| `src/styles/components.css` | 981 | Feuille de style |
+| `src/styles/components.css` | 1139 | Feuille de style |
 | `src/styles/global.css` | 8 | Feuille de style |
 | `src/styles/tokens.css` | 107 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
 | `tests/content.test.mjs` | 51 | Test |
 | `tests/securite.test.mjs` | 48 | Test |
+| `tests/workflow.test.mjs` | 69 | Test |
 | `tsconfig.json` | 16 | Racine / config |

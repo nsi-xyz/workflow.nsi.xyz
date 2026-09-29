@@ -942,6 +942,164 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   Workflow — boucle, phases, frise d'exemple, idées fausses
+   -------------------------------------------------------------------------- */
+.cycle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 1.3rem;
+}
+
+.cycle .chip {
+  font-weight: 700;
+}
+
+.cycle-arrow {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.phase-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.phase {
+  padding: 1.15rem 1.25rem;
+}
+
+.phase h3 {
+  margin: 0 0 0.5em;
+}
+
+.phase p {
+  margin: 0.4em 0;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+
+.phase .who {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.phase .who-agent {
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+.phase p.exit,
+.card p.exit {
+  margin-top: 0.75em;
+  padding-top: 0.65em;
+  border-top: 1px dashed var(--glass-border);
+  color: var(--text-mute);
+  font-size: 0.88rem;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.timeline li {
+  position: relative;
+  padding-left: 1.9rem;
+}
+
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: 0.05rem;
+  top: 0.7rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+}
+
+.timeline li::after {
+  content: "";
+  position: absolute;
+  left: 0.37rem;
+  top: 1.55rem;
+  bottom: -1.25rem;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 65%, transparent),
+    color-mix(in srgb, var(--accent) 22%, transparent)
+  );
+}
+
+.timeline li:last-child::after {
+  display: none;
+}
+
+.timeline h3 {
+  margin: 0.45em 0 0.3em;
+  font-size: 1.06rem;
+}
+
+.timeline pre {
+  margin: 0.5rem 0 0.6rem;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+}
+
+.timeline .result {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.timeline .note {
+  margin: 0.45em 0 0;
+  color: var(--text-mute);
+  font-size: 0.9rem;
+}
+
+.myths {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.myth {
+  padding: 1.15rem 1.25rem;
+}
+
+.myth .said {
+  margin: 0 0 0.5em;
+  color: var(--text-mute);
+  font-style: italic;
+}
+
+.myth .reality {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.prompt-card {
+  padding: 1.15rem 1.25rem;
+}
+
+.prompt-card pre {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+}
+
+.card ul {
+  margin: 0.2em 0 0;
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {

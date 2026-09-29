@@ -247,26 +247,31 @@ export const workflowSteps = [
     title: "Espace de travail",
     text: "Ouvrir OpenCode, choisir un dossier, lancer une session : l'agent travaille dans un dossier, pas « dans le cloud ».",
     href: "/opencode",
+    done: "Un dossier de projet existe, avec un fichier de dépendances et un dépôt Git.",
   },
   {
     title: "Piloter l'IA",
     text: "Décrire ce qu'on veut, itérer, relire. Le prompt est une commande : objectif, contexte, contraintes.",
     href: "/prompt",
+    done: "Une première version fonctionne, et vous savez expliquer ce qu'elle contient.",
   },
   {
     title: "Garder une trace",
     text: "Enregistrer chaque version avec Git, héberger le tout dans un dépôt GitHub privé.",
     href: "/git-github",
+    done: "Le dépôt contient l'historique enregistré, sans aucun secret.",
   },
   {
     title: "Publier",
     text: "Déployer le projet sur Cloudflare Pages et obtenir une URL publique à partager.",
     href: "/cloudflare",
+    done: "L'URL publique répond sur un autre poste que le vôtre.",
   },
   {
     title: "Journaliser",
     text: "Déposer les prompts utilisés sur ce site : c'est la preuve du travail et la mémoire du projet.",
     href: "/prompts/depot",
+    done: "Les prompts de chaque étape sont déposés, le journal raconte le projet.",
   },
 ];
 
