@@ -1,0 +1,7 @@
+/* Point d'entrée unique des styles du site.
+   Ordre volontaire : Tailwind (base + utilitaires), puis nos jetons,
+   la base et les composants — notre verre dépoli passe en dernier. */
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";

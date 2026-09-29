@@ -1,0 +1,62 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Apprendre à piloter une IA pour construire, versionner et déployer un site : le workflow du projet NSI.",
+} = Astro.props;
+
+const pageTitle =
+  title === "Accueil"
+    ? "workflow.nsi.xyz — pilotez une IA, publiez un site"
+    : `${title} — workflow.nsi.xyz`;
+---
+
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="robots" content="index, follow" />
+    <title>{pageTitle}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Thème appliqué avant le premier rendu : aucun flash clair/sombre.
+      // Un paramètre `?theme=light|dark` permet de forcer un thème (partage, tests).
+      (function () {
+        try {
+          var forced = new URLSearchParams(location.search).get("theme");
+          if (forced === "light" || forced === "dark") {
+            document.documentElement.dataset.theme = forced;
+            localStorage.setItem("theme", forced);
+            return;
+          }
+          var stored = localStorage.getItem("theme");
+          var theme = stored === "light" || stored === "dark" ? stored : "dark";
+          document.documentElement.dataset.theme = theme;
+        } catch (error) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <Header />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

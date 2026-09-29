@@ -1,0 +1,28 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import { navItems, type NavItem } from "../data/navigation";
+
+export function getStaticPaths() {
+  return navItems.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+interface Props {
+  item: NavItem;
+}
+
+const { item } = Astro.props;
+---
+
+<DocLayout item={item}>
+  <div class="callout callout-info">
+    <span class="callout-title">Section en cours de rédaction</span>
+    <p>
+      Le plan ci-dessous annonce le contenu exact de cette page. Elle sera complétée
+      avec des exemples, des captures et des exercices — sans jamais dépendre d'une
+      date de cours.
+    </p>
+  </div>
+</DocLayout>

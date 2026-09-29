@@ -1,0 +1,71 @@
+#!/bin/sh
+# =============================================================================
+# Hook de pré-commit — workflow.nsi.xyz
+# Installé par `npm install` (script `prepare` → scripts/install-hooks.mjs).
+#
+# Ce que ce hook garantit SANS que personne ait à y penser :
+#   1. aucun secret ne part sur GitHub (.env, jetons, clés) ;
+#   2. docs/INVENTAIRE_FICHIERS.md est toujours à jour (carte du code pour l'IA) ;
+#   3. aucun fichier ne dépasse son budget de taille (anti-monolithe) ;
+#   4. aucune suppression de types (@ts-nocheck…) nouvelle ;
+#   5. pas de dialogue natif, de « (s) », de catch muet ni de « any » en hausse ;
+#   6. `npm test` passe (0 régression) ;
+#   7. `tsc --noEmit` passe (astro build ne lance pas tsc).
+#
+# En cas d'urgence (travail en cours, commit intermédiaire) :
+#   git commit --no-verify -m "..."
+# =============================================================================
+set -e
+
+# 1. Aucun secret dans le commit
+node scripts/check-secrets.mjs || {
+  echo ""
+  echo "🚫 Commit refusé : un secret ne doit JAMAIS partir sur GitHub."
+  exit 1
+}
+
+# 2. Inventaire régénéré et indexé automatiquement
+if command -v node >/dev/null 2>&1; then
+  node scripts/generate-inventory.mjs >/dev/null 2>&1 || true
+  if [ -f docs/INVENTAIRE_FICHIERS.md ]; then
+    git add docs/INVENTAIRE_FICHIERS.md
+  fi
+fi
+
+# 3. Garde-fou anti-monolithe
+node scripts/check-size.mjs || {
+  echo ""
+  echo "💡 Pour autoriser un dépassement volontaire :"
+  echo "   node scripts/check-size.mjs --update-baseline && git add scripts/size-baseline.json"
+  exit 1
+}
+
+# 4. Suppressions de types (cliquet)
+if ! node scripts/check-nocheck.mjs >/dev/null 2>&1; then
+  echo "❌ une suppression TS (@ts-nocheck…) nouvelle — commit bloqué."
+  echo "   Relancez « node scripts/check-nocheck.mjs » pour voir le détail."
+  exit 1
+fi
+
+# 5. Hygiène : dialogues natifs, pluriel (s), catch muets, compteur any
+if ! node scripts/check-debt.mjs >/dev/null 2>&1; then
+  echo "❌ dette technique non autorisée — commit bloqué."
+  echo "   Relancez « node scripts/check-debt.mjs » pour voir le détail."
+  exit 1
+fi
+
+# 6. Tests unitaires
+if ! npm test --silent >/dev/null 2>&1; then
+  echo "❌ npm test échoue — commit bloqué (0 régression tolérée)."
+  echo "   Relancez « npm test » pour voir le détail."
+  exit 1
+fi
+
+# 7. Contrôle de types (astro build ne lance pas tsc)
+if ! npx tsc --noEmit >/dev/null 2>&1; then
+  echo "❌ npm run typecheck échoue — commit bloqué."
+  echo "   Relancez « npm run typecheck » pour voir le détail."
+  exit 1
+fi
+
+echo "✅ Pré-commit : secrets OK, inventaire à jour, budgets respectés, tests OK, types OK, dette sous contrôle."

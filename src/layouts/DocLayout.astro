@@ -1,0 +1,60 @@
+---
+import { navGroups, type NavItem } from "../data/navigation";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  item: NavItem;
+}
+
+const { item } = Astro.props;
+const current = `/${item.slug}`;
+---
+
+<BaseLayout title={item.title} description={item.lead}>
+  <div class="doc-shell">
+    <aside class="sidebar glass" aria-label="Sommaire du site">
+      <details open>
+        <summary>Toutes les sections</summary>
+        {
+          navGroups.map((group) => (
+            <>
+              <span class="menu-group">{group.label}</span>
+              {group.items.map((entry) => (
+                <a
+                  href={`/${entry.slug}`}
+                  aria-current={entry.slug === item.slug ? "page" : undefined}
+                >
+                  {entry.title}
+                </a>
+              ))}
+            </>
+          ))
+        }
+      </details>
+    </aside>
+
+    <article>
+      <header class="page-hero">
+        <span class="kicker">{item.kicker}</span>
+        <h1>{item.title}</h1>
+        <p class="lead">{item.lead}</p>
+      </header>
+
+      <slot />
+
+      <section aria-labelledby="plan-de-section">
+        <div class="section-title">
+          <h2 id="plan-de-section">Au programme de cette section</h2>
+          <small>rédaction en cours</small>
+        </div>
+        <div class="glass card">
+          <ul class="list-plain planned">
+            {item.planned.map((line) => (
+              <li>{line}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </article>
+  </div>
+</BaseLayout>

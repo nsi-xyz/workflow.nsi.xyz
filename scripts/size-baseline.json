@@ -1,0 +1,12 @@
+{
+  "budgets": {
+    "page": 500,
+    "composant": 400,
+    "layout": 400,
+    "style": 450,
+    "data": 600,
+    "route-api": 400,
+    "script-inline": 150
+  },
+  "files": {}
+}

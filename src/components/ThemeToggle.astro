@@ -1,0 +1,52 @@
+---
+/**
+ * Bascule clair/sombre. Le thème est appliqué avant le premier rendu par le
+ * script inline de BaseLayout ; ici on ne fait que le changer et le mémoriser.
+ */
+---
+<button
+  class="theme-toggle"
+  type="button"
+  data-theme-toggle
+  aria-label="Basculer entre thème clair et sombre"
+  title="Thème clair / sombre"
+>
+  <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linejoin="round"
+    />
+  </svg>
+  <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8" />
+    <path
+      d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+    />
+  </svg>
+</button>
+
+<script>
+  const KEY = "theme";
+
+  function applyTheme(theme: string) {
+    document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem(KEY, theme);
+    } catch {
+      /* stockage indisponible : le thème reste valable pour la page */
+    }
+  }
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement | null;
+    const button = target?.closest("[data-theme-toggle]");
+    if (!button) return;
+    const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+    applyTheme(next);
+  });
+</script>

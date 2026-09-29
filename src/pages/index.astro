@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { navGroups, workflowSteps } from "../data/navigation";
+
+const discoverCards = navGroups
+  .flatMap((group) => group.items)
+  .filter((item) => !item.slug.includes("/") && item.slug !== "prof" && item.slug !== "projet");
+
+const stars = [
+  {
+    href: "/git-github",
+    kicker: "Confidentialité",
+    title: "Un dépôt privé, vraiment privé",
+    text: "Pourquoi « privé » ne veut pas dire « secret », et comment ne jamais exposer de clé.",
+  },
+  {
+    href: "/securite",
+    kicker: "Accidents",
+    title: "Les pièges qui coûtent cher",
+    text: "Clé API dans un fichier, secret dans l'historique Git, prompt qui exécute n'importe quoi : les éviter et les réparer.",
+  },
+  {
+    href: "/prompts",
+    kicker: "Méthode",
+    title: "Des prompts qui font le travail",
+    text: "Une banque de prompts expliqués, à copier puis adapter — jamais à coller aveuglément.",
+  },
+];
+---
+
+<BaseLayout title="Accueil">
+  <section class="home-hero">
+    <div class="glass glass-strong hero-glass">
+      <span class="badge">Projet NSI — vacances de la Toussaint</span>
+      <h1>Pilotez une IA.<br />Construisez un site.<br /><span class="grad">Publiez-le.</span></h1>
+      <p class="lead">
+        Vous ne connaissez ni OpenCode, ni DeepSeek, ni GitHub, ni Cloudflare ? Parfait :
+        ce site part de zéro et vous rend autonome. À la fin, vous aurez construit un
+        vrai site, hébergé à une vraie adresse — et vous saurez dire comment.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="/workflow">Découvrir le workflow</a>
+        <a class="btn btn-ghost" href="/prompts">Voir la promptothèque</a>
+      </div>
+      <ul class="hero-meta">
+        <li>5 étapes, du premier prompt à l'URL publique</li>
+        <li>Sécurité, pièges et dépannage inclus</li>
+        <li>Aucune donnée personnelle, aucun traceur</li>
+      </ul>
+    </div>
+
+    <div class="glass term" aria-hidden="true">
+      <div class="term-bar">
+        <span class="term-dot"></span>
+        <span class="term-dot"></span>
+        <span class="term-dot"></span>
+        <span style="margin-left:0.6rem;">session — mon-projet</span>
+      </div>
+      <div class="term-body">
+        <p class="term-user">crée une page d'accueil avec un titre, une présentation et un bouton</p>
+        <p class="term-agent">
+          J'ai créé <code>src/pages/index.astro</code> : titre, paragraphe de présentation
+          et bouton. Voulez-vous que je lance le serveur pour vérifier ?
+        </p>
+        <p class="term-user">oui, et explique-moi ce que tu as fait<span class="term-cursor"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell" aria-labelledby="titre-parcours">
+    <div class="section-title">
+      <h2 id="titre-parcours">Le workflow en 5 étapes</h2>
+      <small>la colonne vertébrale du site</small>
+    </div>
+    <div class="pipeline">
+      {
+        workflowSteps.map((step) => (
+          <div class="glass step">
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+            <a href={step.href}>Ouvrir la section →</a>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="shell" aria-labelledby="titre-sections">
+    <div class="section-title">
+      <h2 id="titre-sections">Tout ce qu'il faut savoir</h2>
+      <small>comprendre, s'exercer, vérifier</small>
+    </div>
+    <div class="grid-cards">
+      {
+        discoverCards.map((item) => (
+          <a class="glass card" href={`/${item.slug}`}>
+            <span class="card-kicker">{item.kicker}</span>
+            <h3>{item.title}</h3>
+            <p>{item.lead}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="shell" aria-labelledby="titre-essentiels">
+    <div class="section-title">
+      <h2 id="titre-essentiels">Les trois réflexes</h2>
+      <small>ce qui distingue un projet réussi</small>
+    </div>
+    <div class="grid-cards">
+      {
+        stars.map((card) => (
+          <a class="glass card" href={card.href}>
+            <span class="card-kicker">{card.kicker}</span>
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="shell" style="margin-top:clamp(2.2rem,6vw,3.6rem);">
+    <div class="glass band">
+      <div class="band-text">
+        <h2>Le projet final est verrouillé</h2>
+        <p>
+          Il sera révélé le lundi de la dernière semaine avant les vacances de la
+          Toussaint, à 8 h 42. D'ici là, entraînez-vous : tout ce qu'il faut maîtriser
+          est déjà sur ce site.
+        </p>
+      </div>
+      <a class="btn btn-primary" href="/projet">Voir la page du projet</a>
+    </div>
+  </section>
+</BaseLayout>

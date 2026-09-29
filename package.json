@@ -1,0 +1,40 @@
+{
+  "name": "workflow-nsi-xyz",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "workflow.nsi.xyz — apprendre à piloter une IA pour construire, versionner et déployer un site",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "start": "node scripts/dev.mjs",
+    "dev:url": "node scripts/dev-url.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "node scripts/run-with-node22.mjs tsx --test tests/*.test.mjs",
+    "typecheck": "node scripts/run-with-node22.mjs tsc --noEmit",
+    "prepare": "node scripts/install-hooks.mjs",
+    "map": "node scripts/generate-inventory.mjs",
+    "check:size": "node scripts/check-size.mjs",
+    "check:debt": "node scripts/check-debt.mjs",
+    "check:nocheck": "node scripts/check-nocheck.mjs",
+    "check:secrets": "node scripts/check-secrets.mjs",
+    "version:bump": "node scripts/increment-version.js",
+    "deploy": "node scripts/increment-version.js && npm run build && node scripts/wrangler.mjs pages deploy dist --project-name=workflow-nsi-xyz",
+    "audit:secrets": "node scripts/audit-secrets.mjs"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260929.1",
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.143.1"
+  }
+}

@@ -1,0 +1,42 @@
+---
+import { navGroups } from "../data/navigation";
+import versionInfo from "../version.json";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <h4>workflow.nsi.xyz</h4>
+      <p style="margin:0;color:var(--text-soft);font-size:0.9rem;max-width:34ch;">
+        Apprendre à piloter une IA pour construire, versionner et publier un site —
+        le workflow du projet NSI des vacances de la Toussaint, utile à tout
+        visiteur.
+      </p>
+    </div>
+    <div>
+      <h4>Découvrir</h4>
+      {
+        navGroups
+          .filter((group) => ["decouvrir", "outils"].includes(group.id))
+          .flatMap((group) => group.items)
+          .map((item) => <a href={`/${item.slug}`}>{item.title}</a>)
+      }
+    </div>
+    <div>
+      <h4>Pratique</h4>
+      {
+        navGroups
+          .filter((group) => ["pratique", "securite", "projet"].includes(group.id))
+          .flatMap((group) => group.items)
+          .map((item) => <a href={`/${item.slug}`}>{item.title}</a>)
+      }
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>© {year} — contenu pédagogique NSI</span>
+    <span>Version {versionInfo.version} · build #{versionInfo.build}</span>
+    <span>Aucun cookie, aucun traceur, aucune donnée personnelle collectée.</span>
+  </div>
+</footer>
