@@ -1,0 +1,159 @@
+---
+/**
+ * Constructeur de prompt — les champs produisent un prompt à copier.
+ * La logique vient de src/lib/prompt.ts (testée) ; le script ne fait que
+ * remplir les champs et poser le résultat dans la page.
+ */
+import { blocsRemplis, construirePrompt, exempleChamps, formats } from "../lib/prompt";
+import { presets } from "../data/prompt";
+
+const initial = exempleChamps;
+const initialTexte = construirePrompt(initial);
+---
+
+<div class="glass builder" data-builder>
+  <div class="builder-presets">
+    <span class="builder-label">Charger un exemple :</span>
+    {
+      presets.map((preset) => (
+        <button class="btn btn-ghost" type="button" data-builder-preset={preset.label}>
+          {preset.label}
+        </button>
+      ))
+    }
+    <button class="btn btn-ghost" type="button" data-builder-vider>Vider</button>
+  </div>
+
+  <div class="builder-fields">
+    <label class="calc-field">
+      <span>1 · Objectif — ce que vous voulez obtenir</span>
+      <textarea rows="2" data-builder-objectif placeholder="Ajoute une section…">{initial.objectif}</textarea>
+    </label>
+    <label class="calc-field">
+      <span>2 · Contexte — où vous en êtes</span>
+      <textarea rows="3" data-builder-contexte placeholder="Projet Astro, fichiers concernés…">{initial.contexte}</textarea>
+    </label>
+    <label class="calc-field">
+      <span>3 · Contraintes — ce qu'il ne faut pas toucher</span>
+      <textarea rows="3" data-builder-contraintes placeholder="Un seul fichier, aucune dépendance…">{initial.contraintes}</textarea>
+    </label>
+    <label class="calc-field">
+      <span>4 · Critère de réussite — comment vous vérifierez</span>
+      <textarea rows="2" data-builder-critere placeholder="Le reste de la page est identique…">{initial.critere}</textarea>
+    </label>
+    <label class="calc-field">
+      <span>Procédure attendue</span>
+      <select data-builder-format>
+        {
+          formats.map((format) => (
+            <option value={format.id} selected={format.id === initial.format}>
+              {format.label}
+            </option>
+          ))
+        }
+      </select>
+    </label>
+  </div>
+
+  <p class="builder-status" data-builder-status role="status" aria-live="polite"></p>
+  <pre class="builder-output" data-builder-output><code>{initialTexte}</code></pre>
+
+  <div class="builder-actions">
+    <button class="btn btn-primary" type="button" data-builder-copier>Copier le prompt</button>
+    <span class="builder-hint">
+      Le prompt se met à jour tout seul au fur et à mesure. Copiez, collez dans OpenCode, observez.
+    </span>
+  </div>
+</div>
+
+<script type="application/json" data-builder-presets set:html={JSON.stringify(presets)}></script>
+
+<script>
+  import { blocsRemplis, construirePrompt, type ChampsPrompt, type FormatPrompt } from "../lib/prompt";
+
+  const racine = document.querySelector<HTMLElement>("[data-builder]");
+  const donnees = document.querySelector<HTMLScriptElement>("[data-builder-presets]");
+
+  if (racine && donnees?.textContent) {
+    const presets = JSON.parse(donnees.textContent) as Array<{ label: string; champs: ChampsPrompt }>;
+
+    const champ = <T extends HTMLElement>(selecteur: string) => racine.querySelector<T>(selecteur);
+    const champs = {
+      objectif: champ<HTMLTextAreaElement>("[data-builder-objectif]"),
+      contexte: champ<HTMLTextAreaElement>("[data-builder-contexte]"),
+      contraintes: champ<HTMLTextAreaElement>("[data-builder-contraintes]"),
+      critere: champ<HTMLTextAreaElement>("[data-builder-critere]"),
+      format: champ<HTMLSelectElement>("[data-builder-format]"),
+    };
+    const sortie = champ<HTMLElement>("[data-builder-output] code") ?? champ<HTMLElement>("[data-builder-output]");
+    const statut = champ<HTMLElement>("[data-builder-status]");
+
+    const lire = (): ChampsPrompt => ({
+      objectif: champs.objectif?.value ?? "",
+      contexte: champs.contexte?.value ?? "",
+      contraintes: champs.contraintes?.value ?? "",
+      critere: champs.critere?.value ?? "",
+      format: (champs.format?.value ?? "plan") as FormatPrompt,
+    });
+
+    const ecrire = (valeurs: ChampsPrompt) => {
+      if (champs.objectif) champs.objectif.value = valeurs.objectif;
+      if (champs.contexte) champs.contexte.value = valeurs.contexte;
+      if (champs.contraintes) champs.contraintes.value = valeurs.contraintes;
+      if (champs.critere) champs.critere.value = valeurs.critere;
+      if (champs.format) champs.format.value = valeurs.format;
+    };
+
+    const maj = () => {
+      const valeurs = lire();
+      const prompt = construirePrompt(valeurs);
+      if (sortie) {
+        sortie.textContent = prompt || "(Remplissez au moins l'objectif pour voir le prompt apparaître.)";
+      }
+      if (statut) {
+        const remplis = blocsRemplis(valeurs);
+        statut.textContent =
+          remplis === 4
+            ? "Les quatre blocs sont remplis : le prompt est complet."
+            : `Blocs remplis : ${remplis} sur 4 — un prompt complet évite les allers-retours.`;
+      }
+    };
+
+    racine.addEventListener("input", maj);
+
+    racine.addEventListener("click", async (event) => {
+      const cible = event.target as HTMLElement;
+
+      const preset = cible.closest<HTMLElement>("[data-builder-preset]");
+      if (preset) {
+        const trouve = presets.find((p) => p.label === preset.dataset.builderPreset);
+        if (trouve) {
+          ecrire(trouve.champs);
+          maj();
+        }
+        return;
+      }
+
+      if (cible.closest("[data-builder-vider]")) {
+        ecrire({ objectif: "", contexte: "", contraintes: "", critere: "", format: "plan" });
+        maj();
+        return;
+      }
+
+      if (cible.closest("[data-builder-copier]")) {
+        const texte = construirePrompt(lire());
+        if (!texte) return;
+        try {
+          await navigator.clipboard.writeText(texte);
+          if (statut) statut.textContent = "Prompt copié. Collez-le dans la conversation de l'agent.";
+        } catch {
+          if (statut) {
+            statut.textContent = "Copie impossible automatiquement : sélectionnez le texte du prompt à la main.";
+          }
+        }
+      }
+    });
+
+    maj();
+  }
+</script>

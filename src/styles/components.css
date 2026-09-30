@@ -1359,6 +1359,147 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   Piloter l'agent — anatomie du prompt, constructeur, anti-patterns
+   -------------------------------------------------------------------------- */
+.anatomy {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.anatomy-part {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.anatomy-tag {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--accent-ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.anatomy-part h3 {
+  margin: 0 0 0.25em;
+  font-size: 1.02rem;
+}
+
+.anatomy-exemple {
+  margin: 0 0 0.4em;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+}
+
+.anatomy-pourquoi {
+  margin: 0;
+  color: var(--text-mute);
+  font-size: 0.9rem;
+}
+
+.builder {
+  margin: 1.2rem 0;
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+}
+
+.builder-presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.builder-label {
+  color: var(--text-mute);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.builder-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.9rem;
+}
+
+.builder-fields textarea {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-hi);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.builder-status {
+  margin: 1rem 0 0.4rem;
+  color: var(--text-mute);
+  font-size: 0.88rem;
+}
+
+.builder-output {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.builder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.builder-hint {
+  max-width: 60ch;
+  color: var(--text-mute);
+  font-size: 0.84rem;
+}
+
+.antipatterns {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.antipattern {
+  padding: 1.1rem 1.2rem;
+}
+
+.antipattern p {
+  margin: 0 0 0.45em;
+}
+
+.antipattern p:last-child {
+  margin-bottom: 0;
+}
+
+.antipattern-probleme,
+.antipattern-correction {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.duo-prompt {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {

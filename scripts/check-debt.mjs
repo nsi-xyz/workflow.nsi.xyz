@@ -30,7 +30,7 @@ function walk(dir, acc = []) {
 }
 
 const DIALOG = /(^|[^A-Za-z0-9_$])(window\.)?(alert|confirm|prompt)\s*\(/;
-const PLURAL = /[a-zà-ÿ]\(s\)(?=[\s<`'"»]|$)/i;
+const PLURAL = /[a-zà-ÿ]\(s\)(?=[\s,;:.!?)<`'"»]|$)/i;
 const EMPTY_CATCH = /catch\s*(?:\(\s*\w*\s*\))?\s*\{\s*\}|\.catch\(\s*\(\s*\)\s*=>\s*\{\s*\}\s*\)/g;
 const ANY = /:\s*any\b|as any\b|<any>|any\[\]/g;
 

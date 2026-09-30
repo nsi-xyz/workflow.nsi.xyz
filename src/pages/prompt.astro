@@ -1,0 +1,197 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import PromptBuilder from "../components/PromptBuilder.astro";
+import { navItems } from "../data/navigation";
+import { anatomie, antiPatterns, escalade, phrasesPilotage } from "../data/prompt";
+
+const item = navItems.find((entry) => entry.slug === "prompt")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Un prompt n'est pas une question, c'est une commande</h2>
+    <p>
+      Vous ne demandez pas une opinion à l'agent : vous lui confiez un travail. Et comme pour
+      tout travail confié, ce qui manque se paie plus tard. Une question vague produit une
+      réponse vague ; une commande précise produit quelque chose qu'on peut vérifier.
+    </p>
+    <p>
+      Parlez-lui comme à <strong>un développeur junior très rapide</strong> : il ne connaît
+      pas votre projet, il ne devine pas vos intentions, mais il exécute très bien des
+      consignes claires. Ce qui compte n'est pas la politesse, c'est la précision.
+    </p>
+    <Callout type="info" title="La phrase à garder en tête">
+      <p>
+        Un bon prompt contient <strong>un objectif</strong>, <strong>du contexte</strong>, <strong>des contraintes</strong>
+        et <strong>un critère de réussite</strong>. S'il en manque un, l'agent le remplacera
+        par une supposition.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>L'anatomie d'un prompt qui marche</h2>
+    <div class="anatomy">
+      {
+        anatomie.map((partie, index) => (
+          <article class="anatomy-part">
+            <span class="anatomy-tag">{index + 1}</span>
+            <div>
+              <h3>{partie.label}</h3>
+              <p class="anatomy-exemple">{partie.exemple}</p>
+              <p class="anatomy-pourquoi">{partie.pourquoi}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+    <p>
+      Remarquez ce que ce prompt <strong>ne contient pas</strong> : ni politesse inutile, ni
+      explication de ce qu'est Astro, ni liste de toutes les fonctionnalités du site. Un
+      prompt utile est court parce qu'il est précis.
+    </p>
+  </section>
+
+  <section>
+    <h2>Construisez le vôtre</h2>
+    <p>
+      Remplissez les quatre blocs, choisissez la procédure, copiez. Le constructeur ne
+      devine rien pour vous : il met simplement de l'ordre dans ce que vous écrivez.
+    </p>
+    <PromptBuilder />
+    <Callout type="ok" title="Testez sur une petite demande">
+      <p>
+        Utilisez le constructeur pour votre prochaine demande réelle, même minuscule :
+        « change le titre de la page ». C'est en comparant le résultat avec un prompt bâclé
+        qu'on mesure la différence.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Le niveau de détail : deux exemples</h2>
+    <div class="duo">
+      <div class="glass card duo-item">
+        <p class="duo-bad"><span class="duo-label">Vague</span></p>
+        <p class="duo-prompt">Améliore la page d'accueil.</p>
+        <p class="duo-why">
+          L'agent va changer ce qu'il veut, dans l'ordre qu'il veut. Le résultat sera peut-être
+          joli, sûrement pas ce que vous imaginiez, et impossible à discuter.
+        </p>
+      </div>
+      <div class="glass card duo-item">
+        <p class="duo-good"><span class="duo-label">Précis</span></p>
+        <p class="duo-prompt">
+          Sur la page d'accueil, mets le titre principal en 2 lignes maximum et ajoute sous le
+          bouton une phrase qui dit à qui le site s'adresse. Ne touche pas aux couleurs.
+        </p>
+        <p class="duo-why">
+          Un périmètre, un effet attendu, une interdiction. Si le résultat déçoit, vous savez
+          exactement quelle phrase corriger.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sept anti-patterns à reconnaître</h2>
+    <p>
+      Ces sept prompts reviennent sans arrêt. Les reconnaître, c'est déjà les éviter — et
+      savoir quoi dire à la place.
+    </p>
+    <div class="antipatterns">
+      {
+        antiPatterns.map((item) => (
+          <article class="glass card antipattern">
+            <p class="antipattern-mauvais"><span class="duo-label">À éviter</span> {item.mauvais}</p>
+            <p class="antipattern-probleme">
+              <strong>Ce qui cloche :</strong> {item.probleme}
+            </p>
+            <p class="antipattern-correction">
+              <strong>À la place :</strong> {item.correction}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Les phrases qui pilotent</h2>
+    <p>
+      Huit situations, huit phrases à réutiliser telles quelles. Elles ne sont pas magiques :
+      elles imposent un cadre à la conversation.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Ce que vous pouvez écrire</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            phrasesPilotage.map((phrase) => (
+              <tr>
+                <td>{phrase.situation}</td>
+                <td><em>{phrase.phrase}</em></td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quand ça bloque : l'escalade</h2>
+    <p>
+      Un agent qui tourne en rond, ce n'est pas une fatalité : c'est une procédure. Essayez
+      ces étapes dans l'ordre, en vous arrêtant dès que ça débloque.
+    </p>
+    <ol class="rules">
+      {
+        escalade.map((etape) => (
+          <li>
+            <strong>{etape.titre}.</strong> {etape.texte}
+          </li>
+        ))
+      }
+    </ol>
+    <Callout type="danger" title="La fausse bonne idée">
+      <p>
+        Réessayer la même demande en espérant un autre résultat. Le modèle ne tire pas au
+        sort : il produit du texte probable. Si l'entrée ne change pas, la sortie ne change
+        pas non plus.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompts">
+        <span class="card-kicker">Outils prêts</span>
+        <h3>La promptothèque</h3>
+        <p>Des prompts testés, classés par intention, expliqués phrase par phrase.</p>
+      </a>
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>Où écrire le prompt, comment joindre un fichier avec @, où lire le coût.</p>
+      </a>
+      <a class="glass card" href="/workflow">
+        <span class="card-kicker">Méthode</span>
+        <h3>Le workflow</h3>
+        <p>La boucle complète : décrire, générer, tester, corriger, livrer.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">À ne pas rater</span>
+        <h3>Sécurité</h3>
+        <p>Ce qu'on ne met jamais dans un prompt : clés, données personnelles, secrets.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

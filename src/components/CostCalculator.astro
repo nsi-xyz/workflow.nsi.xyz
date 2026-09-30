@@ -87,6 +87,7 @@ const tarifPro = tarifs.pro;
 
 <script>
   import { dollars, estHeurePleine, tarifsPour, type ModeleId } from "../lib/cout";
+  import { frPluriel } from "../lib/fr";
 
   const root = document.querySelector<HTMLElement>("[data-calc]");
 
@@ -150,7 +151,7 @@ const tarifPro = tarifs.pro;
       }
       if (totalNode) {
         const actif = pointe ? plein : creux;
-        totalNode.textContent = `Coût estimé : ${dollars(actif.total)} pour ${valeurs.requetes} requête(s), soit ${dollars(actif.total / valeurs.requetes)} par requête.`;
+        totalNode.textContent = `Coût estimé : ${dollars(actif.total)} pour ${frPluriel(valeurs.requetes, "requête")}, soit ${dollars(actif.total / valeurs.requetes)} par requête.`;
       }
 
       ecrire("[data-calc-creux-entree]", dollars(creux.entree));
