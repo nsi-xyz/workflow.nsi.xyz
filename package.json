@@ -10,7 +10,7 @@
     "dev": "node scripts/dev.mjs",
     "start": "node scripts/dev.mjs",
     "dev:url": "node scripts/dev-url.mjs",
-    "dev:api": "npm run build && node scripts/wrangler.mjs pages dev dist --port=4324",
+    "dev:api": "npm run build && node scripts/wrangler.mjs pages dev dist --port=4324 --ip=0.0.0.0",
     "codes:init": "node scripts/codes-init.mjs",
     "build": "astro build",
     "preview": "astro preview",

@@ -51,14 +51,20 @@ function localAddresses() {
  * port déclaré (`--port`), sinon la socket non-loopback.
  */
 function devPorts() {
-  const ports = new Set();
+  /** port → le serveur accepte-t-il les connexions venant d'un autre poste ? */
+  const trouves = new Set();
+  /** port → au moins une socket écoute hors de la boucle locale (y compris un processus fils). */
+  const exposes = new Map();
   try {
     const lines = execSync('ss -ltnp 2>/dev/null || true').toString().split('\n');
     const socketsByPid = new Map();
+    const estExpose = (addr) => !addr.startsWith('127.') && addr !== '::1';
+
     for (const line of lines) {
       const m = line.match(/LISTEN\s+\d+\s+\d+\s+(\S+):(\d+)\s+.*?pid=(\d+)/);
       if (!m) continue;
       const [, addr, port, pid] = m;
+      if (estExpose(addr)) exposes.set(Number(port), true);
       if (!socketsByPid.has(pid)) socketsByPid.set(pid, []);
       socketsByPid.get(pid).push({ addr, port: Number(port) });
     }
@@ -70,7 +76,8 @@ function devPorts() {
       } catch {
         continue;
       }
-      // Serveur de dev de CE projet uniquement (les `workerd` sont écartés).
+      // Serveur de dev de CE projet uniquement (les `workerd` sont écartés :
+      // ils n'hébergent pas la commande, ils écoutent pour elle).
       if (!cmd.includes(root) || cmd.includes('workerd')) continue;
       const astroDev = /astro(\.m?js)?\s+dev|[/\\]\.bin[/\\]astro\s+dev/.test(cmd);
       const pagesDev = /pages\s+dev/.test(cmd) && /wrangler/.test(cmd);
@@ -78,16 +85,18 @@ function devPorts() {
 
       const declared = cmd.match(/--port[= ](\d+)/);
       if (declared) {
-        ports.add(Number(declared[1]));
+        trouves.add(Number(declared[1]));
         continue;
       }
-      const exposed = sockets.find((s) => !s.addr.startsWith('127.') && s.addr !== '::1');
-      if (exposed) ports.add(exposed.port);
+      for (const socket of sockets) {
+        if (exposes.get(socket.port)) trouves.add(socket.port);
+        else if (socket.addr !== '::1' && !socket.addr.startsWith('127.')) trouves.add(socket.port);
+      }
     }
   } catch {
     /* ss indisponible : on retombera sur DEV_PORT */
   }
-  return [...ports];
+  return [...trouves].sort((a, b) => b - a).map((port) => ({ port, expose: exposes.get(port) ?? false }));
 }
 
 const ports = devPorts();
@@ -105,15 +114,28 @@ if (!ports.length) {
 }
 
 const urls = [];
-for (const port of ports) {
-  for (const { iface, ip } of lan) urls.push({ kind: 'local', iface, url: `http://${ip}:${port}` });
-  for (const { iface, ip } of vpn) urls.push({ kind: 'vpn', iface, url: `http://${ip}:${port}` });
+for (const { port, expose } of ports) {
+  if (expose) {
+    for (const { iface, ip } of lan) urls.push({ kind: 'local', iface, url: `http://${ip}:${port}` });
+    for (const { iface, ip } of vpn) urls.push({ kind: 'vpn', iface, url: `http://${ip}:${port}` });
+  } else {
+    // Serveur attaché à la boucle locale : les autres postes ne peuvent pas y accéder.
+    urls.push({ kind: 'boucle', iface: 'localhost', url: `http://localhost:${port}` });
+  }
 }
 
 if (asJson) {
   console.log(JSON.stringify({ running: true, project: projectName, ports, urls }));
 } else {
-  console.log(`Serveur de dev « ${projectName} » — port ${ports.join(', ')} :`);
+  console.log(`Serveur de dev « ${projectName} » — port ${ports.map((entree) => entree.port).join(', ')} :`);
   for (const u of urls) console.log(`  ${u.kind.padEnd(6)} (${u.iface}) : ${u.url}`);
   if (!urls.length) console.log('  (aucune adresse réseau détectée)');
+  for (const { port, expose } of ports) {
+    if (!expose) {
+      console.log(
+        `\n⚠️  Le serveur du port ${port} n'écoute que sur localhost : il est injoignable depuis un autre poste.`,
+      );
+      console.log('   → relancer avec --host 0.0.0.0 (Astro) ou --ip=0.0.0.0 (Wrangler).');
+    }
+  }
 }
