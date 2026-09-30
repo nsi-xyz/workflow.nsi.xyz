@@ -533,6 +533,11 @@ kbd {
   }
 }
 
+/* Variante à quatre étapes (déploiement Cloudflare) */
+.pipeline.steps-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 @media (max-width: 560px) {
   .pipeline {
     grid-template-columns: 1fr;
@@ -573,6 +578,14 @@ kbd {
   margin-top: 0.6rem;
   font-size: 0.85rem;
   font-weight: 700;
+}
+
+.pipeline .step .step-note {
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px dashed var(--glass-border);
+  color: var(--text-mute);
+  font-size: 0.82rem;
 }
 
 /* --------------------------------------------------------------------------

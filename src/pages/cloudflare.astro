@@ -1,0 +1,315 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import {
+  checklistPublication,
+  erreursBuild,
+  etapesDeploiement,
+  piegesPages,
+  reglages,
+  variablesSecrets,
+} from "../data/cloudflare";
+
+const item = navItems.find((entry) => entry.slug === "cloudflare")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Ce que Cloudflare Pages fait</h2>
+    <p>
+      Cloudflare Pages relie un dépôt à une adresse publique : vous poussez du code, il
+      compile et met en ligne. Gratuit pour un projet d'élève, sans serveur à administrer,
+      avec des URL qui répondent vite partout dans le monde.
+    </p>
+    <p>
+      C'est l'étape qui donne un sens à tout le reste : un projet qui n'est pas en ligne
+      n'existe que pour son auteur. Une URL, un lien partagé, et le travail devient réel —
+      vérifiable, montrable, discutable.
+    </p>
+    <Callout type="info" title="Pages = hébergement statique">
+      <p>
+        Pages sert des fichiers <strong>préparés à l'avance</strong> (HTML, CSS, images). Pas
+        de calcul côté serveur, pas de base de données. Pour une landing page, c'est
+        exactement ce qu'il faut — et c'est ce qui rend l'hébergement gratuit et très rapide.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Comment un site arrive en ligne</h2>
+    <div class="pipeline steps-4">
+      {
+        etapesDeploiement.map((etape) => (
+          <div class="glass step">
+            <h3>{etape.titre}</h3>
+            <p>{etape.texte}</p>
+            <p class="step-note">{etape.detail}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p>
+      Retenez la conséquence pratique : <strong>ce n'est pas vous qui envoyez le site, c'est
+      Cloudflare qui le reconstruit</strong> à partir du dépôt. Si un fichier n'est pas dans
+      le dépôt, il ne peut pas apparaître en ligne.
+    </p>
+  </section>
+
+  <section>
+    <h2>Deux façons de déployer</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Méthode</th>
+            <th>Comment ça marche</th>
+            <th>Pour qui</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Connexion Git</strong> (recommandée)</td>
+            <td>
+              On autorise Cloudflare à lire un dépôt GitHub. Chaque <code>push</code> sur la
+              branche principale déclenche un build et une mise en ligne automatiques.
+            </td>
+            <td>Le cas normal : un dépôt, une URL, zéro commande à retenir.</td>
+          </tr>
+          <tr>
+            <td><strong>Envoi direct</strong> (ligne de commande)</td>
+            <td>
+              On compile chez soi (<code>npm run build</code>) puis on publie le dossier <code>dist/</code> avec l'outil Cloudflare (Wrangler).
+            </td>
+            <td>Pour les cas particuliers : publier sans dépôt, ou automatiser un déploiement.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <Callout type="warn" title="Le point qui bloque tout le monde">
+      <p>
+        Quelle que soit la méthode, il faut que <strong>le build fonctionne chez vous</strong>
+        (<code>npm run build</code>) avant de l'espérer en ligne. Un projet qui ne compile pas
+        sur votre machine ne compilera pas dans le nuage.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Pas à pas : connecter le dépôt</h2>
+    <ol class="rules rules-steps">
+      <li>
+        <strong>Créer un compte Cloudflare</strong> puis ouvrir la section <em>Workers &amp; Pages</em> et choisir <em>Create</em> puis <em>Pages</em>.
+      </li>
+      <li>
+        <strong>Choisir « Connect to Git »</strong> et autoriser Cloudflare à accéder à vos
+        dépôts GitHub. Vous pouvez limiter l'accès à un seul dépôt : c'est plus propre.
+      </li>
+      <li>
+        <strong>Sélectionner le dépôt</strong> du projet, puis la branche à surveiller
+        (<code>main</code> en général). Chaque push sur cette branche mettra le site à jour.
+      </li>
+      <li>
+        <strong>Vérifier les réglages de build</strong> : c'est ici que 90 % des échecs se
+        jouent. Le tableau ci-dessous donne les valeurs attendues.
+      </li>
+      <li>
+        <strong>Lancer le premier déploiement</strong> et lire le journal : il se termine par
+        une URL <code>*.pages.dev</code>. Le site est en ligne.
+      </li>
+      <li>
+        <strong>Tester comme un visiteur</strong> : ouvrez l'URL publique depuis un autre
+        appareil — pas depuis la machine qui a servi au développement.
+      </li>
+    </ol>
+
+    <h3>Les réglages de build</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Champ</th>
+            <th>Valeur attendue</th>
+            <th>Pourquoi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            reglages.map((reglage) => (
+              <tr>
+                <td><strong>{reglage.champ}</strong></td>
+                <td><code>{reglage.valeur}</code></td>
+                <td>{reglage.note}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Les URL : prévisualisation et production</h2>
+    <ul>
+      <li>
+        <strong>URL de production :</strong> celle de la branche principale
+        (<code>mon-projet.pages.dev</code>). C'est elle qu'on partage.
+      </li>
+      <li>
+        <strong>URL de prévisualisation :</strong> chaque branche ou chaque proposition de
+        modification obtient sa propre adresse, avant de rejoindre la production. Pratique,
+        mais ce n'est pas un lien à distribuer.
+      </li>
+      <li>
+        <strong>Domaine personnalisé :</strong> on rattache un domaine à soi
+        (<code>mon-projet.nsi.xyz</code>) dans les réglages du projet, puis on crée
+        l'enregistrement DNS.
+      </li>
+    </ul>
+    <Callout type="danger" title="Le piège du domaine personnalisé en « pending »">
+      <p>
+        Pour un projet <strong>Pages</strong>, rattacher le domaine ne suffit pas : Cloudflare
+        ne crée pas l'enregistrement DNS tout seul. Il faut ajouter soi-même un <code>CNAME</code> vers <code>mon-projet.pages.dev</code>, en mode <em>proxied</em>. Le certificat HTTPS est émis ensuite automatiquement. Sans ce
+        CNAME, le domaine reste indéfiniment en <em>pending</em>.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Quand le build échoue</h2>
+    <p>
+      Un échec de build n'est pas une catastrophe : c'est un message d'erreur, avec un
+      fichier et une ligne. Encore faut-il le lire dans le bon sens — <strong>toujours la
+      première erreur</strong>, jamais la dernière.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Ce qu'on lit dans le journal</th>
+            <th>Cause probable</th>
+            <th>Correction</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            erreursBuild.map((erreur) => (
+              <tr>
+                <td><code>{erreur.message}</code></td>
+                <td>{erreur.cause}</td>
+                <td>{erreur.correction}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Les secrets côté plateforme</h2>
+    <p>
+      En production, il n'y a pas de fichier <code>.env</code> : c'est volontaire. Ce dont le
+      site a besoin se déclare dans les <em>réglages du projet</em>, section <em>variables and secrets</em>. Elles ne sont pas lisibles depuis le dépôt, et ne
+      partent pas sur GitHub.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>À quoi elle sert</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            variablesSecrets.map((variable) => (
+              <tr>
+                <td><code>{variable.nom}</code></td>
+                <td>{variable.role}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <Callout type="ok" title="La règle en une phrase">
+      <p>
+        <strong>Un secret ne traverse jamais le dépôt.</strong> En local, il vit dans <code>.env</code> (ignoré par Git) ; en ligne, il vit dans les réglages de la
+        plateforme. Aucun des deux ne doit apparaître dans le code.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Ce qu'un site statique ne sait pas faire</h2>
+    <p>
+      Autant le savoir avant de le promettre : un site Pages « pur » ne peut pas, à lui seul,
+      enregistrer des données, authentifier des utilisateurs, envoyer des courriels ou
+      exposer une API. Une landing page n'en a pas besoin — et c'est précisément ce qui rend
+      l'exercice accessible.
+    </p>
+    <p>
+      Pour aller plus loin (formulaire qui enregistre, espace protégé, statistiques), la
+      marche suivante s'appelle <strong>Pages Functions</strong> : une petite API déployée
+      avec le site, qui peut lire et écrire dans un espace de stockage. C'est un autre
+      niveau, et un autre sujet.
+    </p>
+  </section>
+
+  <section>
+    <h2>La checklist avant de publier</h2>
+    <ul class="checklist">
+      {
+        checklistPublication.map((ligne) => (
+          <li>
+            <label>
+              <input type="checkbox" />
+              <span set:html={ligne} />
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cinq pièges à connaître</h2>
+    <div class="grid-cards">
+      {
+        piegesPages.map((piege) => (
+          <article class="glass card">
+            <h3>{piege.titre}</h3>
+            <p>{piege.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/git-github">
+        <span class="card-kicker">Prérequis</span>
+        <h3>Git et GitHub</h3>
+        <p>Le dépôt que Cloudflare va lire, et le point de retour qui protège le travail.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">À ne pas rater</span>
+        <h3>Sécurité</h3>
+        <p>Secrets, variables d'environnement, checklist avant publication.</p>
+      </a>
+      <a class="glass card" href="/depannage">
+        <span class="card-kicker">Erreurs</span>
+        <h3>Dépannage</h3>
+        <p>Traduire les messages d'erreur en actions concrètes.</p>
+      </a>
+      <a class="glass card" href="https://developers.cloudflare.com/pages/">
+        <span class="card-kicker">Source</span>
+        <h3>Documentation Cloudflare Pages</h3>
+        <p>La référence officielle : cadres, réglages, limites.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>
