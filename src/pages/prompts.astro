@@ -1,0 +1,120 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import Promptotheque from "../components/Promptotheque.astro";
+import { navItems } from "../data/navigation";
+
+const item = navItems.find((entry) => entry.slug === "prompts")!;
+
+const etapesUsage = [
+  {
+    titre: "Choisir une intention",
+    texte: "Filtrez par catégorie : démarrer, construire, corriger, vérifier, comprendre, publier, sécurité.",
+  },
+  {
+    titre: "Adapter les crochets",
+    texte:
+      "Chaque prompt contient des parties entre crochets [comme ceci]. Remplacez-les par vos chemins, vos textes, vos attentes.",
+  },
+  {
+    titre: "Tester et corriger",
+    texte:
+      "Envoyez le prompt, lisez la réponse, puis corrigez une phrase à la fois. Le prompt est un point de départ, pas un contrat.",
+  },
+];
+
+const regles = [
+  {
+    titre: "On adapte, on ne colle pas à l'aveugle",
+    texte:
+      "Un prompt sans vos chemins de fichiers ni votre objectif précis reste vague. Les crochets sont là pour ça.",
+  },
+  {
+    titre: "On n'y met jamais de secret",
+    texte:
+      "Aucun prompt de cette bibliothèque ne contient de clé, de mot de passe ni de donnée personnelle — et les vôtres ne doivent pas en contenir non plus.",
+  },
+  {
+    titre: "On vérifie avant de remercier",
+    texte:
+      "Une réponse convaincante n'est pas une preuve. Ouvrez la page, lancez le serveur, lisez le résultat.",
+  },
+];
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Une bibliothèque de prompts, pas un grimoire</h2>
+    <p>
+      Tous les prompts de cette page ont été écrits avec la même méthode : un objectif, du
+      contexte, des contraintes, un critère de réussite. Ils ne sont pas magiques et ne
+      remplacent pas votre jugement — ils vous évitent de repartir d'une page blanche.
+    </p>
+    <div class="grid-cards">
+      {
+        etapesUsage.map((etape, index) => (
+          <article class="glass card">
+            <span class="card-kicker">Étape {index + 1}</span>
+            <h3>{etape.titre}</h3>
+            <p>{etape.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+    <Callout type="info" title="Comment lire un prompt de la bibliothèque">
+      <p>
+        Le bloc foncé est le texte à copier. En dessous, <strong>Pourquoi ça marche</strong>
+        explique chaque choix, et <strong>À adapter</strong> dit ce qu'il faut changer pour
+        votre projet. Lisez ces deux parties : c'est là que se trouve la méthode.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Les prompts</h2>
+    <Promptotheque />
+  </section>
+
+  <section>
+    <h2>Trois règles d'or</h2>
+    <ol class="rules">
+      {
+        regles.map((regle) => (
+          <li>
+            <strong>{regle.titre}.</strong> {regle.texte}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section>
+    <h2>Votre prompt n'est pas dans la liste ?</h2>
+    <p>
+      Écrivez-le avec le constructeur : il assemble les quatre blocs et vérifie qu'aucun ne
+      manque. Vous pouvez ensuite le déposer dans votre journal de prompts.
+    </p>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompt">
+        <span class="card-kicker">Outil</span>
+        <h3>Constructeur de prompt</h3>
+        <p>Objectif, contexte, contraintes, critère : assemblez et copiez.</p>
+      </a>
+      <a class="glass card" href="/prompts/depot">
+        <span class="card-kicker">Journal</span>
+        <h3>Déposer un prompt</h3>
+        <p>Gardez la trace de ce qui a été demandé à l'agent, étape par étape.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">Vigilance</span>
+        <h3>Sécurité</h3>
+        <p>Ce qu'on ne met jamais dans un prompt, et la procédure en cas de fuite.</p>
+      </a>
+      <a class="glass card" href="/depannage">
+        <span class="card-kicker">Quand ça coince</span>
+        <h3>Dépannage</h3>
+        <p>Les erreurs les plus fréquentes, traduites en actions.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

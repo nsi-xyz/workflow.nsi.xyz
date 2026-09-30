@@ -1,0 +1,126 @@
+---
+/**
+ * Promptothèque : filtres par intention et copie en un clic.
+ * Les textes viennent de src/data/promptotheque.ts ; le script ne fait que
+ * filtrer les cartes et copier le contenu déjà présent dans la page.
+ */
+import { categories, promptsPublies } from "../data/promptotheque";
+
+const donnees = JSON.stringify(
+  promptsPublies.map((prompt) => ({ id: prompt.id, prompt: prompt.prompt })),
+);
+---
+
+<div class="promptotheque" data-promptotheque>
+  <div class="prompt-filtres" role="group" aria-label="Filtrer les prompts par intention">
+    <button class="btn btn-primary" type="button" data-filtre="tout" aria-pressed="true">
+      Tout <span class="prompt-compte">{promptsPublies.length}</span>
+    </button>
+    {
+      categories.map((categorie) => {
+        const nombre = promptsPublies.filter((prompt) => prompt.categorie === categorie).length;
+        return (
+          <button class="btn btn-ghost" type="button" data-filtre={categorie} aria-pressed="false">
+            {categorie} <span class="prompt-compte">{nombre}</span>
+          </button>
+        );
+      })
+    }
+  </div>
+
+  <p class="prompt-vide" data-prompt-vide hidden>Aucun prompt dans cette intention pour l'instant.</p>
+
+  <div class="prompt-liste">
+    {
+      promptsPublies.map((prompt) => (
+        <article class="glass card prompt-carte" data-categorie={prompt.categorie}>
+          <span class="badge">{prompt.categorie}</span>
+          <h3>{prompt.titre}</h3>
+          <p class="prompt-intention">{prompt.intention}</p>
+
+          <pre class="prompt-texte"><code>{prompt.prompt}</code></pre>
+
+          <div class="prompt-actions">
+            <button class="btn btn-primary" type="button" data-copier data-prompt-id={prompt.id}>
+              Copier le prompt
+            </button>
+            <span class="prompt-confirmation" role="status" aria-live="polite"></span>
+          </div>
+
+          <div class="prompt-notes">
+            <p class="prompt-label">Pourquoi ça marche</p>
+            <ul>
+              {prompt.pourquoi.map((ligne) => (
+                <li>{ligne}</li>
+              ))}
+            </ul>
+            <p class="prompt-adapter">
+              <strong>À adapter :</strong> {prompt.adapter}
+            </p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</div>
+
+<script type="application/json" data-prompts-data set:html={donnees}></script>
+
+<script>
+  const racine = document.querySelector<HTMLElement>("[data-promptotheque]");
+  const donnees = document.querySelector<HTMLScriptElement>("[data-prompts-data]");
+
+  if (racine && donnees?.textContent) {
+    const prompts = JSON.parse(donnees.textContent) as Array<{ id: string; prompt: string }>;
+    const cartes = [...racine.querySelectorAll<HTMLElement>("[data-categorie]")];
+    const filtres = [...racine.querySelectorAll<HTMLButtonElement>("[data-filtre]")];
+    const vide = racine.querySelector<HTMLElement>("[data-prompt-vide]");
+
+    const filtrer = (categorie: string) => {
+      let visibles = 0;
+      for (const carte of cartes) {
+        const visible = categorie === "tout" || carte.dataset.categorie === categorie;
+        carte.hidden = !visible;
+        if (visible) visibles += 1;
+      }
+      for (const bouton of filtres) {
+        const actif = bouton.dataset.filtre === categorie;
+        bouton.setAttribute("aria-pressed", actif ? "true" : "false");
+        bouton.classList.toggle("btn-primary", actif);
+        bouton.classList.toggle("btn-ghost", !actif);
+      }
+      if (vide) vide.hidden = visibles > 0;
+    };
+
+    racine.addEventListener("click", async (event) => {
+      const cible = event.target as HTMLElement;
+
+      const filtre = cible.closest<HTMLButtonElement>("[data-filtre]");
+      if (filtre?.dataset.filtre) {
+        filtrer(filtre.dataset.filtre);
+        return;
+      }
+
+      const bouton = cible.closest<HTMLButtonElement>("[data-copier]");
+      if (!bouton) return;
+
+      const prompt = prompts.find((entree) => entree.id === bouton.dataset.promptId);
+      const confirmation = bouton.parentElement?.querySelector<HTMLElement>(".prompt-confirmation");
+      if (!prompt) return;
+
+      try {
+        await navigator.clipboard.writeText(prompt.prompt);
+        if (confirmation) {
+          confirmation.textContent = "Copié.";
+          window.setTimeout(() => {
+            confirmation.textContent = "";
+          }, 2500);
+        }
+      } catch {
+        if (confirmation) {
+          confirmation.textContent = "Copie automatique refusée : sélectionnez le texte à la main.";
+        }
+      }
+    });
+  }
+</script>

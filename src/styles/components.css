@@ -1500,6 +1500,100 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   Promptothèque — filtres, cartes, notes
+   -------------------------------------------------------------------------- */
+.promptotheque {
+  margin-top: 1.2rem;
+}
+
+.prompt-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.prompt-compte {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  margin-left: 0.3rem;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--bg-deep) 50%, transparent);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.prompt-vide {
+  color: var(--text-mute);
+}
+
+.prompt-liste {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.prompt-carte {
+  padding: clamp(1.1rem, 2.5vw, 1.5rem);
+}
+
+.prompt-carte h3 {
+  margin: 0.55em 0 0.25em;
+}
+
+.prompt-intention {
+  margin: 0 0 0.9rem;
+  color: var(--text-soft);
+}
+
+.prompt-texte {
+  margin: 0 0 0.8rem;
+  white-space: pre-wrap;
+  font-size: 0.84rem;
+}
+
+.prompt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.prompt-confirmation {
+  color: var(--ok);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.prompt-notes {
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--glass-border);
+}
+
+.prompt-label {
+  margin: 0 0 0.35em;
+  color: var(--text-mute);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.prompt-notes ul {
+  margin: 0 0 0.8em;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.prompt-adapter {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {

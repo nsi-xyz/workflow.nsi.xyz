@@ -5,19 +5,19 @@
 
 ## Synthèse
 
-- **68 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **8 689 lignes** au total.
+- **72 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **9 440 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 9 | 2 135 |
-| `src/styles/` | 4 | 1 941 |
-| `src/data/` | 8 | 1 517 |
+| `src/pages/` | 10 | 2 256 |
+| `src/styles/` | 4 | 2 035 |
+| `src/data/` | 9 | 1 865 |
 | `scripts/` | 19 | 1 281 |
-| `src/components/` | 7 | 629 |
-| `tests/` | 9 | 589 |
+| `src/components/` | 8 | 756 |
+| `tests/` | 10 | 650 |
 | `./` | 6 | 250 |
 | `src/lib/` | 3 | 211 |
 | `src/layouts/` | 2 | 130 |
@@ -27,7 +27,7 @@
 
 | Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
 |---|---:|---:|---:|---:|---|
-| `src/styles/components.css` | 1539 | — | — | 1539 | Feuille de style |
+| `src/styles/components.css` | 1633 | — | — | 1633 | Feuille de style |
 
 ## Inventaire complet
 
@@ -62,6 +62,7 @@
 | `src/components/Footer.astro` | 43 | Composant UI |
 | `src/components/Header.astro` | 52 | Composant UI |
 | `src/components/PromptBuilder.astro` | 160 | Composant UI |
+| `src/components/Promptotheque.astro` | 127 | Composant UI |
 | `src/components/SpotTheLeak.astro` | 138 | Composant UI |
 | `src/components/ThemeToggle.astro` | 53 | Composant UI |
 | `src/data/cloudflare.ts` | 174 | Donnée éditoriale |
@@ -70,6 +71,7 @@
 | `src/data/navigation.ts` | 281 | Donnée éditoriale |
 | `src/data/opencode.ts` | 192 | Donnée éditoriale |
 | `src/data/prompt.ts` | 207 | Donnée éditoriale |
+| `src/data/promptotheque.ts` | 348 | Donnée éditoriale |
 | `src/data/securite.ts` | 88 | Donnée éditoriale |
 | `src/data/workflow.ts` | 212 | Donnée éditoriale |
 | `src/layouts/BaseLayout.astro` | 63 | Gabarit de page |
@@ -84,10 +86,11 @@
 | `src/pages/llm.astro` | 265 | Page (route) |
 | `src/pages/opencode.astro` | 337 | Page (route) |
 | `src/pages/prompt.astro` | 198 | Page (route) |
+| `src/pages/prompts.astro` | 121 | Page (route) |
 | `src/pages/securite.astro` | 322 | Page (route) |
 | `src/pages/workflow.astro` | 211 | Page (route) |
 | `src/styles/base.css` | 287 | Feuille de style |
-| `src/styles/components.css` | 1539 | Feuille de style |
+| `src/styles/components.css` | 1633 | Feuille de style |
 | `src/styles/global.css` | 8 | Feuille de style |
 | `src/styles/tokens.css` | 107 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
@@ -98,6 +101,7 @@
 | `tests/llm.test.mjs` | 129 | Test |
 | `tests/opencode.test.mjs` | 59 | Test |
 | `tests/prompt.test.mjs` | 95 | Test |
+| `tests/promptotheque.test.mjs` | 61 | Test |
 | `tests/securite.test.mjs` | 48 | Test |
 | `tests/workflow.test.mjs` | 69 | Test |
 | `tsconfig.json` | 16 | Racine / config |
