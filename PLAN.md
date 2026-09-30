@@ -105,9 +105,9 @@ workflow.nsi.xyz/
 | Jalon | Contenu | État |
 |---|---|---|
 | M1 Fondations | Astro 7 + Tailwind 4, design system glassmorphisme, navigation, thèmes, garde-fous Git | ✅ 29/09/2026 |
-| M2 Contenu cœur | Sécurité (règles, pièges, procédure, jeu, checklist) · Workflow (boucle, rôles, exemple complet, règles, idées fausses) · LLM · prompt · OpenCode · Git/GitHub · Cloudflare | 🔶 sécurité + workflow faits |
-| M3 Interactif | Calculateur, constructeur de prompt, quiz, glossaire, dépannage | à faire |
-| M4 API & prof | Functions, KV, codes, dépôt élève, espace prof, export CSV | à faire |
+| M2 Contenu cœur | Sécurité · Workflow · IA & modèles · OpenCode · Git/GitHub · Cloudflare · Piloter l'agent · Promptothèque · Dépôt des prompts · Dépannage · Glossaire · Quiz | ✅ 13 / 15 sections rédigées |
+| M3 Interactif | Calculateur de coût, constructeur de prompt, jeu « trouve la fuite », filtres, quiz, mode révision | ✅ intégré aux sections |
+| M4 API & prof | KV, codes élèves, API de dépôt, espace prof, export CSV | ✅ 30/09/2026 |
 | M5 Missions & projet | Check-lists, compte à rebours, page verrouillée | à faire |
 | M6 Finition | A11y, perf, smoke 30 routes, déploiement, domaine | à faire |
 

@@ -1,0 +1,123 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { questions, themesQuiz } from "../data/quiz";
+
+const item = navItems.find((entry) => entry.slug === "quiz")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Un quiz pour vérifier, pas pour noter</h2>
+    <p>
+      Ces questions ne demandent pas de mémoriser des définitions : elles vérifient que vous
+      sauriez <strong>agir</strong>. Chaque réponse est suivie d'une explication, y compris
+      quand c'est juste — c'est là que se trouve l'essentiel.
+    </p>
+    <p>
+      Le score reste dans votre navigateur : rien n'est envoyé, rien n'est enregistré. Refaites
+      le quiz autant de fois que nécessaire, en changeant de thème.
+    </p>
+  </section>
+
+  <section data-quiz>
+    <h2>Testez-vous</h2>
+
+    <div class="glass quiz-carte" data-quiz-intro>
+      <p class="quiz-consigne">
+        Choisissez un thème — ou toutes les questions — puis lancez le quiz. L'ordre est
+        mélangé à chaque partie.
+      </p>
+      <div class="prompt-filtres" data-quiz-themes role="group" aria-label="Choisir un thème">
+        <button class="btn btn-primary" type="button" data-theme="tout" aria-pressed="true">
+          Toutes les questions <span class="prompt-compte">{questions.length}</span>
+        </button>
+        {
+          themesQuiz.map((theme) => {
+            const nombre = questions.filter((question) => question.theme === theme).length;
+            return (
+              <button class="btn btn-ghost" type="button" data-theme={theme} aria-pressed="false">
+                {theme} <span class="prompt-compte">{nombre}</span>
+              </button>
+            );
+          })
+        }
+      </div>
+      <button class="btn btn-primary" type="button" data-quiz-commencer>Commencer le quiz</button>
+    </div>
+
+    <div class="glass quiz-carte" data-quiz-jeu hidden>
+      <p class="quiz-progression" data-quiz-progression></p>
+      <h3 data-quiz-question></h3>
+      <div class="quiz-options" data-quiz-options></div>
+      <p class="quiz-feedback" data-quiz-feedback role="status" aria-live="polite"></p>
+      <button class="btn btn-primary" type="button" data-quiz-suivant hidden>Question suivante</button>
+    </div>
+
+    <div class="glass quiz-carte" data-quiz-fin hidden>
+      <h3>Votre score</h3>
+      <p class="quiz-score" data-quiz-score></p>
+      <p data-quiz-message></p>
+      <button class="btn btn-primary" type="button" data-quiz-recommencer>Choisir un autre thème</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quatre conseils pour que ça serve vraiment</h2>
+    <ol class="rules">
+      <li>
+        <strong>Expliquez la réponse à voix haute</strong> avant de cliquer : si vous ne savez
+        pas formuler une explication, la notion n'est pas acquise.
+      </li>
+      <li>
+        <strong>Lisez l'explication même quand c'est juste</strong> : elle contient le
+        raisonnement complet, pas seulement la bonne réponse.
+      </li>
+      <li>
+        <strong>Refaites le quiz quelques jours plus tard</strong> : se souvenir de la position
+        de la bonne réponse n'est pas se souvenir de la notion.
+      </li>
+      <li>
+        <strong>Reliez chaque erreur à une section</strong> du site : c'est ainsi qu'un quiz
+        devient une révision, et non un jeu.
+      </li>
+    </ol>
+    <Callout type="info" title="Le quiz n'est pas une évaluation">
+      <p>
+        Personne ne voit votre score — pas même votre enseignant. Il est là pour vous dire,
+        pendant qu'il est encore temps, ce qui mérite un deuxième passage.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/glossaire">
+        <span class="card-kicker">Vocabulaire</span>
+        <h3>Glossaire</h3>
+        <p>Le mot qui vous a fait hésiter y est défini, avec un exemple.</p>
+      </a>
+      <a class="glass card" href="/workflow">
+        <span class="card-kicker">Méthode</span>
+        <h3>Le workflow</h3>
+        <p>La boucle en cinq temps et les règles du jeu.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">Vigilance</span>
+        <h3>Sécurité</h3>
+        <p>La section la plus rentable du site : les pièges qui coûtent cher.</p>
+      </a>
+      <a class="glass card" href="/depannage">
+        <span class="card-kicker">Erreurs</span>
+        <h3>Dépannage</h3>
+        <p>Les messages d'erreur traduits en actions concrètes.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>
+
+<script>
+  import "../client/quiz";
+</script>

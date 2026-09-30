@@ -1702,6 +1702,163 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   Dépannage — recherche, familles, fiches de panne
+   -------------------------------------------------------------------------- */
+.depannage-filtres {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.panne {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.1rem 1.2rem;
+}
+
+.panne h3 {
+  margin: 0.35em 0 0.2em;
+  font-size: 1rem;
+}
+
+.panne .panne-message {
+  font-family: var(--font-mono);
+  word-break: break-word;
+}
+
+.panne p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.panne-label {
+  display: inline-block;
+  margin-right: 0.35rem;
+  color: var(--text-mute);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   Glossaire — cartes de termes et mode révision
+   -------------------------------------------------------------------------- */
+.glossaire {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.terme {
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+}
+
+.terme dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+.terme dd {
+  margin: 0.5rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.terme .terme-def {
+  transition: filter 0.2s ease;
+}
+
+.terme .terme-exemple {
+  color: var(--text-mute);
+}
+
+.glossaire[data-revision="oui"] .terme:not([data-revele]) .terme-def,
+.glossaire[data-revision="oui"] .terme:not([data-revele]) .terme-exemple {
+  filter: blur(5px);
+  user-select: none;
+}
+
+.terme:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+/* --------------------------------------------------------------------------
+   Quiz — cartes, options, feedback
+   -------------------------------------------------------------------------- */
+.quiz-carte {
+  display: grid;
+  gap: 0.9rem;
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+  margin-bottom: 1rem;
+}
+
+.quiz-consigne {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.quiz-progression {
+  margin: 0;
+  color: var(--text-mute);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.6rem;
+}
+
+/* Les boutons ne s'étirent pas sur toute la largeur de la carte */
+.quiz-carte > .btn {
+  justify-self: start;
+}
+
+.quiz-option {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.quiz-bonne {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.quiz-fausse {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.quiz-feedback {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.quiz-feedback[data-etat="ok"] {
+  color: var(--ok);
+}
+
+.quiz-feedback[data-etat="ko"] {
+  color: var(--danger);
+}
+
+.quiz-score {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {

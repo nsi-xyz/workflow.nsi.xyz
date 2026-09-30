@@ -1,0 +1,190 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { famillesPannes, pannes } from "../data/depannage";
+
+const item = navItems.find((entry) => entry.slug === "depannage")!;
+
+const reflexes = [
+  "Lire le message d'erreur en entier, du premier mot à la dernière ligne.",
+  "Reproduire l'erreur : quel clic, quelle commande, quel fichier.",
+  "Chercher dans cette page le mot qui ressemble le plus au message.",
+  "Corriger UNE chose à la fois, puis retester.",
+];
+
+const pannesTriees = pannes.map((panne) => ({
+  ...panne,
+  recherche: `${panne.famille} ${panne.message} ${panne.traduction} ${panne.correction}`
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, ""),
+}));
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Une erreur n'est pas un échec, c'est une information</h2>
+    <p>
+      Tous les messages de cette page ont été rencontrés pour de vrai. Aucun ne signifie
+      « vous n'êtes pas fait pour ça » : chacun indique quoi regarder. Le bon réflexe est
+      toujours le même.
+    </p>
+    <ol class="rules">
+      {
+        reflexes.map((reflexe) => (
+          <li>{reflexe}</li>
+        ))
+      }
+    </ol>
+    <Callout type="warn" title="Ne supprimez jamais au hasard">
+      <p>
+        Effacer un fichier, réinstaller tout, ou renommer une configuration « pour voir » fait
+        souvent disparaître le message… et crée un problème plus difficile à comprendre. Une
+        erreur lisible vaut mieux qu'un silence.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Chercher dans les pannes</h2>
+    <div class="depannage-filtres">
+      <label class="calc-field">
+        <span>Mot-clé ou message d'erreur</span>
+        <input type="search" data-panne-recherche placeholder="401, pending, not a git repository, port…" />
+      </label>
+      <div class="prompt-filtres" role="group" aria-label="Filtrer par famille">
+        <button class="btn btn-primary" type="button" data-panne-famille="tout" aria-pressed="true">
+          Tout <span class="prompt-compte">{pannes.length}</span>
+        </button>
+        {
+          famillesPannes.map((famille) => {
+            const nombre = pannes.filter((panne) => panne.famille === famille).length;
+            return (
+              <button class="btn btn-ghost" type="button" data-panne-famille={famille} aria-pressed="false">
+                {famille} <span class="prompt-compte">{nombre}</span>
+              </button>
+            );
+          })
+        }
+      </div>
+    </div>
+
+    <p class="prof-etat" data-panne-etat role="status" aria-live="polite"></p>
+
+    <div class="grid-cards" data-panne-liste>
+      {
+        pannesTriees.map((panne) => (
+          <article class="glass card panne" data-famille={panne.famille} data-recherche={panne.recherche}>
+            <span class="badge">{panne.famille}</span>
+            <h3 class="panne-message">{panne.message}</h3>
+            <p><span class="panne-label">Ce que ça veut dire</span> {panne.traduction}</p>
+            <p><span class="panne-label">Correction</span> {panne.correction}</p>
+            <p><span class="panne-label">Pour éviter la prochaine fois</span> {panne.prevention}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="prof-etat" data-panne-vide hidden>Aucune panne ne correspond à cette recherche.</p>
+  </section>
+
+  <section>
+    <h2>Demander de l'aide efficacement</h2>
+    <p>
+      Quand la recherche ne suffit pas, la qualité de la question fait gagner du temps à tout
+      le monde. Un message utile contient toujours ces cinq éléments :
+    </p>
+    <ol class="rules rules-steps">
+      <li><strong>Le but :</strong> « je veux que la page affiche un tableau ».</li>
+      <li><strong>Ce que vous avez fait :</strong> la commande, le clic, le prompt envoyé.</li>
+      <li><strong>Ce qui devait se passer</strong>, et <strong>ce qui se passe</strong>.</li>
+      <li><strong>Le message d'erreur complet</strong>, copié, jamais paraphrasé.</li>
+      <li><strong>Ce que vous avez déjà essayé</strong> et ce que ça a changé.</li>
+    </ol>
+    <Callout type="ok" title="La question parfaite tient en cinq lignes">
+      <p>
+        Attention : si un secret apparaît dans le message d'erreur, remplacez-le par <code>[secret masqué]</code> avant d'envoyer — à l'enseignant comme à un agent.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>Clé, dossier, sessions, compactage : les réglages qui évitent la moitié des pannes.</p>
+      </a>
+      <a class="glass card" href="/git-github">
+        <span class="card-kicker">Dépôt</span>
+        <h3>Git et GitHub</h3>
+        <p>Le vocabulaire et les commandes, pour comprendre les messages de Git.</p>
+      </a>
+      <a class="glass card" href="/cloudflare">
+        <span class="card-kicker">Publication</span>
+        <h3>Cloudflare Pages</h3>
+        <p>Journal de build, réglages, domaine personnalisé.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">Urgence</span>
+        <h3>Sécurité</h3>
+        <p>Procédure en cas de fuite de clé ou de secret.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>
+
+<script>
+  const racine = document.querySelector<HTMLElement>("[data-panne-liste]");
+  const recherche = document.querySelector<HTMLInputElement>("[data-panne-recherche]");
+  const boutonsFamille = [
+    ...document.querySelectorAll<HTMLButtonElement>("[data-panne-famille]"),
+  ];
+  const etat = document.querySelector<HTMLElement>("[data-panne-etat]");
+  const vide = document.querySelector<HTMLElement>("[data-panne-vide]");
+
+  if (racine) {
+    const cartes = [...racine.querySelectorAll<HTMLElement>("[data-famille]")];
+    let familleActive = "tout";
+
+    const normaliser = (texte: string) =>
+      texte
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    const filtrer = () => {
+      const terme = normaliser(recherche?.value.trim() ?? "");
+      let visibles = 0;
+
+      for (const carte of cartes) {
+        const bonneFamille = familleActive === "tout" || carte.dataset.famille === familleActive;
+        const contient = !terme || (carte.dataset.recherche ?? "").includes(terme);
+        const visible = bonneFamille && contient;
+        carte.hidden = !visible;
+        if (visible) visibles += 1;
+      }
+
+      for (const bouton of boutonsFamille) {
+        const actif = bouton.dataset.panneFamille === familleActive;
+        bouton.setAttribute("aria-pressed", actif ? "true" : "false");
+        bouton.classList.toggle("btn-primary", actif);
+        bouton.classList.toggle("btn-ghost", !actif);
+      }
+
+      if (etat) etat.textContent = `Résultats : ${visibles} sur ${cartes.length}.`;
+      if (vide) vide.hidden = visibles > 0;
+    };
+
+    recherche?.addEventListener("input", filtrer);
+    for (const bouton of boutonsFamille) {
+      bouton.addEventListener("click", () => {
+        familleActive = bouton.dataset.panneFamille ?? "tout";
+        filtrer();
+      });
+    }
+
+    filtrer();
+  }
+</script>

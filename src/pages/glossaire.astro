@@ -1,0 +1,216 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { termes, themesGlossaire } from "../data/glossaire";
+
+const item = navItems.find((entry) => entry.slug === "glossaire")!;
+
+const termesTries = termes.map((entree) => ({
+  ...entree,
+  recherche: `${entree.terme} ${entree.definition} ${entree.exemple}`
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, ""),
+}));
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Tous les mots du workflow, sans jargon</h2>
+    <p>
+      Ce vocabulaire n'est pas décoratif : c'est lui qui permet de comprendre un message
+      d'erreur, de poser une question précise et de lire la documentation d'un outil. Chaque
+      terme est défini en une phrase, avec un exemple concret.
+    </p>
+    <Callout type="info" title="Mode révision">
+      <p>
+        Activez-le pour masquer les définitions : lisez le mot, expliquez-le à voix haute,
+        puis cliquez pour vérifier. Un mot qu'on sait expliquer est un mot qu'on a compris.
+      </p>
+    </Callout>
+  </section>
+
+  <section data-glossaire>
+    <h2>Chercher un terme</h2>
+    <div class="depannage-filtres">
+      <label class="calc-field">
+        <span>Mot ou expression</span>
+        <input type="search" data-glossaire-recherche placeholder="commit, token, CNAME, RGPD…" />
+      </label>
+      <div class="prompt-filtres" role="group" aria-label="Filtrer par thème">
+        <button class="btn btn-primary" type="button" data-glossaire-theme="tout" aria-pressed="true">
+          Tout <span class="prompt-compte">{termes.length}</span>
+        </button>
+        {
+          themesGlossaire.map((theme) => {
+            const nombre = termes.filter((entree) => entree.theme === theme).length;
+            return (
+              <button class="btn btn-ghost" type="button" data-glossaire-theme={theme} aria-pressed="false">
+                {theme} <span class="prompt-compte">{nombre}</span>
+              </button>
+            );
+          })
+        }
+        <button class="btn btn-ghost" type="button" data-glossaire-revision aria-pressed="false">
+          Mode révision
+        </button>
+      </div>
+    </div>
+
+    <p class="prof-etat" data-glossaire-etat role="status" aria-live="polite"></p>
+
+    <dl class="glossaire" data-glossaire-liste>
+      {
+        termesTries.map((entree) => (
+          <div class="glass card terme" data-theme={entree.theme} data-recherche={entree.recherche} tabindex="0">
+            <dt>
+              {entree.terme} <span class="badge">{entree.theme}</span>
+            </dt>
+            <dd class="terme-def">{entree.definition}</dd>
+            <dd class="terme-exemple">
+              <span class="panne-label">Exemple</span> {entree.exemple}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="prof-etat" data-glossaire-vide hidden>Aucun terme ne correspond à cette recherche.</p>
+  </section>
+
+  <section>
+    <h2>Trois familles à ne pas confondre</h2>
+    <div class="grid-cards">
+      <article class="glass card">
+        <span class="card-kicker">Ne pas mélanger</span>
+        <h3>Modèle, agent, assistant</h3>
+        <p>
+          Le <strong>modèle</strong> prédit du texte ; l'<strong>agent</strong> l'utilise avec
+          des outils ; l'<strong>assistant</strong> conversationnel (chat) n'a accès à aucun
+          fichier. Dire « l'IA a modifié mon fichier » est donc imprécis : c'est l'agent qui
+          l'a fait, sur ordre du modèle.
+        </p>
+      </article>
+      <article class="glass card">
+        <span class="card-kicker">Ne pas mélanger</span>
+        <h3>Git et GitHub</h3>
+        <p>
+          <strong>Git</strong> fonctionne sur votre machine, sans réseau : il enregistre les
+          points de retour. <strong>GitHub</strong> est un site qui héberge une copie de ces
+          points de retour. On peut très bien travailler sans GitHub — mais on perd la
+          sauvegarde et le partage.
+        </p>
+      </article>
+      <article class="glass card">
+        <span class="card-kicker">Ne pas mélanger</span>
+        <h3>Build et déploiement</h3>
+        <p>
+          Le <strong>build</strong> transforme les sources en fichiers prêts à être servis :
+          c'est un calcul, chez vous comme en ligne. Le <strong>déploiement</strong> publie le
+          résultat à une adresse publique. Un build qui échoue ne déploie rien.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/depannage">
+        <span class="card-kicker">Erreurs</span>
+        <h3>Dépannage</h3>
+        <p>Les messages d'erreur traduits, avec la correction et la prévention.</p>
+      </a>
+      <a class="glass card" href="/quiz">
+        <span class="card-kicker">Vérifier</span>
+        <h3>Quiz</h3>
+        <p>Des questions courtes pour vérifier que le vocabulaire est acquis.</p>
+      </a>
+      <a class="glass card" href="/workflow">
+        <span class="card-kicker">Méthode</span>
+        <h3>Le workflow</h3>
+        <p>La boucle complète et les cinq étapes du projet.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">Vigilance</span>
+        <h3>Sécurité</h3>
+        <p>Secrets, données personnelles, procédure en cas de fuite.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>
+
+<script>
+  const racine = document.querySelector<HTMLElement>("[data-glossaire]");
+  const recherche = document.querySelector<HTMLInputElement>("[data-glossaire-recherche]");
+  const liste = document.querySelector<HTMLElement>("[data-glossaire-liste]");
+  const etat = document.querySelector<HTMLElement>("[data-glossaire-etat]");
+  const vide = document.querySelector<HTMLElement>("[data-glossaire-vide]");
+  const boutonRevision = document.querySelector<HTMLButtonElement>("[data-glossaire-revision]");
+  const boutonsTheme = [
+    ...document.querySelectorAll<HTMLButtonElement>("[data-glossaire-theme]"),
+  ];
+
+  if (racine && liste) {
+    const cartes = [...liste.querySelectorAll<HTMLElement>("[data-theme]")];
+    let themeActif = "tout";
+    let revision = false;
+
+    const normaliser = (texte: string) =>
+      texte
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    const filtrer = () => {
+      const terme = normaliser(recherche?.value.trim() ?? "");
+      let visibles = 0;
+
+      for (const carte of cartes) {
+        const bonTheme = themeActif === "tout" || carte.dataset.theme === themeActif;
+        const contient = !terme || (carte.dataset.recherche ?? "").includes(terme);
+        const visible = bonTheme && contient;
+        carte.hidden = !visible;
+        if (visible) visibles += 1;
+      }
+
+      for (const bouton of boutonsTheme) {
+        const actif = bouton.dataset.glossaireTheme === themeActif;
+        bouton.setAttribute("aria-pressed", actif ? "true" : "false");
+        bouton.classList.toggle("btn-primary", actif);
+        bouton.classList.toggle("btn-ghost", !actif);
+      }
+
+      if (etat) etat.textContent = `Termes affichés : ${visibles} sur ${cartes.length}.`;
+      if (vide) vide.hidden = visibles > 0;
+    };
+
+    const majRevision = () => {
+      racine.dataset.revision = revision ? "oui" : "non";
+      for (const carte of cartes) carte.removeAttribute("data-revele");
+      if (boutonRevision) {
+        boutonRevision.setAttribute("aria-pressed", revision ? "true" : "false");
+        boutonRevision.textContent = revision ? "Quitter le mode révision" : "Mode révision";
+      }
+    };
+
+    recherche?.addEventListener("input", filtrer);
+    for (const bouton of boutonsTheme) {
+      bouton.addEventListener("click", () => {
+        themeActif = bouton.dataset.glossaireTheme ?? "tout";
+        filtrer();
+      });
+    }
+    boutonRevision?.addEventListener("click", () => {
+      revision = !revision;
+      majRevision();
+    });
+    liste.addEventListener("click", (evenement) => {
+      const carte = (evenement.target as HTMLElement).closest<HTMLElement>("[data-theme]");
+      if (carte) carte.setAttribute("data-revele", "");
+    });
+
+    majRevision();
+    filtrer();
+  }
+</script>
