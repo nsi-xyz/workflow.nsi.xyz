@@ -9,8 +9,9 @@
 #   3. aucun fichier ne dépasse son budget de taille (anti-monolithe) ;
 #   4. aucune suppression de types (@ts-nocheck…) nouvelle ;
 #   5. pas de dialogue natif, de « (s) », de catch muet ni de « any » en hausse ;
-#   6. `npm test` passe (0 régression) ;
-#   7. `tsc --noEmit` passe (astro build ne lance pas tsc).
+#   6. aucun espace perdu avant un élément en ligne (texte collé) ;
+#   7. `npm test` passe (0 régression) ;
+#   8. `tsc --noEmit` passe (astro build ne lance pas tsc).
 #
 # En cas d'urgence (travail en cours, commit intermédiaire) :
 #   git commit --no-verify -m "..."
@@ -54,14 +55,21 @@ if ! node scripts/check-debt.mjs >/dev/null 2>&1; then
   exit 1
 fi
 
-# 6. Tests unitaires
+# 6. Rendu : aucun espace perdu avant un élément en ligne (texte collé)
+if ! node scripts/check-whitespace.mjs >/dev/null 2>&1; then
+  echo "❌ un élément en ligne colle au texte (espace perdu) — commit bloqué."
+  echo "   Relancez « node scripts/check-whitespace.mjs » pour voir le détail."
+  exit 1
+fi
+
+# 7. Tests unitaires
 if ! npm test --silent >/dev/null 2>&1; then
   echo "❌ npm test échoue — commit bloqué (0 régression tolérée)."
   echo "   Relancez « npm test » pour voir le détail."
   exit 1
 fi
 
-# 7. Contrôle de types (astro build ne lance pas tsc)
+# 8. Contrôle de types (astro build ne lance pas tsc)
 if ! npx tsc --noEmit >/dev/null 2>&1; then
   echo "❌ npm run typecheck échoue — commit bloqué."
   echo "   Relancez « npm run typecheck » pour voir le détail."

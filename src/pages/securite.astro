@@ -112,8 +112,7 @@ const procedure = [
   <section>
     <h2>Piège n°1 — le secret dans le dépôt</h2>
     <p>
-      C'est <strong>l'accident numéro un</strong> des projets qui utilisent une IA : le fichier
-      <code>.env</code> qui contient la clé se retrouve poussé sur GitHub. Pourquoi ? Parce que
+      C'est <strong>l'accident numéro un</strong> des projets qui utilisent une IA : le fichier <code>.env</code> qui contient la clé se retrouve poussé sur GitHub. Pourquoi ? Parce que
       le fichier était là avant, et qu'un <code>git add .</code> ne fait pas la différence.
     </p>
     <pre><code># ❌ Ce .env part sur GitHub avec le reste
@@ -136,8 +135,7 @@ CLOUDFLARE_API_TOKEN=cfut_4b1e…</code></pre>
           fichier d'un projet, pas le dernier.
         </li>
         <li>
-          <strong>Vérifier :</strong> <code>git check-ignore .env</code> doit afficher
-          <code>.env</code>. Si la commande n'affiche rien, le fichier est suivi : alerte rouge.
+          <strong>Vérifier :</strong> <code>git check-ignore .env</code> doit afficher <code>.env</code>. Si la commande n'affiche rien, le fichier est suivi : alerte rouge.
         </li>
         <li>
           <strong>Restreindre :</strong> <code>chmod 600 .env</code> pour que seul votre
@@ -147,8 +145,7 @@ CLOUDFLARE_API_TOKEN=cfut_4b1e…</code></pre>
     </Callout>
     <Callout type="danger" title="Retirer un fichier ne l'efface pas">
       Un fichier supprimé dans un nouveau commit reste lisible dans l'historique : n'importe
-      qui peut afficher l'ancienne version et y trouver la clé. C'est pour cela qu'on
-      <strong>tourne la clé d'abord</strong> et qu'on nettoie l'historique ensuite.
+      qui peut afficher l'ancienne version et y trouver la clé. C'est pour cela qu'on <strong>tourne la clé d'abord</strong> et qu'on nettoie l'historique ensuite.
     </Callout>
   </section>
 

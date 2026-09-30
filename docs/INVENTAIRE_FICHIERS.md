@@ -5,20 +5,20 @@
 
 ## Synthèse
 
-- **57 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **7 154 lignes** au total.
+- **61 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **7 777 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/styles/` | 4 | 1 787 |
-| `src/pages/` | 7 | 1 640 |
-| `scripts/` | 18 | 1 201 |
-| `src/data/` | 6 | 1 136 |
-| `src/components/` | 6 | 469 |
-| `tests/` | 6 | 416 |
-| `./` | 6 | 249 |
+| `src/pages/` | 8 | 1 937 |
+| `src/styles/` | 4 | 1 800 |
+| `src/data/` | 7 | 1 310 |
+| `scripts/` | 19 | 1 281 |
+| `tests/` | 7 | 475 |
+| `src/components/` | 6 | 468 |
+| `./` | 6 | 250 |
 | `src/layouts/` | 2 | 130 |
 | `src/lib/` | 1 | 120 |
 | `src/` | 1 | 6 |
@@ -27,7 +27,7 @@
 
 | Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
 |---|---:|---:|---:|---:|---|
-| `src/styles/components.css` | 1385 | — | — | 1385 | Feuille de style |
+| `src/styles/components.css` | 1398 | — | — | 1398 | Feuille de style |
 
 ## Inventaire complet
 
@@ -35,7 +35,7 @@
 |---|---:|---|
 | `astro.config.mjs` | 15 | Racine / config |
 | `env.d.ts` | 3 | Racine / config |
-| `package.json` | 41 | Racine / config |
+| `package.json` | 42 | Racine / config |
 | `PLAN.md` | 131 | Racine / config |
 | `README.md` | 43 | Racine / config |
 | `scripts/any-baseline.json` | 4 | Script outillage |
@@ -44,6 +44,7 @@
 | `scripts/check-nocheck.mjs` | 68 | Script outillage |
 | `scripts/check-secrets.mjs` | 98 | Script outillage |
 | `scripts/check-size.mjs` | 148 | Script outillage |
+| `scripts/check-whitespace.mjs` | 80 | Script outillage |
 | `scripts/dev-url.mjs` | 118 | Script outillage |
 | `scripts/dev.mjs` | 96 | Script outillage |
 | `scripts/env.mjs` | 38 | Script outillage |
@@ -59,9 +60,10 @@
 | `src/components/Callout.astro` | 14 | Composant UI |
 | `src/components/CostCalculator.astro` | 168 | Composant UI |
 | `src/components/Footer.astro` | 43 | Composant UI |
-| `src/components/Header.astro` | 53 | Composant UI |
+| `src/components/Header.astro` | 52 | Composant UI |
 | `src/components/SpotTheLeak.astro` | 138 | Composant UI |
 | `src/components/ThemeToggle.astro` | 53 | Composant UI |
+| `src/data/cloudflare.ts` | 174 | Donnée éditoriale |
 | `src/data/git.ts` | 235 | Donnée éditoriale |
 | `src/data/llm.ts` | 128 | Donnée éditoriale |
 | `src/data/navigation.ts` | 281 | Donnée éditoriale |
@@ -72,17 +74,19 @@
 | `src/layouts/DocLayout.astro` | 67 | Gabarit de page |
 | `src/lib/cout.ts` | 120 | Racine / config |
 | `src/pages/[...slug].astro` | 45 | Page (route) |
-| `src/pages/git-github.astro` | 308 | Page (route) |
+| `src/pages/cloudflare.astro` | 316 | Page (route) |
+| `src/pages/git-github.astro` | 303 | Page (route) |
 | `src/pages/index.astro` | 138 | Page (route) |
-| `src/pages/llm.astro` | 266 | Page (route) |
-| `src/pages/opencode.astro` | 345 | Page (route) |
-| `src/pages/securite.astro` | 325 | Page (route) |
-| `src/pages/workflow.astro` | 213 | Page (route) |
+| `src/pages/llm.astro` | 265 | Page (route) |
+| `src/pages/opencode.astro` | 337 | Page (route) |
+| `src/pages/securite.astro` | 322 | Page (route) |
+| `src/pages/workflow.astro` | 211 | Page (route) |
 | `src/styles/base.css` | 287 | Feuille de style |
-| `src/styles/components.css` | 1385 | Feuille de style |
+| `src/styles/components.css` | 1398 | Feuille de style |
 | `src/styles/global.css` | 8 | Feuille de style |
 | `src/styles/tokens.css` | 107 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
+| `tests/cloudflare.test.mjs` | 59 | Test |
 | `tests/content.test.mjs` | 51 | Test |
 | `tests/git.test.mjs` | 60 | Test |
 | `tests/llm.test.mjs` | 129 | Test |

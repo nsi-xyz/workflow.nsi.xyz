@@ -48,8 +48,7 @@ const checklistPush = [
     </ul>
     <Callout type="info" title="Un commit n'est pas une sauvegarde automatique">
       <p>
-        Git n'enregistre que ce que vous lui demandez. Un fichier modifié et jamais
-        <code>commit</code>é n'existe pas dans l'historique. « J'ai sauvegardé » veut dire
+        Git n'enregistre que ce que vous lui demandez. Un fichier modifié et jamais <code>commit</code>é n'existe pas dans l'historique. « J'ai sauvegardé » veut dire
         « j'ai committé ET poussé ».
       </p>
     </Callout>
@@ -112,10 +111,8 @@ git config --global user.email "adresse@exemple.fr"</code></pre>
       </li>
       <li>
         <strong>Créer le dépôt GitHub — privé.</strong> Sur github.com : <em>New
-        repository</em>, un nom court (<code>mon-projet</code>), visibilité
-        <strong>Private</strong>. <strong>Ne cochez rien d'autre</strong> : ni README, ni
-        .gitignore, ni licence.
-        <em>Ces cases créent un historique que votre dossier local ne connaît pas, et le
+        repository</em>, un nom court (<code>mon-projet</code>), visibilité <strong>Private</strong>. <strong>Ne cochez rien d'autre</strong> : ni README, ni
+        .gitignore, ni licence. <em>Ces cases créent un historique que votre dossier local ne connaît pas, et le
         premier <code>push</code> sera refusé.</em>
       </li>
       <li>
@@ -131,8 +128,7 @@ git status          # doit afficher le dossier du projet</code></pre>
 !.env.example
 node_modules/
 dist/</code></pre>
-        Vérification indispensable : <code>git check-ignore .env</code> doit afficher
-        <code>.env</code>. Sinon, ne committez pas encore.
+        Vérification indispensable : <code>git check-ignore .env</code> doit afficher <code>.env</code>. Sinon, ne committez pas encore.
       </li>
       <li>
         <strong>Enregistrer le premier point de retour.</strong>
@@ -161,8 +157,7 @@ ssh-keygen -t ed25519 -C "adresse@exemple.fr"</code></pre>
     <Callout type="ok" title="Le test des trois questions">
       <p>
         Pour savoir si vous êtes prêt : « Où est mon dépôt ? » (le dossier), « Où est mon
-        GitHub ? » (l'adresse), « Comment je reviens en arrière ? » (<code>git log</code> puis
-        <code>git restore</code>, ou <code>/undo</code>). Trois réponses claires, et le reste
+        GitHub ? » (l'adresse), « Comment je reviens en arrière ? » (<code>git log</code> puis <code>git restore</code>, ou <code>/undo</code>). Trois réponses claires, et le reste
         suivra.
       </p>
     </Callout>
