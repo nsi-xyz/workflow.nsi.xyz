@@ -161,6 +161,7 @@ kbd {
    Encadrés pédagogiques
    -------------------------------------------------------------------------- */
 .callout {
+  margin: 1.1rem 0;
   padding: 1rem 1.2rem 1rem 1.4rem;
   border: 1px solid var(--glass-border);
   border-left: 4px solid var(--accent);
@@ -498,6 +499,7 @@ kbd {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
   gap: 1rem;
+  margin: 1rem 0 1.3rem;
 }
 
 .section-title {

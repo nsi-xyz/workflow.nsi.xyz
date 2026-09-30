@@ -163,6 +163,7 @@ code {
 }
 
 pre {
+  margin: 1.1em 0;
   padding: 1rem 1.1rem;
   overflow-x: auto;
   border: 1px solid var(--glass-border);

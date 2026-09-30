@@ -6,7 +6,7 @@
 ## Synthèse
 
 - **102 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **13 429 lignes** au total.
+- **13 432 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -14,7 +14,7 @@
 |---|---:|---:|
 | `src/pages/` | 16 | 3 136 |
 | `src/data/` | 14 | 2 818 |
-| `src/styles/` | 4 | 2 484 |
+| `src/styles/` | 4 | 2 487 |
 | `scripts/` | 21 | 1 505 |
 | `tests/` | 16 | 1 013 |
 | `src/components/` | 9 | 841 |
@@ -32,7 +32,7 @@
 
 | Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
 |---|---:|---:|---:|---:|---|
-| `src/styles/components.css` | 2082 | — | — | 2082 | Feuille de style |
+| `src/styles/components.css` | 2084 | — | — | 2084 | Feuille de style |
 
 ## Inventaire complet
 
@@ -118,8 +118,8 @@
 | `src/pages/quiz.astro` | 124 | Page (route) |
 | `src/pages/securite.astro` | 322 | Page (route) |
 | `src/pages/workflow.astro` | 211 | Page (route) |
-| `src/styles/base.css` | 287 | Feuille de style |
-| `src/styles/components.css` | 2082 | Feuille de style |
+| `src/styles/base.css` | 288 | Feuille de style |
+| `src/styles/components.css` | 2084 | Feuille de style |
 | `src/styles/global.css` | 8 | Feuille de style |
 | `src/styles/tokens.css` | 107 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
