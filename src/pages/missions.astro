@@ -1,0 +1,155 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { missions } from "../data/missions";
+
+const item = navItems.find((entry) => entry.slug === "missions")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Trois missions pour être prêt le jour J</h2>
+    <p>
+      Ces missions se font <strong>dans l'ordre</strong>, à votre rythme, sans sujet imposé.
+      Chacune se termine par un résultat vérifiable : une page visible, une URL publique, un
+      journal de prompts. La progression est mémorisée dans votre navigateur — rien n'est
+      envoyé, et personne d'autre ne la voit.
+    </p>
+    <Callout type="info" title="Comment utiliser une mission">
+      <p>
+        Cochez les étapes au fur et à mesure. Si une étape résiste plus de dix minutes,
+        cherchez dans <a href="/depannage">Dépannage</a> : le message d'erreur y est
+        probablement traduit.
+      </p>
+    </Callout>
+  </section>
+
+  {
+    missions.map((mission) => (
+      <section class="glass mission" data-mission={mission.id}>
+        <header class="mission-entete">
+          <h2>{mission.titre}</h2>
+          <p class="mission-objectif">{mission.objectif}</p>
+          <p class="mission-duree">Durée indicative : {mission.duree}</p>
+        </header>
+
+        <div class="mission-progression">
+          <div class="mission-barre" aria-hidden="true">
+            <span data-mission-barre></span>
+          </div>
+          <p class="mission-compteur" data-mission-compteur role="status" aria-live="polite"></p>
+          <button class="btn btn-ghost" type="button" data-mission-reset>
+            Réinitialiser
+          </button>
+        </div>
+
+        <ul class="mission-etapes">
+          {mission.etapes.map((etape) => (
+            <li>
+              <label class="mission-etape">
+                <input type="checkbox" data-mission-etape={etape.id} />
+                <span>
+                  {etape.texte}
+                  {etape.commande && <code>{etape.commande}</code>}
+                </span>
+              </label>
+            </li>
+          ))}
+        </ul>
+
+        <p class="mission-fin">
+          <strong>Terminé quand :</strong> {mission.finiQuand}
+        </p>
+        <p class="mission-lien">
+          <a href={mission.lienUtile.href}>{mission.lienUtile.label} →</a>
+        </p>
+      </section>
+    ))
+  }
+
+  <section>
+    <h2>Après les missions</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompts/depot">
+        <span class="card-kicker">Journal</span>
+        <h3>Déposer vos prompts</h3>
+        <p>Quatre ou cinq prompts bien choisis racontent votre projet mieux qu'un long rapport.</p>
+      </a>
+      <a class="glass card" href="/quiz">
+        <span class="card-kicker">Vérifier</span>
+        <h3>Passer le quiz</h3>
+        <p>Repérez ce qui mérite une révision avant que le sujet ne tombe.</p>
+      </a>
+      <a class="glass card" href="/depannage">
+        <span class="card-kicker">Bloqué</span>
+        <h3>Chercher la panne</h3>
+        <p>Le message d'erreur, sa traduction et la correction.</p>
+      </a>
+      <a class="glass card" href="/projet">
+        <span class="card-kicker">La suite</span>
+        <h3>Le projet final</h3>
+        <p>Le compte à rebours et le brief, révélé le moment venu.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>
+
+<script>
+  const missions = [...document.querySelectorAll<HTMLElement>("[data-mission]")];
+
+  for (const mission of missions) {
+    const id = mission.dataset.mission;
+    const etapes = [...mission.querySelectorAll<HTMLInputElement>("[data-mission-etape]")];
+    const barre = mission.querySelector<HTMLElement>("[data-mission-barre]");
+    const compteur = mission.querySelector<HTMLElement>("[data-mission-compteur]");
+    const boutonReset = mission.querySelector<HTMLButtonElement>("[data-mission-reset]");
+    if (!id || !etapes.length) continue;
+
+    const cle = `mission:${id}`;
+
+    const lire = (): string[] => {
+      try {
+        const brut = localStorage.getItem(cle);
+        return brut ? (JSON.parse(brut) as string[]) : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const ecrire = (coches: string[]) => {
+      try {
+        localStorage.setItem(cle, JSON.stringify(coches));
+      } catch {
+        /* stockage indisponible : la progression reste valable pour la page */
+      }
+    };
+
+    const maj = () => {
+      const coches = etapes.filter((etape) => etape.checked).length;
+      const total = etapes.length;
+      if (compteur) compteur.textContent = `Étapes terminées : ${coches} / ${total}`;
+      if (barre) barre.style.width = `${total ? Math.round((coches / total) * 100) : 0}%`;
+    };
+
+    const enregistrer = () => {
+      ecrire(etapes.filter((etape) => etape.checked).map((etape) => etape.dataset.missionEtape ?? ""));
+      maj();
+    };
+
+    const memorisees = new Set(lire());
+    for (const etape of etapes) {
+      if (etape.dataset.missionEtape && memorisees.has(etape.dataset.missionEtape)) {
+        etape.checked = true;
+      }
+      etape.addEventListener("change", enregistrer);
+    }
+
+    boutonReset?.addEventListener("click", () => {
+      for (const etape of etapes) etape.checked = false;
+      enregistrer();
+    });
+
+    maj();
+  }
+</script>

@@ -1,0 +1,118 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import CompteARebours from "../components/CompteARebours.astro";
+import { navItems } from "../data/navigation";
+import { briefProjet, messageRevele, pretPourLeJourJ, reglesInchangees, teaser } from "../data/projet";
+
+const item = navItems.find((entry) => entry.slug === "projet")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section class="projet-verrou">
+    <h2>Le sujet est encore verrouillé</h2>
+    <CompteARebours />
+    <div class="glass card projet-teaser">
+      <ul class="planned">
+        {
+          teaser.map((ligne) => (
+            <li>{ligne}</li>
+          ))
+        }
+      </ul>
+    </div>
+    <Callout type="warn" title="Pourquoi un compte à rebours ?">
+      <p>
+        Parce qu'un projet ne se prépare pas la veille. Ce qui se joue d'ici là, ce n'est pas
+        la surprise du sujet : c'est votre <strong>aisance avec les outils</strong>. Quand le
+        sujet tombera, ceux qui auront déjà publié un site une fois iront deux fois plus vite.
+      </p>
+    </Callout>
+  </section>
+
+  <section class="projet-revele">
+    <h2>{messageRevele}</h2>
+    <div class="grid-cards">
+      {
+        briefProjet.map((section) => (
+          <article class="glass card">
+            <h3>{section.titre}</h3>
+            <p>{section.contenu}</p>
+          </article>
+        ))
+      }
+    </div>
+    <Callout type="info" title="Ces quatre blocs attendent le texte du sujet">
+      <p>
+        L'enseignant les remplace par le brief réel : objectif, rendu attendu, règles,
+        critères. Le reste de la page est déjà prêt.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Les règles qui ne changeront pas</h2>
+    <p>
+      Quelle que soit la consigne, cinq règles restent valables. Elles ne sont pas là pour
+      compliquer : elles évitent les accidents qui gâchent un projet abouti.
+    </p>
+    <ol class="rules">
+      {
+        reglesInchangees.map((regle) => (
+          <li>{regle}</li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section>
+    <h2>Être prêt le jour J</h2>
+    <p>
+      Six compétences, six sections du site. Si vous savez faire ces six choses sans aide,
+      le sujet ne sera qu'une formalité.
+    </p>
+    <div class="grid-cards">
+      {
+        pretPourLeJourJ.map((etape, index) => (
+          <a class="glass card" href={etape.lien}>
+            <span class="card-kicker">Compétence {index + 1}</span>
+            <h3>{etape.titre}</h3>
+            <p>{etape.texte}</p>
+          </a>
+        ))
+      }
+    </div>
+    <Callout type="ok" title="Le test de préparation">
+      <p>
+        Créez un projet vide, publiez une page « Bonjour » à une adresse publique, déposez un
+        prompt dans le journal. Si vous y arrivez seul en moins d'une heure, vous êtes prêt.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/missions">
+        <span class="card-kicker">Entraînement</span>
+        <h3>Missions guidées</h3>
+        <p>Trois parcours pas à pas, à faire avant la révélation du sujet.</p>
+      </a>
+      <a class="glass card" href="/workflow">
+        <span class="card-kicker">Méthode</span>
+        <h3>Le workflow</h3>
+        <p>La boucle et les cinq étapes, du premier prompt à l'URL publique.</p>
+      </a>
+      <a class="glass card" href="/quiz">
+        <span class="card-kicker">Vérifier</span>
+        <h3>Quiz</h3>
+        <p>Vingt-trois questions pour repérer ce qui mérite une révision.</p>
+      </a>
+      <a class="glass card" href="/prompts">
+        <span class="card-kicker">Modèles</span>
+        <h3>La promptothèque</h3>
+        <p>Quatorze prompts prêts à adapter, expliqués un par un.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

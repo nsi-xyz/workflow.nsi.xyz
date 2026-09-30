@@ -108,7 +108,7 @@ workflow.nsi.xyz/
 | M2 Contenu cœur | Sécurité · Workflow · IA & modèles · OpenCode · Git/GitHub · Cloudflare · Piloter l'agent · Promptothèque · Dépôt des prompts · Dépannage · Glossaire · Quiz | ✅ 13 / 15 sections rédigées |
 | M3 Interactif | Calculateur de coût, constructeur de prompt, jeu « trouve la fuite », filtres, quiz, mode révision | ✅ intégré aux sections |
 | M4 API & prof | KV, codes élèves, API de dépôt, espace prof, export CSV | ✅ 30/09/2026 |
-| M5 Missions & projet | Check-lists, compte à rebours, page verrouillée | à faire |
+| M5 Missions & projet | Missions guidées (progression locale), compte à rebours, page verrouillée, brief à personnaliser | ✅ 30/09/2026 |
 | M6 Finition | A11y, perf, smoke 30 routes, déploiement, domaine | à faire |
 
 Chaque jalon : `npm run typecheck` (0 erreur), `npm test` (100 %), `npm run build`.

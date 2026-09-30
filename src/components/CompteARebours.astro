@@ -1,0 +1,84 @@
+---
+/**
+ * Compte à rebours jusqu'à la révélation du sujet.
+ * Le contenu du brief est déjà dans la page : le script ne fait que basculer
+ * l'attribut `data-revele` sur <html>, et le CSS décide de ce qui s'affiche.
+ * Sans JavaScript, la page reste lisible (la date est écrite en clair).
+ */
+import { revealAt } from "../data/projet";
+
+const cible = new Date(revealAt);
+const dateLisible = cible.toLocaleString("fr-FR", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+---
+
+<div class="compte" data-compte data-cible={revealAt}>
+  <p class="compte-date">
+    Révélation : <strong>{dateLisible}</strong>
+  </p>
+
+  <div class="compte-grille">
+    <div class="compte-case"><span data-compte-jours>—</span><small>jours</small></div>
+    <div class="compte-case"><span data-compte-heures>—</span><small>heures</small></div>
+    <div class="compte-case"><span data-compte-minutes>—</span><small>minutes</small></div>
+    <div class="compte-case"><span data-compte-secondes>—</span><small>secondes</small></div>
+  </div>
+
+  <p class="compte-etat" data-compte-etat role="status" aria-live="polite"></p>
+</div>
+
+<script>
+  const racine = document.querySelector<HTMLElement>("[data-compte]");
+
+  if (racine) {
+    // Paramètre de test : `?cible=2020-01-01T00:00:00` permet de vérifier la
+    // bascule sans attendre la date. Sans paramètre, la date du site s'applique.
+    const parametre = new URLSearchParams(location.search).get("cible");
+    const cible = new Date(parametre ?? racine.dataset.cible ?? "").getTime();
+    const etat = racine.querySelector<HTMLElement>("[data-compte-etat]");
+    const champs = {
+      jours: racine.querySelector<HTMLElement>("[data-compte-jours]"),
+      heures: racine.querySelector<HTMLElement>("[data-compte-heures]"),
+      minutes: racine.querySelector<HTMLElement>("[data-compte-minutes]"),
+      secondes: racine.querySelector<HTMLElement>("[data-compte-secondes]"),
+    };
+
+    const deuxChiffres = (nombre: number) => String(nombre).padStart(2, "0");
+
+    const maj = () => {
+      const reste = cible - Date.now();
+
+      if (!Number.isFinite(cible)) return;
+
+      if (reste <= 0) {
+        document.documentElement.dataset.revele = "oui";
+        if (etat) etat.textContent = "Le sujet est dévoilé : bienvenue dans la dernière ligne droite.";
+        return;
+      }
+
+      const secondes = Math.floor(reste / 1000);
+      const jours = Math.floor(secondes / 86400);
+      const heures = Math.floor((secondes % 86400) / 3600);
+      const minutes = Math.floor((secondes % 3600) / 60);
+
+      if (champs.jours) champs.jours.textContent = String(jours);
+      if (champs.heures) champs.heures.textContent = deuxChiffres(heures);
+      if (champs.minutes) champs.minutes.textContent = deuxChiffres(minutes);
+      if (champs.secondes) champs.secondes.textContent = deuxChiffres(secondes % 60);
+
+      if (etat) {
+        etat.textContent =
+          jours > 1 ? `Encore ${jours} jours pour s'entraîner.` : "C'est pour très bientôt.";
+      }
+    };
+
+    maj();
+    window.setInterval(maj, 1000);
+  }
+</script>

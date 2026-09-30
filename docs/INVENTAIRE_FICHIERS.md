@@ -5,19 +5,19 @@
 
 ## Synthèse
 
-- **94 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **12 474 lignes** au total.
+- **101 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **13 317 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 14 | 2 856 |
-| `src/data/` | 12 | 2 643 |
-| `src/styles/` | 4 | 2 300 |
+| `src/pages/` | 16 | 3 131 |
+| `src/data/` | 14 | 2 818 |
+| `src/styles/` | 4 | 2 484 |
 | `scripts/` | 20 | 1 420 |
-| `tests/` | 14 | 889 |
-| `src/components/` | 8 | 756 |
+| `tests/` | 16 | 1 013 |
+| `src/components/` | 9 | 841 |
 | `src/lib/` | 4 | 371 |
 | `src/client/` | 2 | 318 |
 | `./` | 6 | 280 |
@@ -32,7 +32,7 @@
 
 | Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
 |---|---:|---:|---:|---:|---|
-| `src/styles/components.css` | 1898 | — | — | 1898 | Feuille de style |
+| `src/styles/components.css` | 2082 | — | — | 2082 | Feuille de style |
 
 ## Inventaire complet
 
@@ -72,6 +72,7 @@
 | `src/client/prof.ts` | 159 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
 | `src/components/Callout.astro` | 14 | Composant UI |
+| `src/components/CompteARebours.astro` | 85 | Composant UI |
 | `src/components/CostCalculator.astro` | 169 | Composant UI |
 | `src/components/Footer.astro` | 43 | Composant UI |
 | `src/components/Header.astro` | 52 | Composant UI |
@@ -84,8 +85,10 @@
 | `src/data/git.ts` | 235 | Donnée éditoriale |
 | `src/data/glossaire.ts` | 270 | Donnée éditoriale |
 | `src/data/llm.ts` | 128 | Donnée éditoriale |
+| `src/data/missions.ts` | 80 | Donnée éditoriale |
 | `src/data/navigation.ts` | 281 | Donnée éditoriale |
 | `src/data/opencode.ts` | 192 | Donnée éditoriale |
+| `src/data/projet.ts` | 95 | Donnée éditoriale |
 | `src/data/prompt.ts` | 207 | Donnée éditoriale |
 | `src/data/promptotheque.ts` | 348 | Donnée éditoriale |
 | `src/data/quiz.ts` | 321 | Donnée éditoriale |
@@ -104,8 +107,10 @@
 | `src/pages/glossaire.astro` | 217 | Page (route) |
 | `src/pages/index.astro` | 138 | Page (route) |
 | `src/pages/llm.astro` | 265 | Page (route) |
+| `src/pages/missions.astro` | 156 | Page (route) |
 | `src/pages/opencode.astro` | 337 | Page (route) |
 | `src/pages/prof.astro` | 68 | Page (route) |
+| `src/pages/projet.astro` | 119 | Page (route) |
 | `src/pages/prompt.astro` | 198 | Page (route) |
 | `src/pages/prompts.astro` | 121 | Page (route) |
 | `src/pages/prompts/depot.astro` | 228 | Page (route) |
@@ -113,7 +118,7 @@
 | `src/pages/securite.astro` | 322 | Page (route) |
 | `src/pages/workflow.astro` | 211 | Page (route) |
 | `src/styles/base.css` | 287 | Feuille de style |
-| `src/styles/components.css` | 1898 | Feuille de style |
+| `src/styles/components.css` | 2082 | Feuille de style |
 | `src/styles/global.css` | 8 | Feuille de style |
 | `src/styles/tokens.css` | 107 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
@@ -125,7 +130,9 @@
 | `tests/glossaire.test.mjs` | 41 | Test |
 | `tests/journal.test.mjs` | 90 | Test |
 | `tests/llm.test.mjs` | 129 | Test |
+| `tests/missions.test.mjs` | 65 | Test |
 | `tests/opencode.test.mjs` | 59 | Test |
+| `tests/projet.test.mjs` | 59 | Test |
 | `tests/prompt.test.mjs` | 95 | Test |
 | `tests/promptotheque.test.mjs` | 61 | Test |
 | `tests/quiz.test.mjs` | 56 | Test |
