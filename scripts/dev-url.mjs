@@ -72,9 +72,11 @@ function devPorts() {
       }
       // Serveur de dev de CE projet uniquement (les `workerd` sont écartés).
       if (!cmd.includes(root) || cmd.includes('workerd')) continue;
-      if (!/astro(\.m?js)?\s+dev|[/\\]\.bin[/\\]astro\s+dev/.test(cmd)) continue;
+      const astroDev = /astro(\.m?js)?\s+dev|[/\\]\.bin[/\\]astro\s+dev/.test(cmd);
+      const pagesDev = /pages\s+dev/.test(cmd) && /wrangler/.test(cmd);
+      if (!astroDev && !pagesDev) continue;
 
-      const declared = cmd.match(/--port\s+(\d+)/);
+      const declared = cmd.match(/--port[= ](\d+)/);
       if (declared) {
         ports.add(Number(declared[1]));
         continue;
