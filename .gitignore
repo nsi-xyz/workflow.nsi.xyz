@@ -8,6 +8,8 @@
 # Codes des élèves (générés en local, jamais publiés)
 codes.csv
 codes-*.txt
+codes-a-distribuer.html
+.codes-bulk.json
 
 # Dépendances et artefacts
 node_modules/

@@ -1,0 +1,18 @@
+# Configuration Cloudflare Pages — workflow.nsi.xyz
+#
+# Le site est statique (dist/) et son API vit dans functions/.
+# Le namespace KV « workflow-nsi-xyz » contient :
+#   - code:<sha256>      → un marqueur par code élève (les codes ne sont jamais stockés en clair)
+#   - prompt:<horodatage>-<aléa> → un dépôt de prompt (JSON, sans identité)
+#
+# Les secrets (mot de passe de l'espace prof, clé de signature) ne sont PAS ici :
+# en local ils vivent dans .dev.vars (ignoré par Git), en production dans les
+# variables et secrets du projet Pages.
+
+name = "workflow-nsi-xyz"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "./dist"
+
+[[kv_namespaces]]
+binding = "WORKFLOW"
+id = "dacc90b180b34c4897ba128f50fbd1cb"

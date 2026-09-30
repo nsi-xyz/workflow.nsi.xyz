@@ -1,0 +1,227 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import Callout from "../../components/Callout.astro";
+import { navItems } from "../../data/navigation";
+import { LONGUEUR_PROMPT_MAX, MISSIONS } from "../../lib/journal";
+
+const item = navItems.find((entry) => entry.slug === "prompts/depot")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Pourquoi journaliser ses prompts</h2>
+    <p>
+      Un projet mené avec un agent laisse deux traces : le code, dans le dépôt, et <strong>les demandes</strong>, qui racontent comment le code est né. Sans elles, on ne
+      peut ni expliquer le travail, ni comprendre une décision, ni progresser.
+    </p>
+    <ul>
+      <li>
+        <strong>C'est la preuve du travail</strong> : ce que vous avez demandé, compris et
+        corrigé — pas seulement le résultat final.
+      </li>
+      <li>
+        <strong>C'est votre mémoire</strong> : le prompt qui a débloqué une situation se
+        retrouve ici, prêt à resservir.
+      </li>
+      <li>
+        <strong>C'est utile à la classe</strong> : les difficultés repérées ici deviennent
+        des exercices, des explications, des prompts modèles.
+      </li>
+    </ul>
+    <Callout type="info" title="Ce qui est enregistré — et ce qui ne l'est pas">
+      <p>
+        Le dépôt contient votre prompt, la mission, le mode (plan ou build) et l'heure.
+        Le code est transformé en <strong>empreinte</strong> : il n'est jamais stocké en
+        clair, et aucune donnée personnelle n'est collectée. N'écrivez jamais de secret,
+        de mot de passe ni de nom de camarade dans un prompt.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Déposer un prompt</h2>
+    <p>
+      Copiez le prompt <em>tel que vous l'avez envoyé</em> à l'agent — pas une version
+      idéalisée. Ce sont les hésitations qui sont instructives.
+    </p>
+
+    <form class="glass depot" data-depot novalidate>
+      <div class="depot-grille">
+        <label class="calc-field">
+          <span>Votre code (12 caractères, distribué en classe)</span>
+          <input
+            type="text"
+            name="code"
+            data-depot-code
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="ABCD-EFGH-JKMN"
+            required
+          />
+        </label>
+
+        <label class="calc-field">
+          <span>Mission</span>
+          <select name="mission" data-depot-mission>
+            {
+              MISSIONS.map((mission) => (
+                <option value={mission.id}>{mission.label}</option>
+              ))
+            }
+          </select>
+        </label>
+
+        <fieldset class="calc-field calc-period">
+          <legend>Mode utilisé dans OpenCode</legend>
+          <label><input type="radio" name="mode" value="plan" /> plan</label>
+          <label><input type="radio" name="mode" value="build" /> build</label>
+          <label><input type="radio" name="mode" value="" checked /> je ne sais pas</label>
+        </fieldset>
+      </div>
+
+      <label class="calc-field">
+        <span>Le prompt envoyé à l'agent</span>
+        <textarea
+          name="prompt"
+          data-depot-prompt
+          rows="8"
+          maxlength={LONGUEUR_PROMPT_MAX}
+          placeholder="Collez ici le texte exact de votre demande…"
+          required></textarea>
+        <output data-depot-compteur>0 caractère</output>
+      </label>
+
+      <div class="depot-actions">
+        <button class="btn btn-primary" type="submit" data-depot-envoyer>Déposer le prompt</button>
+        <span class="depot-message" data-depot-message role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <p class="depot-stats" data-depot-stats aria-live="polite"></p>
+  </section>
+
+  <section>
+    <h2>Quels prompts déposer ?</h2>
+    <ul class="checklist">
+      <li><label><input type="checkbox" /><span>Le prompt qui a créé la première version d'une page.</span></label></li>
+      <li><label><input type="checkbox" /><span>Le prompt qui a corrigé une erreur (avec le message d'erreur collé dedans).</span></label></li>
+      <li><label><input type="checkbox" /><span>Le prompt où vous avez dû reformuler, parce que la première réponse n'était pas la bonne.</span></label></li>
+      <li><label><input type="checkbox" /><span>Le prompt de vérification, avant de publier.</span></label></li>
+    </ul>
+    <p>
+      Pas besoin de tout déposer : <strong>quatre ou cinq dépôts bien choisis</strong>
+      racontent mieux un projet que cinquante copies d'écran.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompt">
+        <span class="card-kicker">Méthode</span>
+        <h3>Piloter l'agent</h3>
+        <p>Le constructeur de prompt et l'anatomie en quatre blocs.</p>
+      </a>
+      <a class="glass card" href="/prompts">
+        <span class="card-kicker">Modèles</span>
+        <h3>La promptothèque</h3>
+        <p>Quatorze prompts prêts à adapter, expliqués un par un.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">Vigilance</span>
+        <h3>Sécurité</h3>
+        <p>Ce qu'on ne met jamais dans un prompt ni dans un dépôt.</p>
+      </a>
+      <a class="glass card" href="/prof">
+        <span class="card-kicker">Côté prof</span>
+        <h3>Espace prof</h3>
+        <p>Lecture des dépôts de la classe, filtres et export.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>
+
+<script>
+  import { LONGUEUR_PROMPT_MAX } from "../../lib/journal";
+
+  const formulaire = document.querySelector<HTMLFormElement>("[data-depot]");
+
+  if (formulaire) {
+    const code = formulaire.querySelector<HTMLInputElement>("[data-depot-code]");
+    const mission = formulaire.querySelector<HTMLSelectElement>("[data-depot-mission]");
+    const prompt = formulaire.querySelector<HTMLTextAreaElement>("[data-depot-prompt]");
+    const compteur = formulaire.querySelector<HTMLOutputElement>("[data-depot-compteur]");
+    const bouton = formulaire.querySelector<HTMLButtonElement>("[data-depot-envoyer]");
+    const message = document.querySelector<HTMLElement>("[data-depot-message]");
+    const stats = document.querySelector<HTMLElement>("[data-depot-stats]");
+
+    const ecrireMessage = (texte: string, type: "ok" | "erreur" | "") => {
+      if (!message) return;
+      message.textContent = texte;
+      message.dataset.etat = type;
+    };
+
+    const majCompteur = () => {
+      if (!compteur || !prompt) return;
+      const longueur = prompt.value.trim().length;
+      compteur.textContent = `${longueur} sur ${LONGUEUR_PROMPT_MAX} caractères maximum`;
+    };
+
+    const chargerStats = async () => {
+      if (!stats) return;
+      try {
+        const reponse = await fetch("/api/stats");
+        const donnees = (await reponse.json()) as {
+          ok: boolean;
+          prompts?: number;
+          codes?: number;
+        };
+        if (donnees.ok) {
+          stats.textContent = `Dépôts reçus : ${donnees.prompts ?? 0} · Codes distribués : ${donnees.codes ?? 0}`;
+        }
+      } catch {
+        stats.textContent = "";
+      }
+    };
+
+    prompt?.addEventListener("input", majCompteur);
+    majCompteur();
+    chargerStats();
+
+    formulaire.addEventListener("submit", async (evenement) => {
+      evenement.preventDefault();
+      if (!code || !mission || !prompt || !bouton) return;
+
+      const modeChoisi = formulaire.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+      ecrireMessage("Envoi en cours…", "");
+      bouton.disabled = true;
+
+      try {
+        const reponse = await fetch("/api/prompts", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            code: code.value,
+            mission: mission.value,
+            mode: modeChoisi?.value ?? "",
+            prompt: prompt.value,
+          }),
+        });
+        const donnees = (await reponse.json()) as { ok: boolean; erreurs?: string[]; message?: string };
+
+        if (donnees.ok) {
+          ecrireMessage(donnees.message ?? "Prompt déposé.", "ok");
+          prompt.value = "";
+          majCompteur();
+          chargerStats();
+        } else {
+          ecrireMessage((donnees.erreurs ?? ["Dépôt refusé."]).join(" "), "erreur");
+        }
+      } catch {
+        ecrireMessage("Impossible de joindre le serveur. Vérifiez la connexion, puis réessayez.", "erreur");
+      } finally {
+        bouton.disabled = false;
+      }
+    });
+  }
+</script>

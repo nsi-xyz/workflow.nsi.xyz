@@ -1,0 +1,67 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { MISSIONS } from "../lib/journal";
+
+const item = navItems.find((entry) => entry.slug === "prof")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section data-prof-connexion>
+    <h2>Connexion</h2>
+    <p>
+      Les dépôts de la classe sont protégés par un mot de passe, défini dans les variables
+      secrètes du projet Cloudflare (et dans <code>.dev.vars</code> en développement).
+    </p>
+    <form class="glass depot" data-prof-login>
+      <label class="calc-field">
+        <span>Mot de passe</span>
+        <input type="password" data-prof-motdepasse autocomplete="current-password" required />
+      </label>
+      <div class="depot-actions">
+        <button class="btn btn-primary" type="submit">Ouvrir l'espace prof</button>
+        <span class="depot-message" data-prof-message role="status" aria-live="polite"></span>
+      </div>
+    </form>
+    <Callout type="info" title="Confidentialité par conception">
+      <p>
+        Chaque dépôt est associé à l'<strong>empreinte</strong> du code de l'élève, jamais à
+        son nom. La correspondance se fait hors ligne, avec <code>codes.csv</code> — le seul
+        fichier qui relie un code à un élève, et il n'est jamais publié.
+      </p>
+    </Callout>
+  </section>
+
+  <section data-prof-panneau hidden>
+    <h2>Dépôts de la classe</h2>
+    <div class="prof-barre">
+      <label class="calc-field">
+        <span>Mission</span>
+        <select data-prof-mission>
+          <option value="">toutes</option>
+          {
+            MISSIONS.map((mission) => (
+              <option value={mission.id}>{mission.label}</option>
+            ))
+          }
+        </select>
+      </label>
+      <label class="calc-field">
+        <span>Recherche dans les prompts</span>
+        <input type="search" data-prof-recherche placeholder="mot-clé, erreur, fichier…" />
+      </label>
+      <div class="prof-boutons">
+        <button class="btn btn-ghost" type="button" data-prof-plus>Charger la suite</button>
+        <button class="btn btn-primary" type="button" data-prof-export>Exporter en CSV</button>
+        <button class="btn btn-ghost" type="button" data-prof-deconnexion>Se déconnecter</button>
+      </div>
+    </div>
+    <p class="prof-etat" data-prof-etat role="status" aria-live="polite"></p>
+    <ol class="prof-liste" data-prof-liste></ol>
+  </section>
+</DocLayout>
+
+<script>
+  import "../client/prof";
+</script>
