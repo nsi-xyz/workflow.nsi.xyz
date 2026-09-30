@@ -1,0 +1,344 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { commandes, pieges, planVsBuild, premiersPas, raccourcis } from "../data/opencode";
+
+const item = navItems.find((entry) => entry.slug === "opencode")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Un agent dans le terminal, pas un chatbot</h2>
+    <p>
+      OpenCode ouvre un agent <strong>dans un dossier de votre machine</strong>. Il lit les
+      fichiers qui s'y trouvent, en crée, en modifie, et lance des commandes — comme un
+      développeur à qui vous parlez. Le dossier ouvert est son monde : ce qu'il ne peut pas
+      lire, il ne le connaît pas.
+    </p>
+    <p>
+      Vous restez le pilote : c'est vous qui décidez, qui lisez, qui validez. OpenCode est
+      le poste de commande ; le modèle (DeepSeek) est le moteur ; le dossier est le terrain.
+    </p>
+    <Callout type="warn" title="Piège classique : installer ne suffit pas">
+      <p>
+        OpenCode est gratuit et open source, mais il ne <em>fournit</em> aucun modèle. Sans
+        clé d'API branchée, l'agent reste muet. La clé DeepSeek se crée sur
+        <code>platform.deepseek.com</code> — c'est un <strong>secret</strong>, à protéger
+        comme tel (voir la section Sécurité).
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Installer</h2>
+    <p>
+      Un terminal récent suffit (WezTerm, Alacritty, Ghostty, Kitty… celui de votre système
+      fait aussi l'affaire pour commencer). Ensuite, une seule commande :
+    </p>
+    <pre><code>curl -fsSL https://opencode.ai/install | bash</code></pre>
+    <p>Autres méthodes, si vous les préférez :</p>
+    <pre><code># Avec Node.js (déjà présent si vous avez fait l'installation du kit)
+npm install -g opencode-ai
+
+# Avec Homebrew (macOS / Linux)
+brew install anomalyco/tap/opencode</code></pre>
+    <Callout type="info" title="Sous Windows">
+      <p>
+        Passez par <strong>WSL</strong> (Windows Subsystem for Linux) : l'agent s'y comporte
+        comme sur Linux. Les commandes de ce site fonctionnent alors telles quelles.
+      </p>
+    </Callout>
+    <p>
+      Vérifiez que la commande répond, puis lancez l'installation depuis le dossier de votre
+      projet :
+    </p>
+    <pre><code>opencode --version
+cd mon-projet
+opencode</code></pre>
+  </section>
+
+  <section>
+    <h2>Brancher la clé DeepSeek</h2>
+    <ol class="rules rules-steps">
+      <li>
+        <strong>Créer la clé</strong> sur <code>platform.deepseek.com</code>
+        (rubrique <em>API keys</em>). Elle commence par <code>sk-</code> et ne s'affiche
+        qu'une seule fois : copiez-la tout de suite.
+      </li>
+      <li>
+        <strong>Dans OpenCode, taper <code>/connect</code></strong>, choisir
+        <code>deepseek</code> dans la liste des fournisseurs.
+      </li>
+      <li><strong>Coller la clé</strong> quand l'interface la demande.</li>
+      <li>
+        <strong>Choisir le modèle</strong> : DeepSeek V4.1 Flash (identifiant
+        <code>deepseek-flash</code>). <code>/models</code> liste ce qui est disponible.
+      </li>
+    </ol>
+    <Callout type="danger" title="Cette clé est un secret">
+      <p>
+        Elle paie chacune de vos requêtes. Elle ne va ni dans un prompt, ni dans un fichier
+        du projet, ni dans une capture d'écran, ni dans un dépôt Git. Si elle fuite :
+        révoquez-la immédiatement et créez-en une autre (section Sécurité, « procédure en cas
+        de fuite »).
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>La première session</h2>
+    <p>
+      Ouvrez le terminal dans le dossier du projet, lancez <code>opencode</code>, puis
+      <code>/init</code>. L'agent explore le dossier et rédige <code>AGENTS.md</code> :
+      la carte du projet, ses conventions, ce qu'il faut savoir avant d'y toucher.
+      <strong>Relisez-le et committez-le</strong> : c'est le document que lit l'agent à
+      chaque session.
+    </p>
+    <pre><code># Dans OpenCode, une fois le projet ouvert :
+/init      → analyse le dossier et écrit AGENTS.md
+/help      → la liste des commandes de votre version
+/models    → vérifier le modèle utilisé</code></pre>
+  </section>
+
+  <section>
+    <h2>Anatomie de l'écran</h2>
+    <p>Schéma simplifié de l'interface, avec les cinq éléments à repérer :</p>
+
+    <div class="tui" aria-label="Schéma de l'interface d'OpenCode">
+      <div class="tui-top">
+        <span>opencode — mon-projet</span>
+        <span><span class="tui-tag">1</span> deepseek-flash</span>
+      </div>
+      <div class="tui-body">
+        <p class="tui-user"><span class="tui-tag">2</span> ajoute une section « horaires » avec un tableau</p>
+        <p class="tui-tool"><span class="tui-tag">3</span> ● lecture de src/pages/index.astro</p>
+        <p class="tui-agent">
+          Je vais ajouter la section après la présentation. Voici ce que je prévois :
+          un titre, un tableau à deux colonnes, une note de bas de tableau.
+        </p>
+        <p class="tui-tool">● modification de src/pages/index.astro (+18 lignes)</p>
+      </div>
+      <div class="tui-footer">
+        <span><span class="tui-tag">4</span> mode build (Tab pour changer)</span>
+        <span>12,4 k tokens · <span class="tui-tag">5</span> 0,004 $</span>
+      </div>
+    </div>
+
+    <ol class="tui-legend">
+      <li>Le <strong>modèle</strong> utilisé : vérifiez qu'il correspond à ce que vous voulez.</li>
+      <li>Votre <strong>demande</strong> : une intention par message, pas trois.</li>
+      <li>
+        Les <strong>outils exécutés</strong> : fichiers lus, fichiers modifiés, commandes
+        lancées. <code>/details</code> affiche l'intégralité.
+      </li>
+      <li>
+        Le <strong>mode</strong> courant : <em>plan</em> (lecture seule) ou <em>build</em>
+        (modifications). <kbd>Tab</kbd> bascule.
+      </li>
+      <li>
+        Le <strong>coût et les tokens</strong> de la session : à surveiller, surtout quand le
+        projet grossit.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Les commandes utiles</h2>
+    <p>
+      Tapez <code>/</code> pour ouvrir la liste. Voici celles qui comptent pour un projet
+      d'élève — l'interface évolue, donc <code>/help</code> fait foi.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Commande</th>
+            <th>À quoi ça sert</th>
+            <th>Ce qu'il faut savoir</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            commandes.map((commande) => (
+              <tr>
+                <td><code>{commande.nom}</code></td>
+                <td>{commande.role}</td>
+                <td>{commande.detail}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Les raccourcis à connaître</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Touche</th>
+          <th>Effet</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          raccourcis.map((raccourci) => (
+            <tr>
+              <td><kbd>{raccourci.touche}</kbd></td>
+              <td>{raccourci.role}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <Callout type="info" title="Le réflexe « je ne sais plus »">
+      <p>
+        <kbd>Ctrl</kbd> + <kbd>p</kbd> ouvre la palette : toutes les actions y sont
+        listables, même celles que vous ne connaissez pas. À défaut, <code>/help</code>.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Mode plan ou mode build ?</h2>
+    <p>
+      Le mode <strong>plan</strong> interdit les modifications : l'agent lit, raisonne et
+      propose, mais ne touche à rien. Le mode <strong>build</strong> exécute. Ce n'est pas un
+      détail de confort : c'est votre principal garde-fou.
+      <kbd>Tab</kbd> bascule de l'un à l'autre ; l'indicateur est en bas de l'écran.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Mode conseillé</th>
+            <th>Pourquoi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            planVsBuild.map((ligne) => (
+              <tr>
+                <td>{ligne.situation}</td>
+                <td><strong>{ligne.mode}</strong></td>
+                <td>{ligne.pourquoi}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <Callout type="ok" title="Le réflexe en une phrase">
+      <p>
+        <strong>Plan pour réfléchir, build pour exécuter.</strong> Toute demande qui touche
+        plus d'un fichier mérite un passage en plan.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Suivre le coût</h2>
+    <p>
+      OpenCode tient les comptes : coût cumulé de la session, tokens d'entrée, de sortie et
+      mis en cache. Ces informations s'affichent dans l'interface et dans l'écran de
+      statistiques. Prenez l'habitude de jeter un œil après une grosse demande : c'est ainsi
+      qu'on repère une session qui s'emballe.
+    </p>
+    <ul>
+      <li>
+        <strong>Une session qui coûte cher</strong> n'est pas une session utile : le coût
+        vient surtout du contexte relu à chaque tour.
+      </li>
+      <li>
+        <strong>Compacter avant de continuer :</strong> <code>/compact</code> résume la
+        conversation et fait baisser la facture.
+      </li>
+      <li>
+        <strong>Comprendre les tarifs :</strong> la section
+        <a href="/llm">L'IA et les modèles</a> contient un calculateur et la règle des heures
+        creuses (moitié prix le week-end et l'après-midi).
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Où sont mes fichiers ?</h2>
+    <p>
+      Là où ils étaient : dans le dossier du projet. L'agent ne travaille pas « dans le
+      cloud » — il écrit sur votre disque. Repérez simplement :
+    </p>
+    <ul>
+      <li>
+        <strong>Le dossier ouvert</strong> : celui du terminal, avant de lancer
+        <code>opencode</code>. C'est le point à vérifier en premier.
+      </li>
+      <li>
+        <strong>Les chemins annoncés</strong> : à chaque action, l'interface indique le
+        fichier lu ou modifié (<code>src/pages/index.astro</code>). Lisez ces lignes : elles
+        racontent ce qui est réellement en train de se passer.
+      </li>
+      <li>
+        <strong>La question magique</strong> : « montre-moi la liste des fichiers du projet
+        et explique à quoi sert chacun ». Utile au début, rassurant ensuite.
+      </li>
+      <li>
+        <strong>Le point de retour</strong> : Git (voir la section Git et GitHub) garde
+        l'historique. <code>/undo</code> s'appuie dessus — sans dépôt, pas d'annulation.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>La première heure sans stress</h2>
+    <ol class="rules">
+      {
+        premiersPas.map((etape) => (
+          <li>
+            <strong>{etape.titre}.</strong> {etape.texte}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section>
+    <h2>Cinq pièges à connaître</h2>
+    <div class="grid-cards">
+      {
+        pieges.map((piege) => (
+          <article class="glass card">
+            <h3>{piege.titre}</h3>
+            <p>{piege.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompt">
+        <span class="card-kicker">Savoir-faire</span>
+        <h3>Piloter l'agent</h3>
+        <p>Ce qu'on écrit dans la conversation, et ce qu'on n'y écrit jamais.</p>
+      </a>
+      <a class="glass card" href="/git-github">
+        <span class="card-kicker">Sécurité du travail</span>
+        <h3>Git et GitHub</h3>
+        <p>Le point de retour qui rend /undo possible.</p>
+      </a>
+      <a class="glass card" href="/depannage">
+        <span class="card-kicker">Erreurs</span>
+        <h3>Dépannage</h3>
+        <p>Clé refusée, dossier vide, session perdue : quoi faire.</p>
+      </a>
+      <a class="glass card" href="https://opencode.ai/docs/">
+        <span class="card-kicker">Source</span>
+        <h3>Documentation OpenCode</h3>
+        <p>La référence officielle, toujours à jour.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

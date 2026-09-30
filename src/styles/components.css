@@ -1183,6 +1183,120 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   OpenCode — maquette de l'interface (schéma, aucun script)
+   -------------------------------------------------------------------------- */
+.tui {
+  margin: 1rem 0;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-deep) 78%, transparent);
+  box-shadow: var(--shadow-1);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.tui-top,
+.tui-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.55rem 0.8rem;
+  color: var(--text-mute);
+}
+
+.tui-top {
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.tui-footer {
+  border-top: 1px solid var(--glass-border);
+}
+
+.tui-body {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem 0.9rem 1rem;
+}
+
+.tui-body p {
+  margin: 0;
+}
+
+.tui-user {
+  color: var(--text);
+}
+
+.tui-agent {
+  color: var(--text-soft);
+}
+
+.tui-tool {
+  color: var(--text-mute);
+  font-size: 0.76rem;
+}
+
+.tui-tag {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  margin-right: 0.35rem;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--accent-ink);
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.tui-legend {
+  counter-reset: tui;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tui-legend li {
+  counter-increment: tui;
+  position: relative;
+  padding-left: 1.9rem;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.tui-legend li::before {
+  content: counter(tui);
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 1px solid var(--glass-border-hi);
+  border-radius: 50%;
+  background: var(--glass-hi);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* Tableaux larges : défilement horizontal plutôt que page cassée */
+.table-scroll {
+  overflow-x: auto;
+  margin: 1.2rem 0;
+}
+
+.table-scroll table {
+  margin: 0;
+  min-width: 640px;
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {

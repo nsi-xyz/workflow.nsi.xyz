@@ -1,23 +1,23 @@
 # Inventaire des fichiers — workflow.nsi.xyz
 
 > Fichier **généré** par `node scripts/generate-inventory.mjs` — ne pas éditer à la main.
-> Dernière génération : 2026-09-29
+> Dernière génération : 2026-09-30
 
 ## Synthèse
 
-- **51 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **5 792 lignes** au total.
+- **54 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **6 502 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/styles/` | 4 | 1 624 |
+| `src/styles/` | 4 | 1 738 |
+| `src/pages/` | 6 | 1 332 |
 | `scripts/` | 18 | 1 201 |
-| `src/pages/` | 5 | 987 |
-| `src/data/` | 4 | 709 |
+| `src/data/` | 5 | 901 |
 | `src/components/` | 6 | 469 |
-| `tests/` | 4 | 297 |
+| `tests/` | 5 | 356 |
 | `./` | 6 | 249 |
 | `src/layouts/` | 2 | 130 |
 | `src/lib/` | 1 | 120 |
@@ -27,7 +27,7 @@
 
 | Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
 |---|---:|---:|---:|---:|---|
-| `src/styles/components.css` | 1222 | — | — | 1222 | Feuille de style |
+| `src/styles/components.css` | 1336 | — | — | 1336 | Feuille de style |
 
 ## Inventaire complet
 
@@ -64,6 +64,7 @@
 | `src/components/ThemeToggle.astro` | 53 | Composant UI |
 | `src/data/llm.ts` | 128 | Donnée éditoriale |
 | `src/data/navigation.ts` | 281 | Donnée éditoriale |
+| `src/data/opencode.ts` | 192 | Donnée éditoriale |
 | `src/data/securite.ts` | 88 | Donnée éditoriale |
 | `src/data/workflow.ts` | 212 | Donnée éditoriale |
 | `src/layouts/BaseLayout.astro` | 63 | Gabarit de page |
@@ -72,15 +73,17 @@
 | `src/pages/[...slug].astro` | 45 | Page (route) |
 | `src/pages/index.astro` | 138 | Page (route) |
 | `src/pages/llm.astro` | 266 | Page (route) |
+| `src/pages/opencode.astro` | 345 | Page (route) |
 | `src/pages/securite.astro` | 325 | Page (route) |
 | `src/pages/workflow.astro` | 213 | Page (route) |
 | `src/styles/base.css` | 287 | Feuille de style |
-| `src/styles/components.css` | 1222 | Feuille de style |
+| `src/styles/components.css` | 1336 | Feuille de style |
 | `src/styles/global.css` | 8 | Feuille de style |
 | `src/styles/tokens.css` | 107 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
 | `tests/content.test.mjs` | 51 | Test |
 | `tests/llm.test.mjs` | 129 | Test |
+| `tests/opencode.test.mjs` | 59 | Test |
 | `tests/securite.test.mjs` | 48 | Test |
 | `tests/workflow.test.mjs` | 69 | Test |
 | `tsconfig.json` | 16 | Racine / config |
