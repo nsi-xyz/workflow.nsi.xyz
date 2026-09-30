@@ -1,0 +1,307 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import {
+  commandesGit,
+  cycleDeTravail,
+  interdits,
+  messagesCommit,
+  piegesGit,
+  vocabulaire,
+} from "../data/git";
+
+const item = navItems.find((entry) => entry.slug === "git-github")!;
+
+const checklistPush = [
+  "<code>git status</code> ne montre que des fichiers voulus (pas de brouillon, pas de capture).",
+  "<code>.env</code> n'apparaît nulle part : ni dans les fichiers, ni dans l'historique.",
+  "Le message de commit décrit le changement, en une phrase.",
+  "Le dépôt est <strong>privé</strong> (ou assumé public).",
+  "Le travail important est <code>push</code>é : il existe ailleurs que sur la machine.",
+];
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Git, c'est la mémoire du projet</h2>
+    <p>
+      Un agent qui modifie dix fichiers en dix minutes, c'est puissant — et vertigineux :
+      comment revenir en arrière si le résultat ne plaît pas ? Git répond à cette question.
+      Il enregistre des <strong>points de retour</strong> nommés, que l'on peut relire,
+      comparer et restaurer. GitHub, lui, met ces points de retour à l'abri : le travail
+      existe ailleurs que sur votre machine.
+    </p>
+    <ul>
+      <li>
+        <strong>Sans Git, pas d'annulation fine :</strong> <code>/undo</code> dans OpenCode
+        s'appuie sur Git. C'est le filet de sécurité du pilotage par IA.
+      </li>
+      <li>
+        <strong>Sans Git, pas d'histoire :</strong> on ne sait plus ce qui a été fait, quand,
+        ni pourquoi. Le projet devient un fichier inconnu qu'on n'ose plus toucher.
+      </li>
+      <li>
+        <strong>Sans GitHub, pas de sauvegarde :</strong> un disque qui rend l'âme, et tout
+        disparaît — y compris la trace des prompts.
+      </li>
+    </ul>
+    <Callout type="info" title="Un commit n'est pas une sauvegarde automatique">
+      <p>
+        Git n'enregistre que ce que vous lui demandez. Un fichier modifié et jamais
+        <code>commit</code>é n'existe pas dans l'historique. « J'ai sauvegardé » veut dire
+        « j'ai committé ET poussé ».
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Le vocabulaire, en images</h2>
+    <div class="grid-cards">
+      {
+        vocabulaire.map((mot) => (
+          <article class="glass card">
+            <span class="card-kicker">{mot.image}</span>
+            <h3>{mot.terme}</h3>
+            <p>{mot.definition}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Les commandes essentielles</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Commande</th>
+            <th>Ce qu'elle fait</th>
+            <th>Quand l'utiliser</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            commandesGit.map((commande) => (
+              <tr>
+                <td><code>{commande.commande}</code></td>
+                <td>{commande.effet}</td>
+                <td>{commande.quand}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Onze commandes suffisent pour tout le projet. Les autres existent, mais ne les
+      apprenez pas « au cas où » : elles viendront quand vous en aurez besoin.
+    </p>
+  </section>
+
+  <section>
+    <h2>La première fois, pas à pas</h2>
+    <ol class="rules rules-steps">
+      <li>
+        <strong>Installer Git et se présenter.</strong> Le nom et l'adresse apparaissent
+        dans chaque commit : ce sont eux qui rendent l'historique lisible.
+<pre><code>git --version
+git config --global user.name "Prénom Nom"
+git config --global user.email "adresse@exemple.fr"</code></pre>
+      </li>
+      <li>
+        <strong>Créer le dépôt GitHub — privé.</strong> Sur github.com : <em>New
+        repository</em>, un nom court (<code>mon-projet</code>), visibilité
+        <strong>Private</strong>. <strong>Ne cochez rien d'autre</strong> : ni README, ni
+        .gitignore, ni licence.
+        <em>Ces cases créent un historique que votre dossier local ne connaît pas, et le
+        premier <code>push</code> sera refusé.</em>
+      </li>
+      <li>
+        <strong>Initialiser le dépôt local dans le bon dossier.</strong>
+<pre><code>cd mon-projet
+git init
+git status          # doit afficher le dossier du projet</code></pre>
+      </li>
+      <li>
+        <strong>Créer le .gitignore AVANT le premier commit.</strong>
+<pre><code>.env
+.env.*
+!.env.example
+node_modules/
+dist/</code></pre>
+        Vérification indispensable : <code>git check-ignore .env</code> doit afficher
+        <code>.env</code>. Sinon, ne committez pas encore.
+      </li>
+      <li>
+        <strong>Enregistrer le premier point de retour.</strong>
+<pre><code>git add -A
+git status          # relire la liste des fichiers préparés
+git commit -m "Initialise le projet : page d'accueil et .gitignore"</code></pre>
+      </li>
+      <li>
+        <strong>Relier au dépôt GitHub et pousser.</strong> Deux méthodes courantes :
+<pre><code># Méthode recommandée : GitHub CLI (installe aussi l'authentification)
+gh auth login
+git remote add origin git@github.com:compte/mon-projet.git
+git push -u origin main
+
+# Méthode classique : clé SSH créée à la main, ajoutée à GitHub
+ssh-keygen -t ed25519 -C "adresse@exemple.fr"</code></pre>
+        <em>GitHub n'accepte plus le mot de passe du compte en ligne de commande : il faut
+        une clé SSH ou un jeton. Un <code>push</code> refusé n'est pas une panne, c'est un
+        problème d'identité.</em>
+      </li>
+      <li>
+        <strong>Vérifier en ligne.</strong> Rechargez la page GitHub : les fichiers et le
+        message du commit doivent apparaître. Le travail est maintenant à l'abri.
+      </li>
+    </ol>
+    <Callout type="ok" title="Le test des trois questions">
+      <p>
+        Pour savoir si vous êtes prêt : « Où est mon dépôt ? » (le dossier), « Où est mon
+        GitHub ? » (l'adresse), « Comment je reviens en arrière ? » (<code>git log</code> puis
+        <code>git restore</code>, ou <code>/undo</code>). Trois réponses claires, et le reste
+        suivra.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Le cycle de travail</h2>
+    <p>Une fois les bases posées, le travail tourne toujours selon la même ronde :</p>
+    <div class="cycle" role="list" aria-label="Le cycle de travail Git">
+      {
+        cycleDeTravail.map((etape, index) => (
+          <>
+            <span class="chip" role="listitem">{etape.titre}</span>
+            {index < cycleDeTravail.length - 1 ? (
+              <span class="cycle-arrow" aria-hidden="true">→</span>
+            ) : (
+              <span class="cycle-arrow" aria-hidden="true">↺</span>
+            )}
+          </>
+        ))
+      }
+    </div>
+    <ol class="rules rules-steps">
+      {
+        cycleDeTravail.map((etape) => (
+          <li>
+            <strong>{etape.titre}.</strong> {etape.texte}
+          </li>
+        ))
+      }
+    </ol>
+    <Callout type="warn" title="Committez petit, committez souvent">
+      <p>
+        Un commit toutes les vingt minutes vaut mieux qu'un seul commit en fin de journée.
+        Chaque commit est un point de retour : plus il y en a, plus la machine à remonter le
+        temps est précise.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Les messages de commit</h2>
+    <p>
+      Un message de commit s'adresse à la personne qui lira l'historique — c'est-à-dire vous,
+      dans trois semaines. La formule : <strong>verbe à l'impératif + objet du changement</strong>.
+    </p>
+    <div class="duo">
+      {
+        messagesCommit.map((message) => (
+          <div class="glass card duo-item">
+            <p class="duo-bad">
+              <span class="duo-label">À éviter</span>
+              <code>{message.mauvais}</code>
+            </p>
+            <p class="duo-good">
+              <span class="duo-label">À préférer</span>
+              <code>{message.bon}</code>
+            </p>
+            <p class="duo-why">{message.pourquoi}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Ce qui ne va jamais dans un dépôt</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Jamais</th>
+            <th>Pourquoi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            interdits.map((ligne) => (
+              <tr>
+                <td><strong>{ligne.element}</strong></td>
+                <td>{ligne.raison}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <h3>La checklist avant de pousser</h3>
+    <ul class="checklist">
+      {
+        checklistPush.map((ligne) => (
+          <li>
+            <label>
+              <input type="checkbox" />
+              <span set:html={ligne} />
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Six pièges à connaître</h2>
+    <div class="grid-cards">
+      {
+        piegesGit.map((piege) => (
+          <article class="glass card">
+            <h3>{piege.titre}</h3>
+            <p>{piege.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">À ne pas rater</span>
+        <h3>Sécurité</h3>
+        <p>Le piège du secret dans l'historique et la procédure en cas de fuite.</p>
+      </a>
+      <a class="glass card" href="/cloudflare">
+        <span class="card-kicker">Suite logique</span>
+        <h3>Cloudflare Pages</h3>
+        <p>Relier le dépôt à une adresse publique.</p>
+      </a>
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>/undo, /redo : les points de retour dans la conversation.</p>
+      </a>
+      <a class="glass card" href="https://git-scm.com/book/fr/v2">
+        <span class="card-kicker">Source</span>
+        <h3>Le livre Git (en français)</h3>
+        <p>La référence progressive, chapitre après chapitre.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

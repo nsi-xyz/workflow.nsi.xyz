@@ -1297,6 +1297,55 @@ kbd {
 }
 
 /* --------------------------------------------------------------------------
+   Git — comparaison « à éviter / à préférer »
+   -------------------------------------------------------------------------- */
+.duo {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.duo-item {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1.1rem 1.2rem;
+}
+
+.duo-item p {
+  margin: 0;
+}
+
+.duo-label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.duo-bad .duo-label {
+  color: var(--danger);
+}
+
+.duo-good .duo-label {
+  color: var(--ok);
+}
+
+.duo-bad code {
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+}
+
+.duo-good code {
+  border-color: color-mix(in srgb, var(--ok) 45%, transparent);
+}
+
+.duo-why {
+  color: var(--text-mute);
+  font-size: 0.88rem;
+}
+
+/* --------------------------------------------------------------------------
    Divers
    -------------------------------------------------------------------------- */
 .sr-only {
