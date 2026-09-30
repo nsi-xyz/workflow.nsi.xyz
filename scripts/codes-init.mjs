@@ -105,6 +105,7 @@ ${cartes}
 </body>
 </html>
 `,
+  { mode: 0o600 },
 );
 
 fs.writeFileSync(
