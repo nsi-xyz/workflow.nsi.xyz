@@ -3,6 +3,9 @@
 Le site qui apprend à **piloter une IA** (OpenCode + DeepSeek) pour construire,
 versionner sur GitHub et déployer un site avec Cloudflare Pages.
 
+**En production : [https://workflow.nsi.xyz](https://workflow.nsi.xyz)**
+Projet Cloudflare Pages `workflow-nsi-xyz`, namespace KV `workflow-nsi-xyz`.
+
 Public : élèves de terminale NSI — et tout visiteur curieux. Le site est
 **générique** : il ne dépend d'aucune date de cours, il décrit le workflow, les
 outils, les pièges de sécurité et les bons prompts.
@@ -65,3 +68,21 @@ n'est suivi par Git. Seules les empreintes SHA-256 partent dans KV.
 `.env` est ignoré par Git et en `chmod 600`, `.dev.vars` aussi. Aucune donnée
 personnelle d'élève n'est stockée : les dépôts sont associés à l'empreinte d'un code,
 et la correspondance ne vit que dans `codes.csv`, côté enseignant.
+
+## Production
+
+```bash
+npm run test:smoke -- https://workflow.nsi.xyz   # 19 vérifications après déploiement
+npm run deploy                                    # build + publication pages.dev
+```
+
+- **Domaine** : `workflow.nsi.xyz` rattaché au projet Pages + CNAME proxied vers
+  `workflow-nsi-xyz.pages.dev` (sans ce CNAME, le domaine reste en `pending`).
+- **Secrets de production** (posés dans les réglages du projet, jamais dans le dépôt) :
+  `PROF_PASSWORD` et `SESSION_SECRET`. Le mot de passe est écrit dans `acces-prof.txt`,
+  fichier local ignoré par Git.
+- **Codes élèves** : générés par `npm run codes:init`, hachés dans KV ; la correspondance
+  vit dans `codes.csv` (ignoré par Git) et la planche imprimable dans
+  `codes-a-distribuer.html`.
+- **Latence KV** : un dépôt de prompt apparaît dans l'espace prof avec un décalage pouvant
+  atteindre une minute (cohérence différée de l'API `list`).

@@ -109,7 +109,7 @@ workflow.nsi.xyz/
 | M3 Interactif | Calculateur de coût, constructeur de prompt, jeu « trouve la fuite », filtres, quiz, mode révision | ✅ intégré aux sections |
 | M4 API & prof | KV, codes élèves, API de dépôt, espace prof, export CSV | ✅ 30/09/2026 |
 | M5 Missions & projet | Missions guidées (progression locale), compte à rebours, page verrouillée, brief à personnaliser | ✅ 30/09/2026 |
-| M6 Finition | A11y, perf, smoke 30 routes, déploiement, domaine | à faire |
+| M6 Finition | Secrets de production, déploiement, domaine, smoke test (19 vérifications) | ✅ 30/09/2026 |
 
 Chaque jalon : `npm run typecheck` (0 erreur), `npm test` (100 %), `npm run build`.
 

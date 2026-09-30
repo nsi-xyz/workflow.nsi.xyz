@@ -5,22 +5,22 @@
 
 ## Synthèse
 
-- **101 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **13 317 lignes** au total.
+- **102 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **13 428 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 16 | 3 131 |
+| `src/pages/` | 16 | 3 136 |
 | `src/data/` | 14 | 2 818 |
 | `src/styles/` | 4 | 2 484 |
-| `scripts/` | 20 | 1 420 |
+| `scripts/` | 21 | 1 504 |
 | `tests/` | 16 | 1 013 |
 | `src/components/` | 9 | 841 |
 | `src/lib/` | 4 | 371 |
 | `src/client/` | 2 | 318 |
-| `./` | 6 | 280 |
+| `./` | 6 | 302 |
 | `src/pages/prompts/` | 1 | 228 |
 | `src/layouts/` | 2 | 130 |
 | `functions/api/prof/` | 3 | 114 |
@@ -46,9 +46,9 @@
 | `functions/api/prof/prompts.ts` | 66 | Pages Function (API) |
 | `functions/api/prompts.ts` | 43 | Pages Function (API) |
 | `functions/api/stats.ts` | 32 | Pages Function (API) |
-| `package.json` | 44 | Racine / config |
+| `package.json` | 45 | Racine / config |
 | `PLAN.md` | 131 | Racine / config |
-| `README.md` | 68 | Racine / config |
+| `README.md` | 89 | Racine / config |
 | `scripts/any-baseline.json` | 4 | Script outillage |
 | `scripts/audit-secrets.mjs` | 102 | Script outillage |
 | `scripts/check-debt.mjs` | 117 | Script outillage |
@@ -68,6 +68,7 @@
 | `scripts/run-with-node22.mjs` | 55 | Script outillage |
 | `scripts/silent-catch-baseline.json` | 2 | Script outillage |
 | `scripts/size-baseline.json` | 13 | Script outillage |
+| `scripts/smoke-test.mjs` | 84 | Script outillage |
 | `scripts/wrangler.mjs` | 58 | Script outillage |
 | `src/client/prof.ts` | 159 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
@@ -109,7 +110,7 @@
 | `src/pages/llm.astro` | 265 | Page (route) |
 | `src/pages/missions.astro` | 156 | Page (route) |
 | `src/pages/opencode.astro` | 337 | Page (route) |
-| `src/pages/prof.astro` | 68 | Page (route) |
+| `src/pages/prof.astro` | 73 | Page (route) |
 | `src/pages/projet.astro` | 119 | Page (route) |
 | `src/pages/prompt.astro` | 198 | Page (route) |
 | `src/pages/prompts.astro` | 121 | Page (route) |

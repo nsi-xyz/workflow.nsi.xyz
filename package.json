@@ -16,6 +16,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "node scripts/run-with-node22.mjs tsx --test tests/*.test.mjs",
+    "test:smoke": "node scripts/smoke-test.mjs",
     "typecheck": "node scripts/run-with-node22.mjs tsc --noEmit",
     "prepare": "node scripts/install-hooks.mjs",
     "map": "node scripts/generate-inventory.mjs",

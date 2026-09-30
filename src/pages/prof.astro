@@ -35,6 +35,11 @@ const item = navItems.find((entry) => entry.slug === "prof")!;
 
   <section data-prof-panneau hidden>
     <h2>Dépôts de la classe</h2>
+    <p class="prof-note">
+      Les dépôts apparaissent avec un léger décalage (jusqu'à une minute) : le stockage KV
+      privilégie la disponibilité, au prix d'une cohérence différée. Si un dépôt manque,
+      rechargez dans quelques instants avant de conclure à un problème.
+    </p>
     <div class="prof-barre">
       <label class="calc-field">
         <span>Mission</span>
