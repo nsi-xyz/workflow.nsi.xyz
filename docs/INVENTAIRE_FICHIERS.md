@@ -6,7 +6,7 @@
 ## Synthèse
 
 - **113 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **14 735 lignes** au total.
+- **14 757 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -20,9 +20,9 @@
 | `src/components/` | 10 | 826 |
 | `./` | 6 | 313 |
 | `src/lib/` | 3 | 280 |
-| `template/` | 3 | 182 |
+| `template/` | 3 | 193 |
 | `src/client/` | 1 | 159 |
-| `public/` | 1 | 136 |
+| `public/` | 1 | 147 |
 | `src/layouts/` | 2 | 130 |
 | `docs/` | 2 | 110 |
 | `src/` | 1 | 6 |
@@ -43,7 +43,7 @@
 | `env.d.ts` | 2 | Racine / config |
 | `package.json` | 50 | Racine / config |
 | `PLAN.md` | 144 | Racine / config |
-| `public/workflow.md` | 136 | Racine / config |
+| `public/workflow.md` | 147 | Racine / config |
 | `README.md` | 87 | Racine / config |
 | `scripts/any-baseline.json` | 4 | Script outillage |
 | `scripts/audit-secrets.mjs` | 102 | Script outillage |
@@ -130,7 +130,7 @@
 | `src/version.json` | 6 | Racine / config |
 | `template/AGENTS.md` | 38 | Modèle de dépôt élève |
 | `template/projet.json` | 9 | Modèle de dépôt élève |
-| `template/workflow.md` | 135 | Modèle de dépôt élève |
+| `template/workflow.md` | 146 | Modèle de dépôt élève |
 | `tests/cloudflare.test.mjs` | 59 | Test |
 | `tests/content.test.mjs` | 51 | Test |
 | `tests/couts.test.mjs` | 99 | Test |

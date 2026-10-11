@@ -38,10 +38,11 @@ if (!fs.existsSync(INDEX)) {
 }
 
 function git(dossier, commandeArgs, silencieux = false) {
-  return execFileSync('git', ['-C', dossier, ...commandeArgs], {
+  const resultat = execFileSync('git', ['-C', dossier, ...commandeArgs], {
     encoding: 'utf8',
     stdio: silencieux ? ['ignore', 'pipe', 'ignore'] : 'inherit',
-  }).trim()
+  })
+  return resultat ? String(resultat).trim() : ''
 }
 
 const lignes = fs.readFileSync(INDEX, 'utf8').trim().split('\n').slice(1)
@@ -74,14 +75,13 @@ for (const { label, alias } of eleves) {
   try {
     git(dossier, ['add', ...FICHIERS], true)
     const enAttente = git(dossier, ['diff', '--cached', '--name-only'], true)
-    if (!enAttente) {
-      console.log(`• ${label} (${alias}) : déjà à jour.`)
-      continue
+    if (enAttente) {
+      git(dossier, ['commit', '-m', 'Contrat : ressources, suivi et site du cours'])
     }
-    git(dossier, ['commit', '-m', 'Contrat : ressources et droits'])
+    // On pousse toujours : un commit peut déjà exister localement (rattrapage).
     git(dossier, ['push'])
-    console.log(`• ${label} (${alias}) : mis à jour et poussé.`)
-    misAJour += 1
+    console.log(`• ${label} (${alias}) : ${enAttente ? 'mis à jour et poussé' : 'poussé (déjà à jour)'}.`)
+    if (enAttente) misAJour += 1
   } catch (erreur) {
     console.error(`• ${label} (${alias}) : ÉCHEC — ${erreur.message}`)
     echecs += 1

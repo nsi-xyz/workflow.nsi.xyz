@@ -6,12 +6,12 @@
 <style>
   * { box-sizing: border-box; }
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  @page { size: A4; margin: 11mm 12mm; }
+  @page { size: A4; margin: 9mm 11mm; }
   body {
     margin: 0;
     font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-    font-size: 10.4pt;
-    line-height: 1.38;
+    font-size: 9.8pt;
+    line-height: 1.3;
     color: #12181f;
   }
   .page { page-break-after: always; }
@@ -22,17 +22,17 @@
     gap: 10px; padding: 10px 12px; border-radius: 10px; color: #fff;
     background: linear-gradient(120deg, #1d3a8a, #2f6bd8);
   }
-  header h1 { margin: 0; font-size: 15.5pt; }
-  header .sub { font-size: 9pt; opacity: .92; margin-top: 2px; }
+  header h1 { margin: 0; font-size: 15pt; }
+  header .sub { font-size: 8.8pt; opacity: .92; margin-top: 2px; }
   header .id { text-align: right; font-size: 9pt; line-height: 1.3; }
   header .id b { font-size: 11pt; letter-spacing: .04em; }
   header .id code {
-    font-size: 8.2pt; color: #fff; background: rgba(255, 255, 255, .18);
+    font-size: 8pt; color: #fff; background: rgba(255, 255, 255, .18);
     padding: 1px 4px; border-radius: 4px; word-break: break-all;
   }
 
   h2 {
-    font-size: 11.4pt; margin: 13px 0 6px; padding-bottom: 3px;
+    font-size: 11.2pt; margin: 12px 0 5px; padding-bottom: 3px;
     border-bottom: 2px solid #dbe4f3; color: #1d3a8a;
   }
   h2 .n {
@@ -41,25 +41,35 @@
     text-align: center; font-size: 10.5pt; line-height: 19px;
   }
   p { margin: 4px 0; }
-  ul { margin: 4px 0 4px 0; padding-left: 20px; }
+  ul { margin: 4px 0; padding-left: 20px; }
   li { margin: 2px 0; }
-  code, .code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
-  code { background: #eef2f9; padding: 0 3px; border-radius: 4px; font-size: 9.3pt; }
+  code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; background: #eef2f9; padding: 0 3px; border-radius: 4px; font-size: 9.2pt; }
+  a { color: #1d3a8a; text-decoration: none; }
   pre {
     margin: 5px 0; padding: 7px 9px; background: #0f172a; color: #e6edf7;
-    border-radius: 8px; font-size: 9pt; line-height: 1.35; white-space: pre-wrap;
+    border-radius: 8px; font-size: 8.8pt; line-height: 1.35; white-space: pre-wrap;
     font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
   }
-  .box { border: 1px solid #dbe4f3; border-left: 4px solid #2f6bd8; border-radius: 8px; padding: 7px 10px; margin: 7px 0; background: #f7faff; }
+  .box { border: 1px solid #dbe4f3; border-left: 4px solid #2f6bd8; border-radius: 8px; padding: 6px 10px; margin: 6px 0; background: #f7faff; }
   .box.warn { border-left-color: #d97706; background: #fff8ee; }
   .box.ok { border-left-color: #17915a; background: #f1fbf6; }
   .box .t { font-weight: 700; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .muted { color: #5a6675; }
-  .steps { counter-reset: s; }
-  .small { font-size: 9pt; }
-  .footer-note { margin-top: 10px; font-size: 8.6pt; color: #5a6675; border-top: 1px solid #e3e9f3; padding-top: 6px; }
+  .small { font-size: 8.9pt; }
+  .footer-note { margin-top: 9px; font-size: 8.4pt; color: #5a6675; border-top: 1px solid #e3e9f3; padding-top: 6px; }
   strong { color: #0f1b2d; }
+
+  /* illustration « contenu du dépôt » à l'étape 4 */
+  .repo {
+    border: 1px solid #cfd9ea; border-radius: 8px; overflow: hidden; margin: 6px 0;
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 8.8pt;
+  }
+  .repo .bar { background: #eef2f9; padding: 3px 8px; color: #3a4658; border-bottom: 1px solid #cfd9ea; }
+  .repo ul { list-style: none; margin: 0; padding: 5px 10px; }
+  .repo li { padding: 1px 0; }
+  .repo .dir { color: #1d3a8a; font-weight: 700; }
+  .repo .badge { float: right; color: #5a6675; }
 </style>
 </head>
 <body>
@@ -69,7 +79,7 @@
   <header>
     <div>
       <h1>Projet IA — mon guide de démarrage</h1>
-      <div class="sub">Créer un projet en pilotant une intelligence artificielle (OpenCode + DeepSeek)</div>
+      <div class="sub">Créer un jeu en pilotant une intelligence artificielle (OpenCode + DeepSeek)</div>
     </div>
     <div class="id">
       Mon identifiant : <b>{{ALIAS}}</b><br>
@@ -77,48 +87,68 @@
     </div>
   </header>
 
-  <p class="small" style="margin-top:8px">
-    <strong>Suis ces quatre étapes dans l'ordre.</strong> Tu débutes : c'est normal.
-    Si quelque chose bloque, <strong>ne cherche pas à joindre quelqu'un</strong> : recopie le
-    problème dans OpenCode et demande-lui de l'aide (voir l'autre face).
+  <p class="small" style="margin-top:7px">
+    <strong>Suis ces quatre étapes.</strong> Tu débutes : c'est normal. En cas de blocage,
+    <strong>ne cherche pas à joindre quelqu'un</strong> : recopie le problème dans ton agent IA et
+    demande-lui de l'aide (voir l'autre face). Le site du cours peut t'aider :
+    <code>https://workflow.nsi.xyz</code> — et pour le budget,
+    <code>https://workflow.nsi.xyz/couts</code>.
   </p>
 
   <h2><span class="n">1</span>Créer mon compte (login.nsi.xyz)</h2>
   <p>Va sur <code>https://login.nsi.xyz</code>.</p>
   <ul>
-    <li>Clique sur <strong>« Se connecter avec Google »</strong> et choisis ton adresse <strong>Gmail</strong>.</li>
+    <li>Clique sur <strong>« Se connecter avec Google »</strong> et choisis
+      <strong>l'adresse Gmail que tu utilises sur Classroom</strong>.</li>
     <li>Puis ouvre <strong>« Mon compte »</strong> et ajoute <strong>GitHub</strong> (bouton « Lier »).</li>
   </ul>
-  <p class="muted small">Un seul compte pour tout le projet : ton adresse et ton identifiant GitHub me seront ainsi transmis.</p>
+  <p class="muted small">C'est par là que ton adresse e-mail et ton identifiant GitHub me sont transmis : un seul endroit, rien à m'envoyer.</p>
 
-  <h2><span class="n">2</span>Installer OpenCode (application de bureau)</h2>
-  <p>Va sur <code>https://opencode.ai/v2/docs</code>, section <strong>Desktop</strong>, et prends la version de ton ordinateur :</p>
-  <ul>
-    <li><strong>Windows</strong> : le fichier <code>.exe</code> — installe aussi Git : <code>https://git-scm.com/download/win</code></li>
-    <li><strong>macOS</strong> : le fichier <code>.dmg</code></li>
-    <li><strong>Linux</strong> : le fichier <code>.deb</code></li>
-  </ul>
+  <h2><span class="n">2</span>Ouvrir OpenCode (l'application de bureau)</h2>
+  <p>
+    <strong>Tu l'as normalement déjà installée.</strong> Sinon : <code>https://opencode.ai/v2/docs</code>,
+    section <strong>Desktop</strong> — <code>.exe</code> (Windows), <code>.dmg</code> (macOS),
+    <code>.deb</code> (Linux).
+  </p>
+  <div class="box">
+    <span class="t">Tu peux utiliser un autre agent IA</span> (Claude, Cursor, un autre outil…), à une condition :
+    il doit savoir <strong>gérer le projet</strong> (créer/modifier les fichiers, lancer les commandes) et
+    <strong>respecter le workflow</strong> décrit dans <code>workflow.md</code> et <code>AGENTS.md</code>.
+    Si ce n'est pas le cas, reviens à OpenCode.
+  </div>
 
   <h2><span class="n">3</span>Brancher une clé DeepSeek</h2>
   <p>Crée un compte sur <code>https://platform.deepseek.com</code>, puis une clé dans
   <strong>« API keys »</strong>. Elle commence par <code>sk-</code> et ne s'affiche <strong>qu'une seule fois</strong> :
-  copie-la tout de suite.</p>
-  <p>Dans OpenCode, tape <code>/connect</code>, choisis <code>deepseek</code>, puis colle la clé.</p>
+  copie-la tout de suite. Dans l'agent, tape <code>/connect</code>, choisis <code>deepseek</code>, colle la clé.</p>
   <div class="box warn">
     <span class="t">La clé est un secret.</span> Elle paie chaque demande. Ne la montre à
     personne et ne la mets <strong>jamais</strong> dans un fichier du projet.
   </div>
 
   <h2><span class="n">4</span>Récupérer mon dépôt et commencer</h2>
-  <pre>gh auth login                 (GitHub.com → HTTPS → connecte-toi dans le navigateur)
-git clone {{URL_DEPOT}}
-cd projet-{{ALIAS}}</pre>
-  <p>Ouvre ensuite ce dossier dans OpenCode, puis écris-lui <strong>ce premier message</strong> (copie-le tel quel) :</p>
-  <div class="box ok">
-    « Lis <code>workflow.md</code> et <code>AGENTS.md</code> en entier, puis fais la mise en place du projet.
-    Ensuite, propose-moi comment créer un petit site web, marche par marche, en m'expliquant en français simple. »
+  <p>Le plus simple : <strong>GitHub Desktop</strong> (<code>https://github.com/apps/desktop</code>) →
+  connecte-toi à GitHub → <strong>« Clone repository »</strong> → <code>projet-{{ALIAS}}</code>.
+  En terminal, c'est <code>git clone {{URL_DEPOT}}</code> (GitHub te demande de te connecter dans le navigateur).</p>
+
+  <div class="repo">
+    <div class="bar">📁 projet-{{ALIAS}}</div>
+    <ul>
+      <li><span class="dir">workflow.md</span><span class="badge">le mode d'emploi, à donner à l'agent</span></li>
+      <li><span class="dir">AGENTS.md</span><span class="badge">les règles du projet</span></li>
+      <li><span class="dir">projet.json</span><span class="badge">tes infos (adresse du jeu…)</span></li>
+      <li><span class="dir">journal/</span><span class="badge">la trace de tes échanges</span></li>
+    </ul>
   </div>
-  <p class="muted small">Le dossier contient déjà <code>workflow.md</code> (le mode d'emploi) et <code>AGENTS.md</code> (les règles) : rien à télécharger.</p>
+
+  <p>Ouvre ce dossier dans l'agent, puis écris-lui <strong>ce premier message</strong> (copie-le) :</p>
+  <div class="box ok">
+    « Lis <code>workflow.md</code> et <code>AGENTS.md</code> en entier. Ensuite, <strong>discutons de mon jeu</strong> :
+    pose-moi des questions pour le cadrer (genre, règles, condition de victoire, public) — pour l'instant on
+    réfléchit, tu ne codes pas. Puis fais la mise en place du projet (identité Git, <code>.gitignore</code>,
+    <code>projet.json</code>, <code>AGENTS.md</code>) en m'expliquant chaque étape. »
+  </div>
+  <p class="muted small">Tu as déjà publié un site : le projet final, lui, est un <strong>jeu</strong>. Commencer par en parler avec l'agent est la meilleure façon de partir.</p>
 </section>
 
 <!-- ============================ VERSO ============================ -->
@@ -159,27 +189,32 @@ cd projet-{{ALIAS}}</pre>
   </div>
 
   <h2>En cas de problème : demande à l'agent</h2>
-  <p>Tu n'as <strong>personne à contacter</strong>. Ouvre OpenCode et recopie le problème
-  <strong>en entier</strong> (message d'erreur compris). Exemples de demandes :</p>
+  <p>Tu n'as <strong>personne à contacter</strong>. Ouvre ton agent et recopie le problème
+  <strong>en entier</strong> (message d'erreur compris). Exemples :</p>
   <ul class="small">
     <li>« Configure le dépôt Git à ma place (identité, <code>.gitignore</code>, <code>projet.json</code>), en m'expliquant. »</li>
     <li>« <code>git push</code> ne fonctionne pas. Voici le message exact : … »</li>
-    <li>« Le site ne s'affiche pas. Voici l'erreur complète : … »</li>
+    <li>« Le jeu ne s'affiche pas. Voici l'erreur complète : … »</li>
     <li>« Explique-moi ce que tu viens de faire, fichier par fichier, comme à un débutant. »</li>
   </ul>
   <div class="box">
     <span class="t">Réflexe :</span> coller le message d'erreur <strong>entier</strong> fait gagner des dizaines de minutes.
-    Copier seulement « ça marche pas » ne permet pas de t'aider.
+    « Ça marche pas » ne permet pas de t'aider.
   </div>
 
-  <h2>À la fin</h2>
-  <p>Quand ton projet fonctionne, publie-le en ligne (l'agent t'y aide), puis
-  <strong>renseigne l'adresse du site dans <code>projet.json</code></strong>.</p>
-  <p class="muted small">Je la verrai directement dans ton dépôt : <strong>inutile de me prévenir</strong>.
-  Vérifie simplement que <code>git status</code> ne signale plus rien à envoyer.</p>
+  <h2>À la fin — et bientôt</h2>
+  <p>Quand ton jeu fonctionne, publie-le en ligne (l'agent t'y aide), puis
+  <strong>renseigne l'adresse du jeu dans <code>projet.json</code></strong>. Je la verrai dans ton dépôt :
+  <strong>inutile de me prévenir</strong>. Vérifie juste que <code>git status</code> ne signale plus rien à envoyer.</p>
+  <div class="box">
+    <span class="t">Page de suivi du projet — bientôt.</span> Une page de suivi de ton projet sera mise en place.
+    Tu recevras les informations <strong>via GitHub</strong> : je déposerai des fichiers dans ton dépôt.
+    Pense donc à faire un <code>git pull</code> (ou « Fetch » dans GitHub Desktop) régulièrement.
+  </div>
 
   <div class="footer-note">
     Identifiant : <strong>{{ALIAS}}</strong> · Dépôt : {{URL_DEPOT}} ·
+    Site : https://workflow.nsi.xyz · Budget : https://workflow.nsi.xyz/couts ·
     Document à conserver — le projet dure plusieurs séances.
   </div>
 </section>

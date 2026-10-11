@@ -132,3 +132,14 @@ Valeurs autorisées — `mode` : `plan` \| `build` · `etape` : `decrire` \| `ge
 
 - Vérifie que `git push` est passé et que `journal/` est à jour.
 - Fais un point d'étape à l'élève : ce qui marche, ce qui reste, la prochaine marche.
+
+---
+
+## 7. Ressources et suivi du projet
+
+- Le **site du cours** : `https://workflow.nsi.xyz` — et pour le budget :
+  `https://workflow.nsi.xyz/couts`.
+- **Commence chaque séance par `git pull`** : des fichiers peuvent avoir été **déposés
+  dans le dépôt** (consignes, corrections, suivi du projet). Signale-le à l'élève.
+- Un **suivi du projet** sera mis en place ; l'information arrivera **par GitHub**, via des
+  fichiers déposés dans le dépôt — jamais par un autre canal.
