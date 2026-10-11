@@ -34,29 +34,27 @@ const item = navItems.find((entry) => entry.slug === "opencode")!;
   <section>
     <h2>Installer</h2>
     <p>
-      Un terminal récent suffit (WezTerm, Alacritty, Ghostty, Kitty… celui de votre système
-      fait aussi l'affaire pour commencer). Ensuite, une seule commande :
+      Le plus simple est l'<strong>application de bureau</strong> : téléchargez-la sur <code>https://opencode.ai/v2/docs</code> (section <strong>Desktop</strong>)
+      — <code>.exe</code> pour Windows, <code>.dmg</code> pour macOS, <code>.deb</code> pour Linux — puis installez-la comme n'importe quel logiciel.
     </p>
-    <pre><code>curl -fsSL https://opencode.ai/install | bash</code></pre>
+    <p>Si vous préférez le terminal, une seule commande :</p>
+    <pre><code>curl -fsSL https://opencode.ai/v2/install | bash</code></pre>
     <p>Autres méthodes, si vous les préférez :</p>
-    <pre><code># Avec Node.js (déjà présent si vous avez fait l'installation du kit)
-npm install -g opencode-ai
+    <pre><code># Avec Node.js
+npm install -g @opencode/cli
 
 # Avec Homebrew (macOS / Linux)
-brew install anomalyco/tap/opencode</code></pre>
+brew install anomalyco/tap/opencode-v2</code></pre>
     <Callout type="info" title="Sous Windows">
       <p>
-        Passez par <strong>WSL</strong> (Windows Subsystem for Linux) : l'agent s'y comporte
-        comme sur Linux. Les commandes de ce site fonctionnent alors telles quelles.
+        L'application de bureau s'installe directement. Installez aussi <strong>Git for Windows</strong>
+        (<code>https://git-scm.com/download/win</code>) : il fournit les commandes <code>git</code> et le terminal utilisés par la suite.
       </p>
     </Callout>
     <p>
-      Vérifiez que la commande répond, puis lancez l'installation depuis le dossier de votre
-      projet :
+      Ouvrez ensuite OpenCode dans le dossier de votre projet (bouton « Ouvrir un dossier »,
+      ou en lançant <code>opencode</code> depuis le terminal du projet).
     </p>
-    <pre><code>opencode --version
-cd mon-projet
-opencode</code></pre>
   </section>
 
   <section>

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Projet IA — guide de démarrage</title>
+<style>
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { size: A4; margin: 11mm 12mm; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    font-size: 10.4pt;
+    line-height: 1.38;
+    color: #12181f;
+  }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+
+  header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 10px; padding: 10px 12px; border-radius: 10px; color: #fff;
+    background: linear-gradient(120deg, #1d3a8a, #2f6bd8);
+  }
+  header h1 { margin: 0; font-size: 15.5pt; }
+  header .sub { font-size: 9pt; opacity: .92; margin-top: 2px; }
+  header .id { text-align: right; font-size: 9pt; line-height: 1.3; }
+  header .id b { font-size: 11pt; letter-spacing: .04em; }
+  header .id code {
+    font-size: 8.2pt; color: #fff; background: rgba(255, 255, 255, .18);
+    padding: 1px 4px; border-radius: 4px; word-break: break-all;
+  }
+
+  h2 {
+    font-size: 11.4pt; margin: 13px 0 6px; padding-bottom: 3px;
+    border-bottom: 2px solid #dbe4f3; color: #1d3a8a;
+  }
+  h2 .n {
+    display: inline-block; width: 19px; height: 19px; margin-right: 6px;
+    background: #2f6bd8; color: #fff; border-radius: 50%;
+    text-align: center; font-size: 10.5pt; line-height: 19px;
+  }
+  p { margin: 4px 0; }
+  ul { margin: 4px 0 4px 0; padding-left: 20px; }
+  li { margin: 2px 0; }
+  code, .code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+  code { background: #eef2f9; padding: 0 3px; border-radius: 4px; font-size: 9.3pt; }
+  pre {
+    margin: 5px 0; padding: 7px 9px; background: #0f172a; color: #e6edf7;
+    border-radius: 8px; font-size: 9pt; line-height: 1.35; white-space: pre-wrap;
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  .box { border: 1px solid #dbe4f3; border-left: 4px solid #2f6bd8; border-radius: 8px; padding: 7px 10px; margin: 7px 0; background: #f7faff; }
+  .box.warn { border-left-color: #d97706; background: #fff8ee; }
+  .box.ok { border-left-color: #17915a; background: #f1fbf6; }
+  .box .t { font-weight: 700; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .muted { color: #5a6675; }
+  .steps { counter-reset: s; }
+  .small { font-size: 9pt; }
+  .footer-note { margin-top: 10px; font-size: 8.6pt; color: #5a6675; border-top: 1px solid #e3e9f3; padding-top: 6px; }
+  strong { color: #0f1b2d; }
+</style>
+</head>
+<body>
+
+<!-- ============================ RECTO ============================ -->
+<section class="page">
+  <header>
+    <div>
+      <h1>Projet IA — mon guide de démarrage</h1>
+      <div class="sub">Créer un projet en pilotant une intelligence artificielle (OpenCode + DeepSeek)</div>
+    </div>
+    <div class="id">
+      Mon identifiant : <b>{{ALIAS}}</b><br>
+      Mon dépôt : <code>{{URL_DEPOT}}</code>
+    </div>
+  </header>
+
+  <p class="small" style="margin-top:8px">
+    <strong>Suis ces quatre étapes dans l'ordre.</strong> Tu débutes : c'est normal.
+    Si quelque chose bloque, <strong>ne cherche pas à joindre quelqu'un</strong> : recopie le
+    problème dans OpenCode et demande-lui de l'aide (voir l'autre face).
+  </p>
+
+  <h2><span class="n">1</span>Créer mon compte (login.nsi.xyz)</h2>
+  <p>Va sur <code>https://login.nsi.xyz</code>.</p>
+  <ul>
+    <li>Clique sur <strong>« Se connecter avec Google »</strong> et choisis ton adresse <strong>Gmail</strong>.</li>
+    <li>Puis ouvre <strong>« Mon compte »</strong> et ajoute <strong>GitHub</strong> (bouton « Lier »).</li>
+  </ul>
+  <p class="muted small">Un seul compte pour tout le projet : ton adresse et ton identifiant GitHub me seront ainsi transmis.</p>
+
+  <h2><span class="n">2</span>Installer OpenCode (application de bureau)</h2>
+  <p>Va sur <code>https://opencode.ai/v2/docs</code>, section <strong>Desktop</strong>, et prends la version de ton ordinateur :</p>
+  <ul>
+    <li><strong>Windows</strong> : le fichier <code>.exe</code> — installe aussi Git : <code>https://git-scm.com/download/win</code></li>
+    <li><strong>macOS</strong> : le fichier <code>.dmg</code></li>
+    <li><strong>Linux</strong> : le fichier <code>.deb</code></li>
+  </ul>
+
+  <h2><span class="n">3</span>Brancher une clé DeepSeek</h2>
+  <p>Crée un compte sur <code>https://platform.deepseek.com</code>, puis une clé dans
+  <strong>« API keys »</strong>. Elle commence par <code>sk-</code> et ne s'affiche <strong>qu'une seule fois</strong> :
+  copie-la tout de suite.</p>
+  <p>Dans OpenCode, tape <code>/connect</code>, choisis <code>deepseek</code>, puis colle la clé.</p>
+  <div class="box warn">
+    <span class="t">La clé est un secret.</span> Elle paie chaque demande. Ne la montre à
+    personne et ne la mets <strong>jamais</strong> dans un fichier du projet.
+  </div>
+
+  <h2><span class="n">4</span>Récupérer mon dépôt et commencer</h2>
+  <pre>gh auth login                 (GitHub.com → HTTPS → connecte-toi dans le navigateur)
+git clone {{URL_DEPOT}}
+cd projet-{{ALIAS}}</pre>
+  <p>Ouvre ensuite ce dossier dans OpenCode, puis écris-lui <strong>ce premier message</strong> (copie-le tel quel) :</p>
+  <div class="box ok">
+    « Lis <code>workflow.md</code> et <code>AGENTS.md</code> en entier, puis fais la mise en place du projet.
+    Ensuite, propose-moi comment créer un petit site web, marche par marche, en m'expliquant en français simple. »
+  </div>
+  <p class="muted small">Le dossier contient déjà <code>workflow.md</code> (le mode d'emploi) et <code>AGENTS.md</code> (les règles) : rien à télécharger.</p>
+</section>
+
+<!-- ============================ VERSO ============================ -->
+<section class="page">
+  <header>
+    <div>
+      <h1>Piloter l'agent — au quotidien</h1>
+      <div class="sub">La méthode, les règles, et quoi faire quand ça bloque</div>
+    </div>
+    <div class="id">Identifiant : <b>{{ALIAS}}</b></div>
+  </header>
+
+  <h2>La méthode, en 5 temps (à chaque demande)</h2>
+  <p class="small">
+    <strong>1. Décrire</strong> — dis ce que tu veux, avec le critère de réussite. &nbsp;
+    <strong>2. Générer</strong> — l'agent écrit le code. &nbsp;
+    <strong>3. Tester</strong> — tu lances et tu regardes pour de vrai. &nbsp;
+    <strong>4. Corriger</strong> — décris l'écart précisément. &nbsp;
+    <strong>5. Livrer</strong> — on enregistre et on publie.
+  </p>
+  <p><strong>Une demande = un objectif.</strong> Si tu mélanges deux choses, découpe.</p>
+
+  <h2>Ce que fait l'agent tout seul : la trace</h2>
+  <p>À <strong>chaque</strong> échange, l'agent doit :</p>
+  <ul>
+    <li>écrire un fichier dans <code>journal/</code> (ton message <strong>exact</strong> + un résumé + les fichiers modifiés) ;</li>
+    <li>faire un <code>commit</code> et <code>push</code> sur GitHub.</li>
+  </ul>
+  <p class="muted small">C'est <strong>cette trace</strong> qui est regardée pour évaluer ton travail — pas seulement le résultat final.
+  S'il oublie, dis-lui : « consigne cet échange dans le journal, puis commit et push ».</p>
+
+  <h2>Les règles d'or</h2>
+  <div class="grid2">
+    <div class="box"><span class="t">Secrets</span><br>Aucune clé ni mot de passe dans un fichier du projet. La clé vit dans <code>.env</code>, ignoré par Git.</div>
+    <div class="box"><span class="t">Données personnelles</span><br>Aucun nom, téléphone, adresse, photo dans le dépôt, le site ou un message à l'agent.</div>
+    <div class="box"><span class="t">Ressources légères</span><br>Images et sons optimisés : <strong>aucun fichier de plus de 10 Mo</strong>.</div>
+    <div class="box"><span class="t">Droits</span><br>Aucun contenu sous copyright : respecte les droits d'auteur et les marques (images, sons, polices, noms).</div>
+  </div>
+
+  <h2>En cas de problème : demande à l'agent</h2>
+  <p>Tu n'as <strong>personne à contacter</strong>. Ouvre OpenCode et recopie le problème
+  <strong>en entier</strong> (message d'erreur compris). Exemples de demandes :</p>
+  <ul class="small">
+    <li>« Configure le dépôt Git à ma place (identité, <code>.gitignore</code>, <code>projet.json</code>), en m'expliquant. »</li>
+    <li>« <code>git push</code> ne fonctionne pas. Voici le message exact : … »</li>
+    <li>« Le site ne s'affiche pas. Voici l'erreur complète : … »</li>
+    <li>« Explique-moi ce que tu viens de faire, fichier par fichier, comme à un débutant. »</li>
+  </ul>
+  <div class="box">
+    <span class="t">Réflexe :</span> coller le message d'erreur <strong>entier</strong> fait gagner des dizaines de minutes.
+    Copier seulement « ça marche pas » ne permet pas de t'aider.
+  </div>
+
+  <h2>À la fin</h2>
+  <p>Quand ton projet fonctionne, publie-le en ligne (l'agent t'y aide), puis
+  <strong>renseigne l'adresse du site dans <code>projet.json</code></strong>.</p>
+  <p class="muted small">Je la verrai directement dans ton dépôt : <strong>inutile de me prévenir</strong>.
+  Vérifie simplement que <code>git status</code> ne signale plus rien à envoyer.</p>
+
+  <div class="footer-note">
+    Identifiant : <strong>{{ALIAS}}</strong> · Dépôt : {{URL_DEPOT}} ·
+    Document à conserver — le projet dure plusieurs séances.
+  </div>
+</section>
+
+</body>
+</html>

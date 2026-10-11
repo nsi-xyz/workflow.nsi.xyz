@@ -5,20 +5,20 @@
 
 ## Synthèse
 
-- **112 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **14 641 lignes** au total.
+- **113 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **14 735 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 18 | 3 679 |
+| `src/pages/` | 18 | 3 677 |
 | `src/data/` | 17 | 3 304 |
 | `src/styles/` | 4 | 2 387 |
-| `scripts/` | 26 | 2 022 |
+| `scripts/` | 27 | 2 117 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 10 | 826 |
-| `./` | 6 | 312 |
+| `./` | 6 | 313 |
 | `src/lib/` | 3 | 280 |
 | `template/` | 3 | 182 |
 | `src/client/` | 1 | 159 |
@@ -41,7 +41,7 @@
 | `docs/pilote.md` | 63 | Documentation |
 | `docs/workflow-classe.template.md` | 47 | Documentation |
 | `env.d.ts` | 2 | Racine / config |
-| `package.json` | 49 | Racine / config |
+| `package.json` | 50 | Racine / config |
 | `PLAN.md` | 144 | Racine / config |
 | `public/workflow.md` | 136 | Racine / config |
 | `README.md` | 87 | Racine / config |
@@ -61,6 +61,7 @@
 | `scripts/generate-inventory.mjs` | 153 | Script outillage |
 | `scripts/increment-version.js` | 33 | Script outillage |
 | `scripts/install-hooks.mjs` | 31 | Script outillage |
+| `scripts/kit-pdf.mjs` | 95 | Script outillage |
 | `scripts/nocheck-baseline.json` | 5 | Script outillage |
 | `scripts/node22.mjs` | 63 | Script outillage |
 | `scripts/repos-init.mjs` | 148 | Script outillage |
@@ -115,7 +116,7 @@
 | `src/pages/llm.astro` | 210 | Page (route) |
 | `src/pages/markdown.astro` | 196 | Page (route) |
 | `src/pages/missions.astro` | 156 | Page (route) |
-| `src/pages/opencode.astro` | 352 | Page (route) |
+| `src/pages/opencode.astro` | 350 | Page (route) |
 | `src/pages/projet.astro` | 124 | Page (route) |
 | `src/pages/prompt.astro` | 200 | Page (route) |
 | `src/pages/prompts.astro` | 116 | Page (route) |

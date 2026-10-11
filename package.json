@@ -15,6 +15,7 @@
     "repos:init": "node scripts/repos-init.mjs",
     "repos:contrat": "node scripts/contrat-sync.mjs",
     "verif:journal": "node scripts/verif-journal.mjs",
+    "kit:pdf": "node scripts/kit-pdf.mjs",
     "workflow:sync": "node scripts/sync-workflow.mjs",
     "build": "node scripts/run-with-node22.mjs astro build",
     "preview": "node scripts/run-with-node22.mjs astro preview",
