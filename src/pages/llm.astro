@@ -1,19 +1,11 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
 import Callout from "../components/Callout.astro";
-import CostCalculator from "../components/CostCalculator.astro";
 import { navItems } from "../data/navigation";
 import { fichesModeles, leviersEconomie, reperesTokens, verifications } from "../data/llm";
-import { dollars, tarifs } from "../lib/cout";
+import { tarifs } from "../lib/cout";
 
 const item = navItems.find((entry) => entry.slug === "llm")!;
-const { flash, pro } = tarifs;
-
-const prix = [
-  { label: "Entrée — cache manqué", flash: [flash.entreeCreux, flash.entreePointe], pro: [pro.entreeCreux, pro.entreePointe] },
-  { label: "Entrée — cache touché", flash: [flash.cacheCreux, flash.cachePointe], pro: [pro.cacheCreux, pro.cachePointe] },
-  { label: "Sortie", flash: [flash.sortieCreux, flash.sortiePointe], pro: [pro.sortieCreux, pro.sortiePointe] },
-];
 ---
 
 <DocLayout item={item} plan={false}>
@@ -142,9 +134,9 @@ const prix = [
     </table>
     <Callout type="ok" title="Le vrai levier de qualité, c'est vous">
       <p>
-        Passer de Flash à Pro change peu sur une page web. Un objectif clair, un contexte
-        propre et un test après chaque modification changent tout. La qualité vient du
-        pilotage, pas de la taille du modèle.
+        Prendre un modèle plus gros et plus cher change peu sur une page web. Un objectif
+        clair, un contexte propre et un test après chaque modification changent tout. La
+        qualité vient du pilotage, pas de la taille du modèle.
       </p>
     </Callout>
   </section>
@@ -152,59 +144,12 @@ const prix = [
   <section>
     <h2>Combien ça coûte, concrètement</h2>
     <p>
-      DeepSeek facture au token, avec <strong>deux tarifs</strong> selon l'heure
-      (les heures pleines sont le double des heures creuses) et un tarif très réduit quand
-      le début du contexte est déjà en <strong>cache</strong>. Voici les prix officiels du
-      moment, en dollars par million de tokens :
+      Chez DeepSeek, un projet d'élève — quelques dizaines de requêtes, un projet de taille modeste — coûte en général <strong>moins d'un dollar</strong>. Ce qui fait grimper la note, ce n'est pas le nombre de questions : c'est le contexte qu'on laisse grossir, relu à chaque tour.
     </p>
-    <table>
-      <thead>
-        <tr>
-          <th>Prix (par million de tokens)</th>
-          <th>{flash.api}</th>
-          <th>{pro.api}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          prix.map((ligne) => (
-            <tr>
-              <th scope="row">{ligne.label}</th>
-              <td>
-                {dollars(ligne.flash[0])} creux · {dollars(ligne.flash[1])} pleines
-              </td>
-              <td>
-                {dollars(ligne.pro[0])} creux · {dollars(ligne.pro[1])} pleines
-              </td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-    <p>
-      Un projet d'élève — quelques dizaines de requêtes, un projet de taille modeste —
-      coûte en général <strong>moins d'un dollar</strong>. Ce qui fait exploser la note,
-      ce n'est pas le nombre de questions : c'est le contexte qu'on laisse grossir.
-    </p>
-
-    <h3>Calculez votre propre scénario</h3>
-    <CostCalculator />
-
-    <Callout type="info" title="Deux détails qui changent tout">
-      <ul>
-        <li>
-          <strong>Le cache est automatique.</strong> Le préfixe de contexte déjà envoyé est
-          facturé environ <strong>50 fois moins cher</strong> (0,003 $ contre 0,15 $ par
-          million, sur Flash). C'est pour cela qu'une longue session n'est pas forcément
-          ruineuse — mais seulement si elle réutilise ce qu'elle a déjà lu.
-        </li>
-        <li>
-          <strong>Les heures creuses tombent bien.</strong> Les heures pleines sont
-          01 h–04 h et 06 h–10 h UTC, du lundi au vendredi : en France, cela correspond
-          surtout à la matinée et au milieu de la nuit. Le week-end entier est en tarif
-          réduit, et le créneau 12 h–3 h du matin aussi.
-        </li>
-      </ul>
+    <Callout type="info" title="Le détail complet a sa page">
+      <p>
+        Comparaison des modèles, heures creuses, plans à prix fixe et budget : tout est réuni sur la page <a href="/couts">Coûts et budget</a>, avec un comparateur interactif.
+      </p>
     </Callout>
   </section>
 

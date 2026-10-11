@@ -1,6 +1,7 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
 import Callout from "../components/Callout.astro";
+import AgentPeutToutFaire from "../components/AgentPeutToutFaire.astro";
 import { navItems } from "../data/navigation";
 import {
   checklistPublication,
@@ -15,6 +16,7 @@ const item = navItems.find((entry) => entry.slug === "cloudflare")!;
 ---
 
 <DocLayout item={item} plan={false}>
+  <AgentPeutToutFaire exemple="Prépare le build, relie le projet à Cloudflare Pages et donne-moi l'URL publique, en vérifiant que tout répond." />
   <section>
     <h2>Ce que Cloudflare Pages fait</h2>
     <p>

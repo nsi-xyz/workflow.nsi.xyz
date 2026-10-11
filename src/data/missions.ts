@@ -70,10 +70,10 @@ export const missions: Mission[] = [
       { id: "m3-4", texte: "Tester, puis décrire précisément ce qui ne va pas ; corriger." },
       { id: "m3-5", texte: "Provoquer volontairement une erreur, puis la corriger en collant le message entier." },
       { id: "m3-6", texte: "Committer chaque étape qui fonctionne, avec un message clair." },
-      { id: "m3-7", texte: "Déposer quatre prompts dans le journal : cadrage, création, correction, vérification." },
+      { id: "m3-7", texte: "Faire consigner quatre prompts dans le journal : cadrage, création, correction, vérification." },
       { id: "m3-8", texte: "Passer le quiz sécurité et corriger au moins une erreur de compréhension." },
     ],
     finiQuand: "La page est en ligne, le dépôt est à jour, le journal contient quatre prompts, et vous savez expliquer chaque choix.",
-    lienUtile: { href: "/prompts/depot", label: "Le journal des prompts" },
+    lienUtile: { href: "/git-github", label: "Le dépôt et le journal" },
   },
 ];

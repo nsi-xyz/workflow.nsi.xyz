@@ -11,8 +11,9 @@ export const revealAt = "2026-10-12T08:42:00";
 
 export const teaser = [
   "Le sujet n'est pas encore dévoilé. Il le sera exactement à l'heure indiquée, sur cette page.",
+  "Ce que l'on sait déjà : le projet des vacances consiste à créer un jeu vidéo de A à Z.",
   "D'ici là, tout ce qu'il faut maîtriser est déjà en ligne : le workflow, OpenCode, le journal des prompts, Git, Cloudflare et la sécurité.",
-  "Arriver préparé ne veut pas dire connaître le sujet : cela veut dire savoir piloter l'agent, publier un site et protéger ses secrets.",
+  "Arriver préparé ne veut pas dire connaître le sujet : cela veut dire savoir piloter l'agent, publier un projet et protéger ses secrets.",
 ];
 
 export interface SectionProjet {
@@ -25,12 +26,12 @@ export const briefProjet: SectionProjet[] = [
   {
     titre: "L'objectif",
     contenu:
-      "[À compléter par l'enseignant : ce que les élèves doivent réaliser — par exemple une landing page sur un sujet choisi, présentant le sujet, des images et un appel à l'action.]",
+      "[À compléter par l'enseignant : le jeu vidéo à créer de A à Z — sa boucle de jeu, ses règles, sa condition de victoire, le public visé.]",
   },
   {
     titre: "Le rendu attendu",
     contenu:
-      "[À compléter : l'URL publique du site, le dépôt GitHub privé, le journal des prompts déposé sur ce site.]",
+      "[À compléter : l'URL publique du jeu, le dépôt GitHub privé, le journal des prompts (dossier journal/ du dépôt).]",
   },
   {
     titre: "Les règles du jeu",
@@ -48,7 +49,7 @@ export const reglesInchangees: string[] = [
   "Aucun secret dans le dépôt : la clé reste dans .env, ignoré par Git.",
   "Aucune donnée personnelle d'autrui dans le site, le dépôt ou un prompt.",
   "Le dépôt est privé, le site est public : on vérifie avant de publier.",
-  "Les prompts utilisés sont déposés sur ce site : c'est la trace du travail.",
+  "Les prompts utilisés sont consignés dans le dépôt (dossier journal/) : c'est la trace du travail.",
   "Le projet doit être explicable : on ne valide jamais ce qu'on ne comprend pas.",
 ];
 
@@ -86,8 +87,8 @@ export const pretPourLeJourJ: EtapePret[] = [
   },
   {
     titre: "Journaliser",
-    texte: "Déposer les prompts qui racontent le projet, du premier cadrage à la publication.",
-    lien: "/prompts/depot",
+    texte: "Consigner les prompts qui racontent le projet, du premier cadrage à la publication.",
+    lien: "/git-github",
   },
 ];
 

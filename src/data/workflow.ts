@@ -50,9 +50,9 @@ export const loopPhases: LoopPhase[] = [
   {
     id: "livrer",
     title: "Livrer",
-    you: "Vous committez, vous déployez, vous partagez l'URL — et vous journalisez les prompts utilisés.",
-    agent: "Il prépare les commandes et rédige le message de commit si vous le lui demandez.",
-    exit: "L'URL publique répond, le dépôt est à jour, les prompts sont déposés.",
+    you: "Vous committez, vous déployez, vous partagez l'URL — le journal se remplit dans le dépôt.",
+    agent: "Il prépare les commandes, rédige le message de commit et consigne chaque échange dans le journal du dépôt.",
+    exit: "L'URL publique répond, le dépôt est à jour, le journal contient chaque échange.",
   },
 ];
 
@@ -132,10 +132,11 @@ export const timeline: TimelineStep[] = [
   {
     phase: "Livrer",
     title: "Journaliser les prompts",
-    prompt: "Aide-moi à résumer les prompts qui ont mené à cette version.",
+    prompt:
+      "Vérifie que chaque échange de cette session est bien consigné dans le dossier journal/, et que tout est poussé.",
     result:
-      "Les prompts sont déposés sur le site du projet avec le code anonyme. C'est la trace du travail : ce que l'élève a demandé, compris et corrigé.",
-    note: "Le journal des prompts raconte la vraie histoire du projet — bien mieux qu'un fichier final.",
+      "L'agent écrit un fichier JSON par échange (prompt exact, résumé, fichiers) et le pousse avec le code. C'est la trace du travail : ce que l'élève a demandé, compris et corrigé.",
+    note: "Le dossier journal/ raconte la vraie histoire du projet — bien mieux qu'un fichier final.",
   },
 ];
 

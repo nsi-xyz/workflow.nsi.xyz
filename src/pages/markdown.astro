@@ -1,0 +1,195 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { erreurs, pourquoi, syntaxe, usages, workflowMarkdown } from "../data/markdown";
+
+const item = navItems.find((entry) => entry.slug === "markdown")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Qu'est-ce qu'un Markdown ?</h2>
+    <p>
+      Un Markdown est un <strong>fichier texte</strong> qui contient quelques repères simples :
+      des <code>#</code> pour les titres, des <code>-</code> pour les listes, des <code>**</code> pour
+      le gras. Ces repères s'appellent une syntaxe : ils disent à la machine comment lire le
+      document, sans l'alourdir de mise en forme cachée.
+    </p>
+    <p>
+      Un fichier Markdown porte l'extension <code>.md</code> (ou <code>.markdown</code>). Il
+      s'ouvre dans n'importe quel éditeur de texte et se lit presque aussi bien brut
+      qu'une fois mis en forme.
+    </p>
+    <Callout type="info" title="Un format, pas un logiciel">
+      <p>
+        Markdown n'est pas un programme : c'est une convention d'écriture. Vos consignes
+        restent du texte, ce qui les rend durables et comparables d'un projet à l'autre.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Pourquoi ce format, et pourquoi avec une IA ?</h2>
+    <div class="grid-cards">
+      {
+        pourquoi.map((repere) => (
+          <article class="glass card">
+            <h3>{repere.titre}</h3>
+            <p>{repere.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+    <Callout type="ok" title="Le vrai avantage avec un agent">
+      <p>
+        L'agent IA lit un Markdown comme une suite de consignes clairement délimitées : un
+        titre annonce un sujet, une liste énumère des règles, un bloc de code montre un
+        exemple. Moins d'ambiguïté, donc moins d'allers-retours.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>La syntaxe de base, par l'exemple</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Ce que vous écrivez</th>
+            <th>Ce que le lecteur voit</th>
+            <th>À quoi ça sert</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            syntaxe.map((ligne) => (
+              <tr>
+                <td><code>{ligne.ecrit}</code></td>
+                <td>{ligne.rendu}</td>
+                <td>{ligne.role}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Il n'y a rien d'autre à retenir pour commencer. Le reste s'apprend en lisant les
+      fichiers du projet : <code>README.md</code>, <code>AGENTS.md</code>, et le <code>workflow.md</code>
+      fourni en classe.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comment on crée un Markdown</h2>
+    <ol class="rules rules-steps">
+      <li>
+        <strong>Ouvrir un éditeur de texte</strong> — celui d'OpenCode, VS Code, Nano, peu
+        importe. Le fichier doit rester du texte pur.
+      </li>
+      <li>
+        <strong>Écrire le contenu</strong> avec les repères de la table ci-dessus, en
+        commençant par un titre de niveau 1.
+      </li>
+      <li>
+        <strong>Enregistrer avec l'extension</strong> <code>.md</code> : <code>README.md</code>, <code>notes.md</code>, <code>workflow.md</code>.
+      </li>
+      <li>
+        <strong>Relire le fichier brut</strong> : si on le comprend sans aperçu, il sera
+        compris par l'agent aussi.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Comment l'IA crée un Markdown</h2>
+    <p>
+      Vous n'avez pas besoin de tout taper vous-même : c'est exactement le genre de tâche
+      qu'un agent réussit très bien. Décrivez le document, laissez-le écrire, puis relisez.
+    </p>
+    <div class="grid-cards">
+      <article class="glass card">
+        <span class="card-kicker">Demander</span>
+        <h3>Rédiger le document</h3>
+        <p>
+          « Écris un fichier <code>AGENTS.md</code> qui décrit ce projet, ses conventions et
+          ce qu'il ne faut pas casser. Explique chaque section. »
+        </p>
+      </article>
+      <article class="glass card">
+        <span class="card-kicker">Vérifier</span>
+        <h3>Relire avant d'accepter</h3>
+        <p>
+          Un document de consignes engage tout le travail qui suit : il se lit, se corrige
+          et se committe, comme du code.
+        </p>
+      </article>
+      <article class="glass card">
+        <span class="card-kicker">Transmettre</span>
+        <h3>Guider l'agent</h3>
+        <p>
+          Le <code>workflow.md</code> remis en début de projet sert de mode d'emploi :
+          l'agent s'en sert pour vous guider, étape après étape.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Trois erreurs à éviter</h2>
+    <div class="duo">
+      {
+        erreurs.map((erreur) => (
+          <div class="glass card duo-item">
+            <p class="duo-bad">
+              <span class="duo-label">À éviter</span> {erreur.mauvais}
+            </p>
+            <p class="duo-why">
+              <strong>À la place :</strong> {erreur.correction}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Le fichier <code>workflow.md</code></h2>
+    <p>{workflowMarkdown.texte}</p>
+    <p>
+      La version remise en classe ajoute l'identifiant de l'élève et l'adresse de son dépôt.
+      Le document demande à l'agent de consigner chaque échange dans le dossier <code>journal/</code>
+      du dépôt, sans que l'élève ait à le faire à la main.
+    </p>
+    <p>
+      <a class="btn btn-primary" href="/workflow.md" download>Télécharger le modèle</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/prompt">
+        <span class="card-kicker">Savoir-faire</span>
+        <h3>Piloter l'agent</h3>
+        <p>Transformer une intention en consignes précises, structurées comme un Markdown.</p>
+      </a>
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>Où vivent <code>AGENTS.md</code> et les fichiers du projet.</p>
+      </a>
+      <a class="glass card" href="/git-github">
+        <span class="card-kicker">Journal</span>
+        <h3>Le dépôt et le journal</h3>
+        <p>L'agent consigne chaque échange dans le dossier <code>journal/</code> du dépôt.</p>
+      </a>
+      <a class="glass card" href="/jeu">
+        <span class="card-kicker">Le projet</span>
+        <h3>Du site au jeu</h3>
+        <p>Le même workflow, adapté à la création d'un jeu vidéo.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

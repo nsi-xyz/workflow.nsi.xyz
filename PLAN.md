@@ -5,6 +5,11 @@
 > Public : élèves de terminale NSI (23) **et** tout visiteur curieux.
 > Statut : plan validé à valider — aucun code écrit tant que ce document n'est pas accepté.
 
+> **Mise à jour (11/10/2026) — le dépôt central a été retiré.** Les prompts ne sont plus
+> déposés sur ce site : l'agent les consigne dans le dépôt GitHub de chaque élève
+> (`journal/*.json`, voir `template/workflow.md`). L'API, le KV, les codes anonymes et
+> l'espace prof décrits ci-dessous n'existent plus ; ce document reste l'historique du projet.
+
 ## 0. Décisions actées
 
 | Sujet | Décision |
@@ -34,14 +39,17 @@ question d'élève débutant : *c'est quoi, à quoi ça sert, comment je fais, q
 |---|---|---|
 | `/` | Accueil | Le workflow en 5 étapes (schéma animé), parcours conseillé, bascule de thème, état « bientôt révélé » |
 | `/workflow` | Vue d'ensemble | Pourquoi un workflow, la boucle décrire → générer → tester → corriger → livrer |
-| `/llm` | IA & DeepSeek | Modèle, tokens, fenêtre de contexte, effort/qualité, tarifs et heures creuses, **calculateur de coût** |
+| `/jeu` | Du site au jeu | Différences site/jeu, invariants, spécificités d'un jeu vidéo, adaptations du workflow — sans révéler le sujet |
+| `/markdown` | Écrire pour l'IA | Qu'est-ce qu'un Markdown, pourquoi ce format, syntaxe, AGENTS.md/README, `workflow.md` téléchargeable |
+| `/llm` | IA & DeepSeek | Modèle, tokens, fenêtre de contexte, effort/qualité, renvoi vers la page des coûts |
+| `/couts` | Coûts et budget | Gratuit/payant, trois postes de facturation, **comparateur multi-modèles**, heures creuses DeepSeek, plans d'abonnement, budget ~10 € |
 | `/opencode` | L'agent | Interface, session/espace de travail, fichiers, commandes `/`, plan vs build, `/compact`, suivi du coût, installation, premier pas |
 | `/git-github` | Garder une trace | Git, GitHub, dépôt **privé**, commit, push, README, `.gitignore`, `git check-ignore`, clone |
 | `/prompt` | Piloter l'agent | Anatomie d'un prompt, itérer, bons/mauvais exemples, anti-patterns, **constructeur de prompt** |
 | `/cloudflare` | Publier | Pages, build, URL publique, domaine, statuts de déploiement, lecture des erreurs |
 | `/securite` | Sécurité | Clés API, `.env`, secrets et historique Git, injection de prompt, permissions, « privé ≠ secret », RGPD, **jeu « trouve la fuite »** |
 | `/prompts` | Promptothèque | Prompts prêts à copier par tâche (créer, corriger, déployer, vérifier…) |
-| `/prompts/depot` | Dépôt élève | Code individuel + mission + prompt ; accusé de réception ; rappel RGPD |
+| `/prompts/depot` | Dépôt élève | Code individuel + mission + prompt ; dépôt **automatique par l'agent** (le formulaire reste un secours) ; rappel RGPD |
 | `/missions` | Parcours | Missions guidées génériques avec check-lists locales (découverte → dépôt → déploiement) |
 | `/projet` | Projet final | **Verrouillé** : compte à rebours jusqu'à `REVEAL_AT`, puis brief configurable |
 | `/quiz` | Validation | Quiz par thème, score local, corrigés pédagogiques |
@@ -99,6 +107,11 @@ workflow.nsi.xyz/
    partagé, prompt qui exécute une commande destructrice), que faire dans l'urgence.
 6. **Brief du projet final** : fourni par le prof ; en attendant, page verrouillée
    avec texte d'ambiance.
+7. **Page « Coûts et budget »** : ce qui est gratuit (GitHub, Cloudflare Pages,
+   OpenCode), ce qui est payant (les tokens du modèle), budget d'une dizaine
+   d'euros, présenté comme une fourniture scolaire. Intègre le document de cours
+   remis en classe : comparateur multi-modèles (sans la version Pro), heures
+   creuses DeepSeek, plans d'abonnement, règles d'usage.
 
 ## 6. Jalons
 

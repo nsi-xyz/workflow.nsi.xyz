@@ -1,6 +1,7 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
 import Callout from "../components/Callout.astro";
+import AgentPeutToutFaire from "../components/AgentPeutToutFaire.astro";
 import { navItems } from "../data/navigation";
 import { commandes, pieges, planVsBuild, premiersPas, raccourcis } from "../data/opencode";
 
@@ -8,6 +9,7 @@ const item = navItems.find((entry) => entry.slug === "opencode")!;
 ---
 
 <DocLayout item={item} plan={false}>
+  <AgentPeutToutFaire exemple="Installe OpenCode, branche la clé DeepSeek et lance le serveur à ma place, en m'expliquant chaque étape." />
   <section>
     <h2>Un agent dans le terminal, pas un chatbot</h2>
     <p>
@@ -94,6 +96,19 @@ opencode</code></pre>
 /init      → analyse le dossier et écrit AGENTS.md
 /help      → la liste des commandes de votre version
 /models    → vérifier le modèle utilisé</code></pre>
+  </section>
+
+  <section>
+    <h2>Le contrat <code>workflow.md</code></h2>
+    <p>
+      En début de projet, on remet aussi <code>workflow.md</code> à l'agent : c'est le
+      document où il lit la méthode, les règles de sécurité et la journalisation à tenir
+      après chaque échange. Chaque élève le reçoit <strong>personnalisé dans son dépôt</strong> ;
+      la version modèle est aussi téléchargeable :
+    </p>
+    <p>
+      <a class="btn btn-primary" href="/workflow.md" download>Télécharger <code>workflow.md</code></a>
+    </p>
   </section>
 
   <section>

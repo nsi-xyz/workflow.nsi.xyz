@@ -1,6 +1,7 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
 import Callout from "../components/Callout.astro";
+import AgentPeutToutFaire from "../components/AgentPeutToutFaire.astro";
 import { navItems } from "../data/navigation";
 import {
   commandesGit,
@@ -23,6 +24,7 @@ const checklistPush = [
 ---
 
 <DocLayout item={item} plan={false}>
+  <AgentPeutToutFaire exemple="Initialise le dépôt Git, écris le .gitignore et prépare les commandes, en m'expliquant à quoi sert chacune." />
   <section>
     <h2>Git, c'est la mémoire du projet</h2>
     <p>

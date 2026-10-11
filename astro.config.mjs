@@ -2,9 +2,8 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
-// Site statique + Pages Functions (dossier `functions/`) : le tout tient dans
-// un seul projet Cloudflare Pages. Pas d'adaptateur SSR : les pages sont
-// pré-rendues, l'API vit à côté.
+// Site entièrement statique : Astro pré-rend toutes les pages dans dist/.
+// Aucune API, aucun adaptateur SSR — Cloudflare Pages se contente de servir dist/.
 export default defineConfig({
   site: 'https://workflow.nsi.xyz',
   output: 'static',

@@ -1,0 +1,131 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import { navItems } from "../data/navigation";
+import { adaptations, avertissement, differences, invariants, specificites } from "../data/jeu";
+
+const item = navItems.find((entry) => entry.slug === "jeu")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Deux projets, un même workflow</h2>
+    <p>
+      Le <strong>test réalisé en classe</strong> consiste à publier un site : une adresse
+      publique, un dépôt, des prompts journalisés. Le <strong>projet des vacances</strong> va
+      plus loin : il s'agit de créer un <strong>jeu vidéo de A à Z</strong>. Les outils, la
+      méthode et les réflexes restent les mêmes — seule la nature du projet change.
+    </p>
+    <p>
+      Cette page ne dévoile pas le sujet du projet final : elle explique ce qui distingue un
+      site d'un jeu, pour que vous sachiez à quoi vous préparer.
+    </p>
+    <Callout type="warn" title="Le sujet reste verrouillé">
+      <p>{avertissement}</p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Un site et un jeu : ce qui change</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Un site</th>
+            <th>Un jeu vidéo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            differences.map((ligne) => (
+              <tr>
+                <td><strong>{ligne.aspect}</strong></td>
+                <td>{ligne.site}</td>
+                <td>{ligne.jeu}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ce qui ne change pas</h2>
+    <p>
+      Avant les différences, les ressemblances : un jeu se construit exactement comme le site
+      du test. C'est la raison d'être de ce workflow.
+    </p>
+    <ol class="rules">
+      {invariants.map((ligne) => <li>{ligne}</li>)}
+    </ol>
+    <Callout type="ok" title="La compétence transférable">
+      <p>
+        Un élève qui sait publier un site sait déjà l'essentiel pour publier un jeu. Le reste
+        s'apprend en cours de route, à condition de garder la même méthode.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Les spécificités d'un jeu vidéo</h2>
+    <p>
+      Un jeu n'est pas un site qui bouge : c'est un programme qui tourne en continu et qui
+      réagit au joueur. Six notions apparaissent, et le pilotage de l'agent doit en tenir compte.
+    </p>
+    <div class="grid-cards">
+      {
+        specificites.map((specificite) => (
+          <article class="glass card">
+            <h3>{specificite.titre}</h3>
+            <p>{specificite.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Comment le workflow s'adapte</h2>
+    <p>
+      La boucle et les cinq étapes ne changent pas. Quatre réflexes se renforcent simplement
+      quand le projet devient un jeu.
+    </p>
+    <ol class="rules rules-steps">
+      {
+        adaptations.map((etape) => (
+          <li>
+            <strong>{etape.titre}.</strong> {etape.texte}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/projet">
+        <span class="card-kicker">Objectif</span>
+        <h3>Le projet final</h3>
+        <p>Le compte à rebours et le brief, révélé le moment venu.</p>
+      </a>
+      <a class="glass card" href="/workflow">
+        <span class="card-kicker">Méthode</span>
+        <h3>Le workflow</h3>
+        <p>La boucle et les cinq étapes, valables pour un site comme pour un jeu.</p>
+      </a>
+      <a class="glass card" href="/markdown">
+        <span class="card-kicker">Transmettre</span>
+        <h3>Markdown</h3>
+        <p>Écrire les consignes que l'agent suivra pendant tout le projet.</p>
+      </a>
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>Le poste de commande, la session et les fichiers du projet.</p>
+      </a>
+    </div>
+  </section>
+</DocLayout>

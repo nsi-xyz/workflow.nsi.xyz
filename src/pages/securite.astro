@@ -19,7 +19,7 @@ const checklist = [
   "Aucune clé, aucun jeton, aucun mot de passe dans le code, le README ou les exemples.",
   "Aucune donnée personnelle (nom, téléphone, adresse, photo, date de naissance) dans le dépôt ni dans un prompt.",
   "Le dépôt ne contient que ce que vous accepteriez de voir public : un dépôt privé peut le devenir.",
-  "Le mot de passe de l'espace prof n'est écrit nulle part dans le dépôt.",
+  "Les secrets de déploiement vivent dans les réglages de l'hébergeur, jamais dans le dépôt.",
   "Le site déployé n'expose pas de page technique (fichiers de configuration, API d'administration) sans protection.",
   "Vous savez quelle clé tourner en premier si quelque chose fuit.",
 ];
@@ -102,7 +102,7 @@ const procedure = [
           des ressources. Exposé, c'est votre compte qui est en danger, pas seulement le projet.
         </li>
         <li>
-          Les <strong>mots de passe</strong> (compte GitHub, espace prof) : même un mot de
+          Les <strong>mots de passe</strong> (compte GitHub, hébergeur) : même un mot de
           passe « pas important » ouvre une porte à laquelle vous n'avez pas pensé.
         </li>
       </ul>
@@ -223,8 +223,8 @@ CLOUDFLARE_API_TOKEN=cfut_4b1e…</code></pre>
         adresses, dates de naissance, notes, photos de personnes, informations de santé.
       </li>
       <li>
-        <strong>À la place :</strong> un pseudonyme choisi par la personne, ou un code
-        anonyme (comme les codes de dépôt de ce site).
+        <strong>À la place :</strong> un pseudonyme choisi par la personne, ou l'identifiant
+        pseudonyme du projet (comme les identifiants des dépôts de ce cours).
       </li>
       <li>
         <strong>Pour un site de classe :</strong> demandez l'accord des personnes citées ou

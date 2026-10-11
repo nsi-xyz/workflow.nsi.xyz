@@ -240,17 +240,17 @@ export const questions: QuestionQuiz[] = [
       "Un prompt peut être conservé et analysé par le service. Il n'est pas un espace privé : aucun secret, aucune donnée personnelle.",
   },
   {
-    id: "prof-mot-de-passe",
+    id: "secret-env",
     theme: "Sécurité",
-    question: "Où doit être rangé le mot de passe de l'espace prof ?",
+    question: "Où doit vivre la clé d'API DeepSeek pendant le développement ?",
     options: [
       "Dans un fichier du dépôt, pour ne pas l'oublier",
-      "Dans les variables secrètes de la plateforme, et dans un fichier local non publié",
+      "Dans un fichier local ignoré par Git (.env), ou dans les secrets de l'hébergeur",
       "Dans le README, en tout petit",
     ],
     bonne: 1,
     explication:
-      "Un secret de déploiement vit dans les réglages de l'hébergeur (et dans .dev.vars pour le développement local). Le dépôt n'en contient jamais.",
+      "Un secret vit dans .env (local, ignoré par Git et vérifié avec git check-ignore .env) ou dans les réglages de l'hébergeur. Le dépôt n'en contient jamais.",
   },
   {
     id: "build-def",

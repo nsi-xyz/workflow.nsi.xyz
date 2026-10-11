@@ -37,7 +37,7 @@ export const reperesTokens: Repere[] = [
 ];
 
 export interface FicheModele {
-  id: "flash" | "pro";
+  id: "flash";
   usage: string;
   points: string[];
 }
@@ -51,16 +51,6 @@ export const fichesModeles: FicheModele[] = [
       "Réfléchit ou répond directement (mode thinking par défaut)",
       "Accepte les images, les appels d'outils et le format JSON",
       "Rapport qualité-prix imbattable pour un projet d'élève",
-    ],
-  },
-  {
-    id: "pro",
-    usage: "Le grand frère : à réserver aux tâches vraiment difficiles.",
-    points: [
-      "Même contexte de 1 million de tokens",
-      "Environ 4 à 5 fois plus cher que Flash",
-      "Pas d'analyse d'images",
-      "Utile quand Flash tourne en rond sur un problème de logique",
     ],
   },
 ];
@@ -122,6 +112,6 @@ export const verifications: Verification[] = [
   {
     mythe: "« Plus cher = meilleur. »",
     verite:
-      "La différence entre Flash et Pro se voit sur les problèmes difficiles. Sur une page web classique, vous payez surtout des tokens de sortie : mieux vaut un bon prompt qu'un gros modèle.",
+      "Les modèles frontier se voient sur les problèmes difficiles, mais ils coûtent 20 à 80 fois plus cher. Sur une page web, un projet de jeu ou un exercice, mieux vaut un bon prompt qu'un gros modèle.",
   },
 ];

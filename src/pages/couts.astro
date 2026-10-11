@@ -1,0 +1,276 @@
+---
+import DocLayout from "../layouts/DocLayout.astro";
+import Callout from "../components/Callout.astro";
+import CostCalculator from "../components/CostCalculator.astro";
+import { navItems } from "../data/navigation";
+import {
+  avertissementModele,
+  budget,
+  gratuits,
+  heuresNote,
+  heuresParis,
+  ideeCle,
+  nonNecessaires,
+  plans,
+  plansUnDollar,
+  postes,
+  recommandation,
+  regles,
+  sources,
+} from "../data/couts";
+
+const item = navItems.find((entry) => entry.slug === "couts")!;
+---
+
+<DocLayout item={item} plan={false}>
+  <section>
+    <h2>Ce qui est gratuit, ce qui est payant</h2>
+    <p>
+      La bonne nouvelle : <strong>l'essentiel du projet ne coûte rien</strong>. La seule
+      dépense inévitable, ce sont les <strong>jetons</strong> du modèle qui fait tourner
+      l'agent — c'est le carburant du travail, pas un abonnement caché.
+    </p>
+    <div class="grid-cards">
+      {
+        gratuits.map((ligne) => (
+          <article class="glass card">
+            <span class="card-kicker">Gratuit</span>
+            <h3>{ligne.outil}</h3>
+            <p>{ligne.role}</p>
+          </article>
+        ))
+      }
+    </div>
+    <Callout type="ok" title="Ce qu'on ne vous demande pas de payer">
+      <ul>
+        {
+          nonNecessaires.map((ligne) => (
+            <li>
+              <strong>{ligne.outil} :</strong> {ligne.role}
+            </li>
+          ))
+        }
+      </ul>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Pourquoi le coût ne vient pas d'où l'on croit</h2>
+    <p>
+      Un agent ne pose pas une question et n'attend pas une réponse : il enchaîne les
+      étapes. Chaque tour renvoie l'historique et les fichiers au modèle. C'est cet usage
+      en boucle qui consomme, et il se facture sur trois postes.
+    </p>
+    <div class="grid-cards">
+      {
+        postes.map((poste) => (
+          <article class="glass card">
+            <h3>{poste.titre}</h3>
+            <p>{poste.texte}</p>
+          </article>
+        ))
+      }
+    </div>
+    <Callout type="warn" title="L'idée qui change tout">
+      <p>{ideeCle}</p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Comparer les modèles</h2>
+    <p>
+      Tous les modèles ne se valent pas côté prix : pour le même travail, un modèle <em>frontier</em>
+      haut de gamme peut coûter <strong>20, 50, parfois 84 fois plus
+      cher</strong> qu'un modèle ouvert bon marché. Réglez le volume et la part de cache, puis
+      regardez le classement se faire tout seul.
+    </p>
+    <CostCalculator />
+    <Callout type="info" title="Comment lire ce tableau">
+      <p>{avertissementModele}</p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>DeepSeek et les heures creuses</h2>
+    <p>
+      DeepSeek applique <strong>deux tarifs</strong> selon l'heure : plein tarif et <strong>−50 %</strong>
+      en heures creuses. Travailler l'après-midi, le soir ou le week-end divise déjà la
+      facture par deux.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Jour</th>
+            <th>Heures (heure de Paris)</th>
+            <th>Tarif</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            heuresParis.map((ligne) => (
+              <tr>
+                <td>{ligne.jour}</td>
+                <td>{ligne.plage}</td>
+                <td>{ligne.creux ? "🟢 " : "🔴 "}{ligne.tarif}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="small">{heuresNote}</p>
+  </section>
+
+  <section>
+    <h2>Payer à l'usage, ou par abonnement</h2>
+    <p>
+      Au paiement à l'usage, <strong>1 $ dépensé = 1 $ de travail</strong>, sans
+      amplification : le compteur tourne à chaque requête, sans plafond. Un abonnement, lui,
+      achète les jetons en gros et les revend avec un coefficient : <strong>10 $ peuvent
+      donner 60 $ de travail</strong>, soit environ ×6. C'est ce qui rend le coût prévisible.
+    </p>
+    <h3>Les plans compatibles avec OpenCode</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Prix/mois</th>
+            <th>Ratio</th>
+            <th>DeepSeek Flash</th>
+            <th>GPT-6 Luna</th>
+            <th>Clé API</th>
+            <th>OpenCode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            plans.map((plan) => (
+              <tr>
+                <td>
+                  <strong>{plan.nom}</strong>
+                  {plan.recommande && <span class="badge"> conseillé</span>}
+                </td>
+                <td>{plan.prix}</td>
+                <td>{plan.ratio}</td>
+                <td>{plan.deepseek}</td>
+                <td>{plan.luna}</td>
+                <td>{plan.cleApi}</td>
+                <td>{plan.opencode}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <Callout type="warn" title="Le piège des plans à 1 $">
+      <p>
+        Certains plans à 1 $ sont verrouillés sur leur propre application : pas de clé
+        réutilisable, donc impossible de les brancher dans OpenCode. Un plan qui « ne marche
+        pas où vous voulez » est un faux bon plan. Et le « gratuit » n'existe pas vraiment :
+        les offres à 0 $ tiennent quelques requêtes, pas un projet.
+      </p>
+    </Callout>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan à 1 $</th>
+            <th>Prix</th>
+            <th>Ce qu'il donne</th>
+            <th>Clé API</th>
+            <th>OpenCode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            plansUnDollar.map((plan) => (
+              <tr>
+                <td><strong>{plan.nom}</strong></td>
+                <td>{plan.prix}</td>
+                <td>{plan.donne}</td>
+                <td>{plan.cleApi}</td>
+                <td>{plan.opencode}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="glass card">
+      <span class="card-kicker">Recommandation</span>
+      <h3>{recommandation.titre}</h3>
+      <p>{recommandation.texte}</p>
+      <ul>
+        {recommandation.points.map((point) => <li>{point}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Votre budget</h2>
+    <div class="glass band">
+      <div class="band-text">
+        <h2>{budget.titre}</h2>
+        <p>{budget.texte}</p>
+      </div>
+    </div>
+    <Callout type="info" title="Un conseil avant d'acheter">
+      <p>{budget.avertissement}</p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Quatre règles d'usage</h2>
+    <ol class="rules rules-steps">
+      {
+        regles.map((regle) => (
+          <li>
+            <strong>{regle.titre}.</strong> {regle.texte}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section>
+    <h2>Pour aller plus loin</h2>
+    <div class="grid-cards">
+      <a class="glass card" href="/llm">
+        <span class="card-kicker">Comprendre</span>
+        <h3>L'IA et les modèles</h3>
+        <p>Tokens, contexte, effort : ce qui se cache derrière la facture.</p>
+      </a>
+      <a class="glass card" href="/opencode">
+        <span class="card-kicker">Espace de travail</span>
+        <h3>OpenCode</h3>
+        <p>Brancher la clé, suivre le coût d'une session, compacter au bon moment.</p>
+      </a>
+      <a class="glass card" href="/securite">
+        <span class="card-kicker">Vigilance</span>
+        <h3>Sécurité</h3>
+        <p>Une clé est un secret : elle ne va jamais dans le dépôt.</p>
+      </a>
+      <a class="glass card" href="/projet">
+        <span class="card-kicker">Objectif</span>
+        <h3>Le projet final</h3>
+        <p>Ce que le budget sert à financer, sans surprise.</p>
+      </a>
+    </div>
+    <h3>Sources</h3>
+    <ul>
+      {
+        sources.map((source) => (
+          <li>
+            <a href={source.url}>{source.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="small">
+      Tarifs relevés le 30/09/2026. Ils évoluent vite : vérifiez la page de facturation
+      officielle du fournisseur avant tout achat. Ce n'est pas un conseil financier.
+    </p>
+  </section>
+</DocLayout>

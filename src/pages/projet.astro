@@ -10,7 +10,7 @@ const item = navItems.find((entry) => entry.slug === "projet")!;
 
 <DocLayout item={item} plan={false}>
   <section class="projet-verrou">
-    <h2>Le sujet est encore verrouillé</h2>
+    <h2>Le jeu à créer est encore verrouillé</h2>
     <CompteARebours />
     <div class="glass card projet-teaser">
       <ul class="planned">
@@ -97,6 +97,11 @@ const item = navItems.find((entry) => entry.slug === "projet")!;
         <span class="card-kicker">Entraînement</span>
         <h3>Missions guidées</h3>
         <p>Trois parcours pas à pas, à faire avant la révélation du sujet.</p>
+      </a>
+      <a class="glass card" href="/jeu">
+        <span class="card-kicker">Comprendre</span>
+        <h3>Du site au jeu</h3>
+        <p>Ce qui distingue un site d'un jeu vidéo, et comment le workflow s'adapte.</p>
       </a>
       <a class="glass card" href="/workflow">
         <span class="card-kicker">Méthode</span>

@@ -1,165 +1,129 @@
 ---
 /**
- * Calculateur de coût DeepSeek — les formules viennent de src/lib/cout.ts,
- * testées côté serveur ET utilisées côté client (même code, même résultat).
+ * Comparateur de coût — les formules viennent de src/lib/cout.ts, testées
+ * côté serveur ET utilisées côté client (même code, même résultat).
+ *
+ * Le tableau est rendu au serveur pour le scénario par défaut (100 M de
+ * jetons, 70 % de cache) : sans JavaScript, il reste lisible.
  */
-import { tarifs } from "../lib/cout";
+import { coutModele, dollars, MIX_DEFAUT, MODELE_REFERENCE, modeles } from "../lib/cout";
 
-const tarifFlash = tarifs.flash;
-const tarifPro = tarifs.pro;
+const volumeDefaut = 100;
+const cacheDefaut = Math.round(MIX_DEFAUT.cache * 100);
+const reference = modeles.find((modele) => modele.id === MODELE_REFERENCE)!;
+const coutReference = coutModele(reference, volumeDefaut, MIX_DEFAUT.cache);
+
+const lignes = modeles
+  .map((modele) => ({ ...modele, cout: coutModele(modele, volumeDefaut, MIX_DEFAUT.cache) }))
+  .sort((a, b) => a.cout - b.cout);
+
+const resumeDefaut = `Coût estimé pour ${volumeDefaut} M de jetons : de ${dollars(lignes[0].cout)} (${lignes[0].nom}) à ${dollars(lignes[lignes.length - 1].cout)} (${lignes[lignes.length - 1].nom}).`;
 ---
 
 <div class="glass calc" data-calc>
   <div class="calc-fields">
     <label class="calc-field">
-      <span>Modèle</span>
-      <select data-calc-modele>
-        <option value="flash">{tarifFlash.api} — le plus courant</option>
-        <option value="pro">{tarifPro.api} — le plus puissant</option>
-      </select>
-    </label>
-
-    <label class="calc-field">
-      <span>Tokens d'entrée par requête</span>
-      <input type="number" min="0" step="500" value="4000" data-calc-entree />
-    </label>
-
-    <label class="calc-field">
-      <span>Tokens de sortie par requête</span>
-      <input type="number" min="0" step="100" value="800" data-calc-sortie />
-    </label>
-
-    <label class="calc-field">
-      <span>Nombre de requêtes</span>
-      <input type="number" min="1" step="1" value="20" data-calc-requetes />
+      <span>Volume total du projet (millions de jetons)</span>
+      <input type="number" min="1" step="10" value={volumeDefaut} data-calc-volume />
     </label>
 
     <label class="calc-field">
       <span>Part du contexte déjà en cache</span>
-      <input type="range" min="0" max="100" step="5" value="50" data-calc-cache />
-      <output data-calc-cache-sortie>50 %</output>
+      <input type="range" min="0" max="95" step="5" value={cacheDefaut} data-calc-cache />
+      <output data-calc-cache-sortie>{cacheDefaut} %</output>
     </label>
 
-    <fieldset class="calc-field calc-period">
-      <legend>Tarif appliqué</legend>
-      <label><input type="radio" name="calc-periode" value="auto" checked /> maintenant</label>
-      <label><input type="radio" name="calc-periode" value="creux" /> creuses</label>
-      <label><input type="radio" name="calc-periode" value="pointe" /> pleines</label>
-    </fieldset>
+    <label class="calc-field calc-abonnement">
+      <span><input type="checkbox" data-calc-abonnement /> Tenir compte d'un abonnement (÷6 sur les modèles compatibles)</span>
+    </label>
   </div>
 
-  <p class="calc-period-info" data-calc-period-info></p>
-  <p class="calc-total" data-calc-total role="status" aria-live="polite"></p>
+  <p class="calc-total" data-calc-total role="status" aria-live="polite">{resumeDefaut}</p>
 
-  <table class="calc-table">
-    <caption class="sr-only">Comparaison du coût en heures creuses et en heures pleines</caption>
-    <thead>
-      <tr>
-        <th scope="col">Tarif</th>
-        <th scope="col">Entrée</th>
-        <th scope="col">Sortie</th>
-        <th scope="col">Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">Heures creuses</th>
-        <td data-calc-creux-entree></td>
-        <td data-calc-creux-sortie></td>
-        <td data-calc-creux-total></td>
-      </tr>
-      <tr>
-        <th scope="row">Heures pleines</th>
-        <td data-calc-pointe-entree></td>
-        <td data-calc-pointe-sortie></td>
-        <td data-calc-pointe-total></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-scroll">
+    <table class="calc-table" data-calc-table>
+      <caption class="sr-only">Coût estimé par modèle pour le scénario choisi</caption>
+      <thead>
+        <tr>
+          <th scope="col">Modèle</th>
+          <th scope="col">Famille</th>
+          <th scope="col">Coût du scénario</th>
+          <th scope="col">× DeepSeek</th>
+        </tr>
+      </thead>
+      <tbody data-calc-corps>
+        {
+          lignes.map((modele) => (
+            <tr data-calc-ligne data-modele-id={modele.id} data-nom={modele.nom} data-cout={modele.cout}>
+              <th scope="row">
+                {modele.nom}
+                {modele.recommande && <span class="badge"> conseillé</span>}
+              </th>
+              <td>{modele.famille}</td>
+              <td data-calc-cout>{dollars(modele.cout)}</td>
+              <td data-calc-ratio>{`×${(modele.cout / coutReference).toFixed(1).replace(".", ",")}`}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
 
   <p class="calc-note">
-    Prix publics DeepSeek vérifiés le 29/09/2026 (dollars US, par million de tokens).
+    Tarifs publics relevés le 30/09/2026 (dollars US, par million de jetons), hors promotions.
     Le cache est automatique : la part « déjà en cache » reste une estimation.
-    Les heures pleines sont 01 h–04 h et 06 h–10 h UTC, du lundi au vendredi ;
-    tout le reste, week-ends compris, est en heures creuses.
+    Les modèles marqués « abonnement » sont couverts par un plan à prix fixe type OpenCode Go.
   </p>
 </div>
 
 <script>
-  import { dollars, estHeurePleine, tarifsPour, type ModeleId } from "../lib/cout";
-  import { frPluriel } from "../lib/fr";
+  import { coutModele, dollars, MODELE_REFERENCE, modeles, type ModeleCout } from "../lib/cout";
 
   const root = document.querySelector<HTMLElement>("[data-calc]");
 
   if (root) {
     const champ = <T extends Element>(selecteur: string) => root.querySelector<T>(selecteur);
 
-    const modele = champ<HTMLSelectElement>("[data-calc-modele]");
-    const entree = champ<HTMLInputElement>("[data-calc-entree]");
-    const sortie = champ<HTMLInputElement>("[data-calc-sortie]");
-    const requetes = champ<HTMLInputElement>("[data-calc-requetes]");
+    const volume = champ<HTMLInputElement>("[data-calc-volume]");
     const cache = champ<HTMLInputElement>("[data-calc-cache]");
     const cacheSortie = champ<HTMLOutputElement>("[data-calc-cache-sortie]");
-    const periodInfo = champ<HTMLElement>("[data-calc-period-info]");
+    const abonnement = champ<HTMLInputElement>("[data-calc-abonnement]");
+    const corps = champ<HTMLElement>("[data-calc-corps]");
     const totalNode = champ<HTMLElement>("[data-calc-total]");
-    const periodes = [...root.querySelectorAll<HTMLInputElement>('input[name="calc-periode"]')];
-
-    const lire = () => ({
-      modele: (modele?.value ?? "flash") as ModeleId,
-      entree: Math.max(0, Number(entree?.value) || 0),
-      sortie: Math.max(0, Number(sortie?.value) || 0),
-      requetes: Math.max(1, Number(requetes?.value) || 1),
-      cache: Math.min(Math.max((Number(cache?.value) || 0) / 100, 0), 1),
-    });
-
-    const pointeChoisie = () => {
-      const choix = periodes.find((radio) => radio.checked)?.value ?? "auto";
-      if (choix === "auto") return estHeurePleine(new Date());
-      return choix === "pointe";
-    };
-
-    /** Détail entrée / sortie / total pour un tarif donné. */
-    const detail = (pointe: boolean, valeurs: ReturnType<typeof lire>) => {
-      const tarif = tarifsPour(valeurs.modele, pointe);
-      const coutEntree =
-        (valeurs.entree * ((1 - valeurs.cache) * tarif.entree + valeurs.cache * tarif.cache)) / 1e6;
-      const coutSortie = (valeurs.sortie * tarif.sortie) / 1e6;
-      const parRequete = coutEntree + coutSortie;
-      return {
-        entree: coutEntree * valeurs.requetes,
-        sortie: coutSortie * valeurs.requetes,
-        total: parRequete * valeurs.requetes,
-      };
-    };
-
-    const ecrire = (selecteur: string, texte: string) => {
-      const noeud = champ<HTMLElement>(selecteur);
-      if (noeud) noeud.textContent = texte;
-    };
+    const parId = new Map<string, ModeleCout>(modeles.map((modele) => [modele.id, modele]));
 
     const maj = () => {
-      const valeurs = lire();
-      const pointe = pointeChoisie();
-      const creux = detail(false, valeurs);
-      const plein = detail(true, valeurs);
+      const volumeMillions = Math.max(1, Number(volume?.value) || 1);
+      const partCache = Math.min(Math.max((Number(cache?.value) || 0) / 100, 0), 0.95);
+      const avecAbonnement = abonnement?.checked ?? false;
+      const reference = parId.get(MODELE_REFERENCE)!;
+      const coutReference = coutModele(reference, volumeMillions, partCache) / (avecAbonnement ? 6 : 1);
 
-      if (cacheSortie) cacheSortie.textContent = `${Math.round(valeurs.cache * 100)} %`;
-      if (periodInfo) {
-        periodInfo.textContent = pointe
-          ? "En ce moment, le tarif appliqué est celui des heures pleines."
-          : "En ce moment, le tarif appliqué est celui des heures creuses (moitié prix).";
+      const lignes = [...(corps?.querySelectorAll<HTMLTableRowElement>("[data-calc-ligne]") ?? [])];
+
+      for (const ligne of lignes) {
+        const modele = parId.get(ligne.dataset.modeleId ?? "");
+        if (!modele) continue;
+        let cout = coutModele(modele, volumeMillions, partCache);
+        if (avecAbonnement && modele.abonnement) cout /= 6;
+
+        const celluleCout = ligne.querySelector<HTMLElement>("[data-calc-cout]");
+        const celluleRatio = ligne.querySelector<HTMLElement>("[data-calc-ratio]");
+        if (celluleCout) celluleCout.textContent = dollars(cout);
+        if (celluleRatio) celluleRatio.textContent = `×${(cout / coutReference).toFixed(1).replace(".", ",")}`;
+        ligne.dataset.cout = String(cout);
       }
+
+      const triees = lignes.sort((a, b) => Number(a.dataset.cout) - Number(b.dataset.cout));
+      for (const ligne of triees) corps?.append(ligne);
+
+      if (cacheSortie) cacheSortie.textContent = `${Math.round(partCache * 100)} %`;
       if (totalNode) {
-        const actif = pointe ? plein : creux;
-        totalNode.textContent = `Coût estimé : ${dollars(actif.total)} pour ${frPluriel(valeurs.requetes, "requête")}, soit ${dollars(actif.total / valeurs.requetes)} par requête.`;
+        const premier = triees[0];
+        const dernier = triees[triees.length - 1];
+        const suffixe = avecAbonnement ? " (abonnement inclus)" : "";
+        totalNode.textContent = `Coût estimé pour ${volumeMillions} M de jetons : de ${dollars(Number(premier?.dataset.cout ?? 0))} (${premier?.dataset.nom ?? ""}) à ${dollars(Number(dernier?.dataset.cout ?? 0))} (${dernier?.dataset.nom ?? ""})${suffixe}.`;
       }
-
-      ecrire("[data-calc-creux-entree]", dollars(creux.entree));
-      ecrire("[data-calc-creux-sortie]", dollars(creux.sortie));
-      ecrire("[data-calc-creux-total]", dollars(creux.total));
-      ecrire("[data-calc-pointe-entree]", dollars(plein.entree));
-      ecrire("[data-calc-pointe-sortie]", dollars(plein.sortie));
-      ecrire("[data-calc-pointe-total]", dollars(plein.total));
     };
 
     root.addEventListener("input", maj);

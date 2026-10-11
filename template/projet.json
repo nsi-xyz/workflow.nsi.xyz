@@ -1,0 +1,8 @@
+{
+  "schema": "workflow-nsi/projet/v1",
+  "alias": "{{ALIAS}}",
+  "titre": "",
+  "mission": "projet-final",
+  "hebergeur": "",
+  "url": ""
+}

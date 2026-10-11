@@ -7,7 +7,7 @@
  */
 
 export interface NavItem {
-  /** Route sans slash initial (peut être imbriquée, ex. « prompts/depot »). */
+  /** Route sans slash initial (pas de slash en tête, ex. « missions »). */
   slug: string;
   title: string;
   kicker: string;
@@ -31,11 +31,22 @@ const groups: Array<Omit<NavGroup, "items"> & { items: Array<Omit<NavItem, "slug
         slug: "workflow",
         title: "Le workflow",
         kicker: "Vue d'ensemble",
-        lead: "Un workflow, c'est la chaîne d'étapes qui transforme une idée en site en ligne. Voici celle du projet NSI : du premier prompt à l'URL publique.",
+        lead: "Un workflow, c'est la chaîne d'étapes qui transforme une idée en site — ou en jeu — en ligne. Voici celle du projet NSI : du premier prompt à l'URL publique.",
         planned: [
           "La boucle décrire → générer → tester → corriger → livrer",
           "Ce que fait l'IA, ce que fait l'humain",
           "Les cinq étapes appliquées à un exemple complet",
+        ],
+      },
+      {
+        slug: "jeu",
+        title: "Du site au jeu",
+        kicker: "Le projet final",
+        lead: "Le test en classe consiste à publier un site. Le projet des vacances va plus loin : créer un jeu vidéo de A à Z, avec le même workflow.",
+        planned: [
+          "Ce qui change entre un site et un jeu",
+          "Ce qui ne change pas : la boucle, la trace, la publication",
+          "Comment le workflow s'adapte aux jeux vidéo",
         ],
       },
       {
@@ -46,7 +57,19 @@ const groups: Array<Omit<NavGroup, "items"> & { items: Array<Omit<NavItem, "slug
         planned: [
           "Tokens, contexte et fenêtre de contexte",
           "Effort et qualité : où placer le curseur",
-          "Coûts, heures creuses et calculateur",
+          "Ce qui se cache derrière la facture",
+        ],
+      },
+      {
+        slug: "couts",
+        title: "Coûts et budget",
+        kicker: "Combien ça coûte",
+        lead: "GitHub, Cloudflare Pages et OpenCode sont gratuits. Seuls les jetons du modèle s'achètent : comparez les modèles et prévoyez une dizaine d'euros, comme une fourniture scolaire.",
+        planned: [
+          "Ce qui est gratuit, ce qui est payant",
+          "Comparer les modèles pour le même travail",
+          "Payer à l'usage ou par abonnement",
+          "Le budget à prévoir, sans surprise",
         ],
       },
       {
@@ -59,6 +82,17 @@ const groups: Array<Omit<NavGroup, "items"> & { items: Array<Omit<NavItem, "slug
           "Itérer : relancer, préciser, corriger",
           "Anti-patterns et pièges fréquents",
           "Constructeur de prompt",
+        ],
+      },
+      {
+        slug: "markdown",
+        title: "Markdown",
+        kicker: "Écrire pour l'IA",
+        lead: "Markdown est le format de texte qui relie l'élève, l'agent et le dépôt. Comprendre sa syntaxe, c'est apprendre à donner des consignes claires.",
+        planned: [
+          "Qu'est-ce qu'un Markdown, et pourquoi ce format",
+          "La syntaxe de base, par l'exemple",
+          "AGENTS.md, README, workflow.md : à quoi ils servent",
         ],
       },
     ],
@@ -119,17 +153,6 @@ const groups: Array<Omit<NavGroup, "items"> & { items: Array<Omit<NavItem, "slug
           "Prompts de correction et de débogage",
           "Prompts de vérification et de relecture",
           "Comment adapter un prompt modèle",
-        ],
-      },
-      {
-        slug: "prompts/depot",
-        title: "Déposer un prompt",
-        kicker: "Votre journal",
-        lead: "Chaque prompt envoyé à l'agent se dépose ici avec votre code anonyme : c'est la trace de votre travail et la preuve que vous avez piloté.",
-        planned: [
-          "Pourquoi journaliser ses prompts",
-          "Déposer : code, mission, prompt",
-          "Ce que deviennent vos prompts",
         ],
       },
       {
@@ -206,23 +229,12 @@ const groups: Array<Omit<NavGroup, "items"> & { items: Array<Omit<NavItem, "slug
         slug: "projet",
         title: "Le projet final",
         kicker: "Objectif",
-        lead: "Le sujet sera révélé le lundi de la dernière semaine avant les vacances de la Toussaint, à 8 h 42. D'ici là, tout ce qu'il faut maîtriser est sur ce site.",
+        lead: "Le sujet sera révélé le lundi de la dernière semaine avant les vacances de la Toussaint, à 8 h 42 : la création d'un jeu vidéo de A à Z. D'ici là, tout ce qu'il faut maîtriser est sur ce site.",
         planned: [
-          "Le sujet (verrouillé jusqu'à la révélation)",
+          "Le jeu à réaliser (verrouillé jusqu'à la révélation)",
           "Le rendu attendu",
           "Les règles du jeu",
           "Les critères d'évaluation",
-        ],
-      },
-      {
-        slug: "prof",
-        title: "Espace prof",
-        kicker: "Réservé",
-        lead: "Lecture des prompts déposés par la classe, filtres et export. Accès protégé par mot de passe.",
-        planned: [
-          "Connexion",
-          "Liste et filtres des dépôts",
-          "Export CSV",
         ],
       },
     ],
@@ -269,9 +281,9 @@ export const workflowSteps = [
   },
   {
     title: "Journaliser",
-    text: "Déposer les prompts utilisés sur ce site : c'est la preuve du travail et la mémoire du projet.",
-    href: "/prompts/depot",
-    done: "Les prompts de chaque étape sont déposés, le journal raconte le projet.",
+    text: "L'agent consigne chaque échange (prompt exact + résumé + fichiers) dans le dépôt : c'est la preuve du travail et la mémoire du projet.",
+    href: "/git-github",
+    done: "Le dossier journal/ raconte le projet, un fichier par échange.",
   },
 ];
 

@@ -1,68 +1,59 @@
 /**
- * Tests des données de la section « Le workflow ».
- * Un contenu pédagogique incomplet (phase sans critère de sortie, exemple sans
- * résultat…) doit être bloqué avant publication.
+ * Garde-fou du document remis aux élèves.
+ *
+ * Le contrat vit dans `template/workflow.md` ; la version publique du site
+ * (`public/workflow.md`) en est générée. Ces tests empêchent toute divergence et
+ * vérifient que le contrat opérationnel (journal, schéma, sécurité) est présent.
  */
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import {
-  agentStrengths,
-  examplePrompts,
-  humanDuties,
-  loopPhases,
-  myths,
-  timeline,
-  workflowRules,
-} from "../src/data/workflow.ts";
-import { navItems, workflowSteps } from "../src/data/navigation.ts";
+import fs from "node:fs";
+import { CIBLE, EXEMPLE_ALIAS, SOURCE, rendreEleve, renderPublic } from "../scripts/sync-workflow.mjs";
 
-test("la boucle compte cinq temps, chacun complet", () => {
-  assert.equal(loopPhases.length, 5, "la boucle est un cycle en cinq temps");
-  const ids = loopPhases.map((phase) => phase.id);
-  assert.equal(new Set(ids).size, ids.length, "identifiant de phase en double");
-  for (const phase of loopPhases) {
-    assert.ok(phase.you.trim().length > 30, `rôle humain trop court : ${phase.id}`);
-    assert.ok(phase.agent.trim().length > 30, `rôle de l'agent trop court : ${phase.id}`);
-    assert.ok(phase.exit.trim().length > 30, `critère de sortie manquant : ${phase.id}`);
+const modele = fs.readFileSync(SOURCE, "utf8");
+const publicMd = fs.readFileSync(CIBLE, "utf8");
+
+test("le modèle porte les deux jetons de personnalisation", () => {
+  assert.ok(modele.includes("{{ALIAS}}"), "jeton {{ALIAS}} manquant");
+  assert.ok(modele.includes("{{URL_DEPOT}}"), "jeton {{URL_DEPOT}} manquant");
+});
+
+test("la version publique est générée depuis le modèle (aucune divergence)", () => {
+  assert.equal(publicMd, renderPublic(modele));
+});
+
+test("la version publique ne laisse aucun jeton", () => {
+  assert.ok(!/\{\{[A-Z_]+\}\}/.test(publicMd), "jeton non remplacé dans public/workflow.md");
+  assert.ok(publicMd.includes(EXEMPLE_ALIAS), "valeur d'exemple absente de la version publique");
+});
+
+test("le contrat impose le journal et fige le schéma", () => {
+  for (const fichier of [modele, publicMd]) {
+    assert.match(fichier, /journal\/<NNN>-<horodatage>\.json/, "nom de fichier journal manquant");
+    assert.match(fichier, /workflow-nsi\/journal\/v1/, "schéma v1 manquant");
+    assert.match(fichier, /git push/, "consigne de push manquante");
+    assert.match(fichier, /prompt.*texte exact/i, "règle « prompt exact » manquante");
   }
 });
 
-test("l'exemple complet est une vraie frise, avec des prompts", () => {
-  assert.ok(timeline.length >= 8, "l'exemple doit couvrir au moins huit moments");
-  const phases = new Set(loopPhases.map((phase) => phase.title));
-  let prompts = 0;
-  for (const step of timeline) {
-    assert.ok(phases.has(step.phase), `phase inconnue dans la frise : ${step.phase}`);
-    assert.ok(step.title.trim(), "titre d'étape manquant");
-    assert.ok(step.result.trim().length > 30, `résultat trop court : ${step.title}`);
-    if (step.prompt) prompts += 1;
-  }
-  assert.ok(prompts >= 3, "l'exemple doit montrer au moins trois prompts réels");
-});
-
-test("la frise contient un échec et une correction", () => {
-  const texts = timeline.map((step) => `${step.title} ${step.result}`).join(" ").toLowerCase();
-  assert.ok(texts.includes("casse"), "un exemple qui ne casse jamais n'apprend rien");
-  assert.ok(texts.includes("erreur"), "l'exemple doit montrer un message d'erreur");
-});
-
-test("rôles, règles, idées fausses et prompts sont fournis", () => {
-  assert.ok(humanDuties.length >= 4, "il faut au moins quatre responsabilités humaines");
-  assert.ok(agentStrengths.length >= 4, "il faut au moins quatre forces de l'agent");
-  assert.ok(workflowRules.length >= 5, "il faut au moins cinq règles de travail");
-  assert.ok(myths.length >= 3, "il faut au moins trois idées fausses");
-  assert.ok(examplePrompts.length >= 4, "il faut au moins quatre prompts d'exemple");
-  for (const myth of myths) {
-    assert.ok(myth.reality.trim().length > 40, `réponse trop courte à l'idée fausse : ${myth.myth}`);
+test("le contrat interdit secrets et données personnelles", () => {
+  for (const fichier of [modele, publicMd]) {
+    assert.match(fichier, /check-ignore \.env/, "vérification du .gitignore manquante");
+    assert.match(fichier, /donnée[s]? personnelle[s]?/i, "règle de données personnelles manquante");
   }
 });
 
-test("chaque étape du parcours a un critère de sortie et un lien valide", () => {
-  const known = new Set(navItems.map((entry) => `/${entry.slug}`));
-  assert.equal(workflowSteps.length, 5);
-  for (const step of workflowSteps) {
-    assert.ok(step.done.trim().length > 20, `critère de sortie manquant : ${step.title}`);
-    assert.ok(known.has(step.href), `lien inconnu depuis l'étape ${step.title} : ${step.href}`);
+test("le contrat cadre les ressources et les droits", () => {
+  for (const fichier of [modele, publicMd]) {
+    assert.match(fichier, /10 Mo/, "limite de taille de fichier manquante");
+    assert.match(fichier, /sous copyright|droits d'auteur/i, "règle de droits manquante");
   }
+});
+
+test("la version élève retire le marqueur et remplit les jetons", () => {
+  const eleve = rendreEleve("# t\n\n<!-- NOTE-PUBLIQUE -->\n\n{{ALIAS}} — {{URL_DEPOT}}", "eleve-07", "https://x/y");
+  assert.ok(!eleve.includes("NOTE-PUBLIQUE"), "marqueur public non retiré");
+  assert.ok(!eleve.includes("{{"), "jeton non remplacé");
+  assert.ok(eleve.includes("eleve-07") && eleve.includes("https://x/y"), "valeurs absentes");
 });

@@ -17,7 +17,7 @@ const ROOT = process.cwd();
 const OUT = path.join(ROOT, 'docs', 'INVENTAIRE_FICHIERS.md');
 
 const EXCLUDED_DIRS = new Set([
-  'node_modules', '.git', 'dist', '.astro', '.cache', '.wrangler', '.secret', 'coverage',
+  'node_modules', '.git', 'dist', '.astro', '.cache', '.wrangler', '.secret', 'coverage', '.classe',
 ]);
 const INCLUDED_EXT = /\.(astro|ts|mjs|js|css|sql|json|md|sh|yml|yaml)$/;
 const NOISE = [/^package-lock\.json$/, /^docs\/INVENTAIRE_FICHIERS\.md$/];
@@ -81,6 +81,7 @@ function role(file) {
   if (file.startsWith('tests/')) return 'Test';
   if (file.startsWith('scripts/')) return 'Script outillage';
   if (file.startsWith('docs/')) return 'Documentation';
+  if (file.startsWith('template/')) return 'Modèle de dépôt élève';
   return 'Racine / config';
 }
 

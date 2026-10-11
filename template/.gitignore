@@ -1,0 +1,17 @@
+# Secrets — ne jamais commiter
+.env
+.env.*
+!.env.example
+.dev.vars
+.secret/
+
+# Dépendances et artefacts
+node_modules/
+dist/
+.astro/
+.wrangler/
+coverage/
+
+# Système
+.DS_Store
+Thumbs.db

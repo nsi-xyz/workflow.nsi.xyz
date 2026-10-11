@@ -180,7 +180,7 @@ export const termes: Terme[] = [
     theme: "Web et publication",
     definition:
       "Petites fonctions exécutées par l'hébergeur, déployées avec le site : elles permettent une API, un formulaire, un accès à un stockage.",
-    exemple: "L'API du journal des prompts (dépôt, statistiques, espace prof) est faite de Pages Functions.",
+    exemple: "Un formulaire de contact, un compteur de visites : de petites fonctions exécutées à la demande, à côté du site.",
   },
   {
     terme: "Secret",
@@ -201,7 +201,7 @@ export const termes: Terme[] = [
     theme: "Sécurité",
     definition:
       "Résultat d'un calcul irréversible appliqué à une donnée : impossible de remonter au texte d'origine.",
-    exemple: "Le journal des prompts ne stocke que l'empreinte SHA-256 du code élève.",
+    exemple: "Git identifie chaque commit par une empreinte : elle résume son contenu.",
   },
   {
     terme: "Rotation d'une clé",
@@ -215,7 +215,7 @@ export const termes: Terme[] = [
     theme: "Sécurité",
     definition:
       "Informations qui identifient une personne : nom, téléphone, adresse, photo, date de naissance, notes. À ne jamais publier ni envoyer dans un prompt.",
-    exemple: "Ce site ne collecte aucune donnée personnelle : les dépôts sont liés à une empreinte de code.",
+    exemple: "Ce site ne collecte aucune donnée personnelle : ni compte, ni formulaire, ni traceur.",
   },
   {
     terme: "Injection de prompt",

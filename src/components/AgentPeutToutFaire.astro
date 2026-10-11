@@ -1,0 +1,20 @@
+---
+import Callout from "./Callout.astro";
+
+interface Props {
+  /** Exemple de demande à formuler, propre à la page. */
+  exemple?: string;
+}
+
+const { exemple } = Astro.props;
+---
+
+<Callout type="info" title="Pas besoin de tout retenir : l'agent sait le faire">
+  <p>
+    Cette page décrit les manipulations dans le détail pour que vous compreniez <strong>ce qui se passe</strong> et pourquoi. Mais vous n'êtes pas obligé de retenir les commandes : l'agent IA sait les exécuter à votre place, et vous expliquer chaque étape.
+  </p>
+  <p>
+    Comprendre sert à <strong>progresser et à mieux demander</strong>. Votre rôle reste de décider, de lire et de vérifier le résultat.
+  </p>
+  {exemple && <p>Par exemple : <em>« {exemple} »</em></p>}
+</Callout>

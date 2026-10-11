@@ -1,6 +1,7 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
 import Callout from "../components/Callout.astro";
+import AgentPeutToutFaire from "../components/AgentPeutToutFaire.astro";
 import PromptBuilder from "../components/PromptBuilder.astro";
 import { navItems } from "../data/navigation";
 import { anatomie, antiPatterns, escalade, phrasesPilotage } from "../data/prompt";
@@ -9,6 +10,7 @@ const item = navItems.find((entry) => entry.slug === "prompt")!;
 ---
 
 <DocLayout item={item} plan={false}>
+  <AgentPeutToutFaire exemple="Transforme cette idée en prompt complet : objectif, contexte, contraintes et critère de réussite." />
   <section>
     <h2>Un prompt n'est pas une question, c'est une commande</h2>
     <p>

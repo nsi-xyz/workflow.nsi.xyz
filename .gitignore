@@ -12,6 +12,9 @@ codes-a-distribuer.html
 .codes-bulk.json
 acces-prof.txt
 
+# Dépôts élèves préparés localement (identifiants + correspondance)
+.classe/
+
 # Dépendances et artefacts
 node_modules/
 dist/
