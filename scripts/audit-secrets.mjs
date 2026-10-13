@@ -17,7 +17,13 @@ import { resolve } from 'node:path'
 const BASE = resolve(process.argv[2] ?? `${process.cwd()}/..`)
 const KEY_RE = /(TOKEN|SECRET|PASS|PASSWORD|API_KEY|APP_KEY|JWT|CREDENTIAL)/i
 const VALUE_MIN = 16
-const PATTERNS = ['cfut_'] // préfixe des jetons Cloudflare de ce compte
+/**
+ * Motifs de secrets RÉELS : le préfixe suivi d'un jeton plausible. Un simple
+ * « cfut_ » est trop large — il apparaît dans les exemples tronqués (« cfut_4b1e… »)
+ * des pages pédagogiques et dans le code des garde-fous eux-mêmes. On exige donc
+ * au moins 20 caractères de jeton, ce que ces exemples ne fournissent jamais.
+ */
+const PATTERNS = [{ label: 'jeton Cloudflare (cfut_)', re: 'cfut_[A-Za-z0-9_-]{20,}' }]
 const fp = (v) => createHash('sha256').update(v).digest('hex').slice(0, 10)
 
 const secrets = new Map() // valeur -> nom de clé
@@ -70,9 +76,9 @@ let alerts = 0
 for (const name of readdirSync(BASE).filter((n) => existsSync(`${BASE}/${n}/.git`)).sort()) {
   const repo = `${BASE}/${name}`
   const findings = []
-  for (const pattern of PATTERNS) {
-    const g = git(repo, ['grep', '-l', '-F', '-e', pattern])
-    if (g) findings.push(`motif « ${pattern} » dans : ${g.split('\n').join(', ')}`)
+  for (const { label, re } of PATTERNS) {
+    const g = git(repo, ['grep', '-lE', '-e', re])
+    if (g) findings.push(`motif « ${label} » dans : ${g.split('\n').join(', ')}`)
   }
   for (const [value, key] of secrets) {
     const g = git(repo, ['grep', '-l', '-F', '-e', value])

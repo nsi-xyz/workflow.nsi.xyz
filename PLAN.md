@@ -9,6 +9,11 @@
 > déposés sur ce site : l'agent les consigne dans le dépôt GitHub de chaque élève
 > (`journal/*.json`, voir `template/workflow.md`). L'API, le KV, les codes anonymes et
 > l'espace prof décrits ci-dessous n'existent plus ; ce document reste l'historique du projet.
+>
+> **Mise à jour (13/10/2026) — brief du projet rédigé.** Les quatre blocs du sujet
+> (objectif, rendu, règles, critères) sont désormais réels (`src/data/projet.ts`). Le
+> garde-fou de taille couvre les CSS, la variable `REVEAL_AT` a été retirée (la date
+> est une constante éditoriale) et l'audit de secrets ne se signale plus lui-même.
 
 ## 0. Décisions actées
 
@@ -35,6 +40,11 @@ question d'élève débutant : *c'est quoi, à quoi ça sert, comment je fais, q
 
 ## 2. Arborescence du site
 
+> **État réel (2026)** : le site publié compte **17 pages** statiques, listées par
+> `npm run test:smoke`. Les entrées `/prof` et `/prompts/depot` du tableau ci-dessous
+> ont été **retirées** avec l'API, le KV et l'espace prof (voir la note en tête de
+> document) ; `/jeu`, `/markdown`, `/llm` et `/couts` ont, elles, été ajoutées.
+
 | Route | Rôle | Contenu clé |
 |---|---|---|
 | `/` | Accueil | Le workflow en 5 étapes (schéma animé), parcours conseillé, bascule de thème, état « bientôt révélé » |
@@ -49,13 +59,13 @@ question d'élève débutant : *c'est quoi, à quoi ça sert, comment je fais, q
 | `/cloudflare` | Publier | Pages, build, URL publique, domaine, statuts de déploiement, lecture des erreurs |
 | `/securite` | Sécurité | Clés API, `.env`, secrets et historique Git, injection de prompt, permissions, « privé ≠ secret », RGPD, **jeu « trouve la fuite »** |
 | `/prompts` | Promptothèque | Prompts prêts à copier par tâche (créer, corriger, déployer, vérifier…) |
-| `/prompts/depot` | Dépôt élève | Code individuel + mission + prompt ; dépôt **automatique par l'agent** (le formulaire reste un secours) ; rappel RGPD |
+| `/prompts/depot` | Dépôt élève | Code individuel + mission + prompt ; dépôt **automatique par l'agent** (le formulaire reste un secours) ; rappel RGPD — **route retirée** |
 | `/missions` | Parcours | Missions guidées génériques avec check-lists locales (découverte → dépôt → déploiement) |
 | `/projet` | Projet final | **Verrouillé** : compte à rebours jusqu'à `REVEAL_AT`, puis brief configurable |
 | `/quiz` | Validation | Quiz par thème, score local, corrigés pédagogiques |
 | `/depannage` | Aide | Erreurs décodées (`401`, port occupé, `fetch failed`, `No access…`), FAQ |
 | `/glossaire` | Référence | Cartes retournables, langage clair |
-| `/prof` | Admin | Mot de passe, liste des dépôts, filtres mission/code/date, export CSV |
+| `/prof` | Admin | Mot de passe, liste des dépôts, filtres mission/code/date, export CSV — **route retirée** |
 
 ## 3. Architecture technique
 
@@ -122,19 +132,20 @@ workflow.nsi.xyz/
 | M3 Interactif | Calculateur de coût, constructeur de prompt, jeu « trouve la fuite », filtres, quiz, mode révision | ✅ intégré aux sections |
 | M4 API & prof | KV, codes élèves, API de dépôt, espace prof, export CSV | ✅ 30/09/2026 |
 | M5 Missions & projet | Missions guidées (progression locale), compte à rebours, page verrouillée, brief à personnaliser | ✅ 30/09/2026 |
-| M6 Finition | Secrets de production, déploiement, domaine, smoke test (19 vérifications) | ✅ 30/09/2026 |
+| M6 Finition | Secrets de production, déploiement, domaine, smoke test (17 pages) | ✅ 30/09/2026 |
 
 Chaque jalon : `npm run typecheck` (0 erreur), `npm test` (100 %), `npm run build`.
 
 ## 7. Ce qu'il me faut avant d'exécuter
 
-- **`REVEAL_AT`** : date et heure exactes de la révélation du projet final
-  (l'élève doit voir un compte à rebours crédible).
+- ✅ **`REVEAL_AT`** : date fournie. Constante éditoriale `revealAt` dans
+  `src/data/projet.ts` (lundi 12/10/2026 à 8 h 42 ; reprise des cours le 02/11/2026).
+  Pas de variable d'environnement : le bundle est statique et les tests importent le module.
 - **Génération des 23 codes** : je produis `codes.csv` (ignoré de Git) + une
   planche imprimable à distribuer ; le prof garde la correspondance hors ligne.
 - **Dépôt du site** : privé (recommandé) ou public comme exemple pour les élèves ?
-- **Hook pré-commit** : le kit le mentionne sans fournir le fichier — je le
-  récupère dans un projet frère (`abc.nsi.xyz`) ou je le réécris.
+- ✅ **Hook pré-commit** : fourni — `.githooks/pre-commit`, installé par `npm install`
+  (`scripts/install-hooks.mjs`).
 
 ## 8. Hors périmètre (pour l'instant)
 

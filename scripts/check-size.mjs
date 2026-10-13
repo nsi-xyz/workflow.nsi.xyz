@@ -36,7 +36,7 @@ function walk(dir, acc = []) {
     if (EXCLUDED_DIRS.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full, acc);
-    else if (/\.(astro|ts)$/.test(entry.name)) acc.push(path.relative(ROOT, full));
+    else if (/\.(astro|ts|css)$/.test(entry.name)) acc.push(path.relative(ROOT, full));
   }
   return acc;
 }
