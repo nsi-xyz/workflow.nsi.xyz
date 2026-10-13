@@ -1,0 +1,42 @@
+/* ==========================================================================
+   Utilitaires — divers
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Divers
+   -------------------------------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.list-plain {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.planned li {
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--glass-border);
+  color: var(--text-soft);
+}
+
+.planned li:last-child {
+  border-bottom: 0;
+}
+
+.planned li::before {
+  content: "→";
+  margin-right: 0.6rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+

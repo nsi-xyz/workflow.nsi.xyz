@@ -1,0 +1,144 @@
+/* ==========================================================================
+   Projet final — compte à rebours et brief
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Projet final — compte à rebours et bascule à la révélation
+   -------------------------------------------------------------------------- */
+/* Avant la révélation, le brief est masqué. Le script pose data-revele="oui"
+   sur <html> le moment venu ; le CSS fait le reste. */
+.projet-revele {
+  display: none;
+}
+
+html[data-revele="oui"] .projet-revele {
+  display: block;
+}
+
+html[data-revele="oui"] .projet-verrou {
+  display: none;
+}
+
+.compte {
+  margin-bottom: 1.2rem;
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+  border: 1px solid var(--glass-border-hi);
+  border-radius: var(--r-lg);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow: var(--shadow-2);
+  text-align: center;
+}
+
+.compte-date {
+  margin: 0 0 1rem;
+  color: var(--text-soft);
+}
+
+.compte-grille {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.compte-case {
+  padding: 0.8rem 0.4rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: var(--glass-hi);
+}
+
+.compte-case span {
+  display: block;
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.compte-case small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--text-mute);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.compte-etat {
+  margin: 1rem 0 0;
+  color: var(--text-mute);
+  font-size: 0.9rem;
+}
+
+.projet-teaser {
+  margin-top: 1.2rem;
+}
+
+@media (max-width: 560px) {
+  .compte-grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Brief révélé — panneaux pleine largeur, lecture confortable
+   --------------------------------------------------------------------------
+   Le brief est un contenu long : la grille `.grid-cards`, pensée pour des cartes
+   courtes, l'étalait et laissait une carte orpheline. Chaque bloc est ici un
+   panneau numéroté, avec une mesure de lecture bornée.
+   -------------------------------------------------------------------------- */
+.brief {
+  display: grid;
+  gap: 1rem;
+  margin: 1.2rem 0 1.3rem;
+}
+
+.brief-bloc {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.1rem;
+  align-items: start;
+  padding: clamp(1.2rem, 2.6vw, 1.7rem) clamp(1.3rem, 3vw, 1.9rem);
+}
+
+.brief-num {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-sm);
+  background: var(--gradient-accent);
+  color: var(--accent-ink);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-1);
+}
+
+.brief-corps h3 {
+  margin: 0 0 0.45em;
+  font-size: 1.2rem;
+}
+
+.brief-corps p {
+  max-width: 74ch;
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.65;
+}
+
+@media (max-width: 560px) {
+  .brief-bloc {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .brief-num {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+}

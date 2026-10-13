@@ -1,0 +1,196 @@
+/* ==========================================================================
+   Primitives — verre, cartes, boutons, pastilles, encadrés
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Surface de verre : la brique de base
+   -------------------------------------------------------------------------- */
+.glass {
+  position: relative;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow: var(--shadow-1);
+}
+
+/* Reflet en haut de la surface : l'indice visuel du verre */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--glass-sheen), transparent);
+  pointer-events: none;
+}
+
+.glass-strong {
+  background: var(--glass-hi);
+  box-shadow: var(--shadow-2);
+}
+
+.glass-soft {
+  background: var(--glass-low);
+}
+
+/* Carte de section : verre + élévation au survol */
+.card {
+  display: block;
+  padding: 1.4rem 1.5rem;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+a.card:hover,
+a.card:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--glass-border-hi);
+  box-shadow: var(--shadow-2);
+}
+
+.card h3 {
+  margin: 0 0 0.35em;
+  font-size: 1.12rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.95em;
+}
+
+.card-kicker {
+  display: block;
+  margin-bottom: 0.55em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Boutons
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1.25rem;
+  border: 1px solid var(--glass-border-hi);
+  border-radius: var(--r-full);
+  background: var(--glass-hi);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+}
+
+.btn-primary {
+  border-color: transparent;
+  background: var(--gradient-accent);
+  color: var(--accent-ink);
+}
+
+.btn-ghost {
+  border-color: var(--glass-border);
+  background: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Pastilles, étiquettes, touches
+   -------------------------------------------------------------------------- */
+.badge,
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.8rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-full);
+  background: var(--glass);
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.chip-ok {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 45%, transparent);
+}
+
+.chip-warn {
+  color: var(--warn);
+  border-color: color-mix(in srgb, var(--warn) 45%, transparent);
+}
+
+.chip-danger {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+}
+
+kbd {
+  padding: 0.15em 0.5em;
+  border: 1px solid var(--glass-border-hi);
+  border-bottom-width: 2px;
+  border-radius: 7px;
+  background: var(--glass-hi);
+  font-size: 0.85em;
+}
+
+/* --------------------------------------------------------------------------
+   Encadrés pédagogiques
+   -------------------------------------------------------------------------- */
+.callout {
+  margin: 1.1rem 0;
+  padding: 1rem 1.2rem 1rem 1.4rem;
+  border: 1px solid var(--glass-border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--r-md);
+  background: var(--glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.callout > :last-child {
+  margin-bottom: 0;
+}
+
+.callout-title {
+  display: block;
+  margin-bottom: 0.25em;
+  font-weight: 700;
+}
+
+.callout-info {
+  border-left-color: var(--accent);
+}
+.callout-ok {
+  border-left-color: var(--ok);
+}
+.callout-warn {
+  border-left-color: var(--warn);
+}
+.callout-danger {
+  border-left-color: var(--danger);
+}
+

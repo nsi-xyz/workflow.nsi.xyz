@@ -1,7 +1,26 @@
 /* Point d'entrée unique des styles du site.
-   Ordre volontaire : Tailwind (base + utilitaires), puis nos jetons,
-   la base et les composants — notre verre dépoli passe en dernier. */
+   Ordre volontaire : Tailwind (base + utilitaires), puis nos jetons, la base,
+   et les composants découpés par domaine. `rhythm.css` vient en dernier pour
+   imposer le rythme vertical (anti-collage) sur tous les composants. */
+
 @import "tailwindcss";
 @import "./tokens.css";
 @import "./base.css";
-@import "./components.css";
+@import "./primitives.css";
+@import "./chrome.css";
+@import "./layout.css";
+@import "./home.css";
+@import "./securite.css";
+@import "./workflow.css";
+@import "./couts.css";
+@import "./opencode.css";
+@import "./git.css";
+@import "./prompt.css";
+@import "./promptotheque.css";
+@import "./depannage.css";
+@import "./glossaire.css";
+@import "./quiz.css";
+@import "./projet.css";
+@import "./missions.css";
+@import "./utilities.css";
+@import "./rhythm.css";

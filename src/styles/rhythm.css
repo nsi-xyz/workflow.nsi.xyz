@@ -1,0 +1,27 @@
+/* ==========================================================================
+   Rythme vertical — garde-fous anti-collage
+   --------------------------------------------------------------------------
+   Les marges des titres et paragraphes s'effondrent entre blocs : quand une
+   section se termine par une grille sans marge et que la suivante commence par
+   un bandeau sans marge, l'espace tombe à zéro et les blocs se collent. Ces
+   règles garantissent un écart minimal, sans dépendre du contenu des sections.
+   Importé EN DERNIER pour reprendre la main sur les composants sans marge.
+   ========================================================================== */
+
+main > section + section,
+article > section + section {
+  margin-top: clamp(1.7rem, 4vw, 2.6rem);
+}
+
+.phase-grid,
+.myths,
+.duo,
+.antipatterns,
+.anatomy,
+.prompt-liste,
+.leak-grid,
+.glossaire,
+.rules,
+.checklist {
+  margin-block: 1.05rem 1.3rem;
+}

@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Mise en page — héros, sommaire, grilles, bandeau
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Héros et mise en page des pages
+   -------------------------------------------------------------------------- */
+.page-hero {
+  position: relative;
+  max-width: 72ch;
+  margin-bottom: clamp(1.6rem, 4vw, 2.8rem);
+}
+
+.page-hero .kicker {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-full);
+  background: var(--glass);
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.page-hero h1 {
+  margin-bottom: 0.5rem;
+}
+
+.page-hero .lead {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: clamp(1.02rem, 1.6vw, 1.16rem);
+}
+
+.doc-shell {
+  display: grid;
+  grid-template-columns: minmax(230px, 262px) minmax(0, 1fr);
+  gap: clamp(1.4rem, 3vw, 2.6rem);
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(1.4rem, 4vw, 3rem) var(--pad) 4rem;
+  align-items: start;
+}
+
+@media (max-width: 880px) {
+  .doc-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sommaire latéral */
+.sidebar {
+  position: sticky;
+  top: 84px;
+  padding: 1.1rem;
+  max-height: calc(100vh - 110px);
+  overflow: auto;
+}
+
+.sidebar .menu-group {
+  padding: 0.55rem 0.5rem 0.2rem;
+  color: var(--text-mute);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.sidebar a {
+  display: block;
+  padding: 0.42rem 0.6rem;
+  border-radius: var(--r-sm);
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  background: var(--glass-hi);
+  color: var(--text);
+}
+
+.sidebar a[aria-current="page"] {
+  background: var(--glass-hi);
+  color: var(--text);
+  border-left: 3px solid var(--accent);
+}
+
+.sidebar details {
+  margin-top: 0.9rem;
+}
+
+.sidebar summary {
+  cursor: pointer;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Grilles */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.3rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin: clamp(2rem, 5vw, 3.2rem) 0 1rem;
+}
+
+.section-title h2 {
+  margin: 0;
+}
+
+.section-title small {
+  color: var(--text-mute);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Parcours du workflow — la pièce centrale de l'accueil
+   -------------------------------------------------------------------------- */
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.9rem;
+  counter-reset: step;
+}
+
+@media (max-width: 980px) {
+  .pipeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Variante à quatre étapes (déploiement Cloudflare) */
+.pipeline.steps-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 560px) {
+  .pipeline {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pipeline .step {
+  position: relative;
+  padding: 1.2rem 1.1rem 1.1rem;
+  counter-increment: step;
+}
+
+.pipeline .step::after {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  top: 0.7rem;
+  right: 0.9rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.pipeline .step h3 {
+  margin: 0 0 0.3em;
+  padding-right: 2.2rem;
+  font-size: 1rem;
+}
+
+.pipeline .step p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+}
+
+.pipeline .step a {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pipeline .step .step-note {
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px dashed var(--glass-border);
+  color: var(--text-mute);
+  font-size: 0.82rem;
+}
+
+/* Bandeau du projet final */
+.band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.6rem;
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.band .band-text {
+  flex: 1 1 22rem;
+}
+
+.band h2 {
+  margin: 0 0 0.3em;
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+}
+
+.band p {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.shell {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
