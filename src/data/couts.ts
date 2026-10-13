@@ -2,7 +2,8 @@
  * Données de la page « Coûts et budget ».
  *
  * Synthèse d'un document de cours distribué en classe. Les tarifs sont
- * relevés au 30/09/2026, en dollars US, et évoluent vite : la page invite à
+ * relevés en octobre 2026 (offre OpenCode Go : amplification portée à ×8 sur
+ * DeepSeek V4.1 Flash), en dollars US, et évoluent vite : la page invite à
  * vérifier les pages officielles avant tout achat.
  */
 
@@ -105,8 +106,8 @@ export const plans: Plan[] = [
   {
     nom: "OpenCode Go",
     prix: "10 $/mois",
-    ratio: "×6",
-    deepseek: "60 $",
+    ratio: "×8",
+    deepseek: "80 $",
     luna: "15 $",
     cleApi: "oui",
     opencode: "natif",
@@ -193,10 +194,10 @@ export interface Recommandation {
 export const recommandation: Recommandation = {
   titre: "OpenCode Go — 10 $/mois (environ 9 €)",
   texte:
-    "C'est le plan recommandé après test : pour 10 $ par mois, il donne environ 60 $ de travail sur les modèles ouverts, directement intégré à OpenCode, avec une clé API utilisable aussi ailleurs.",
+    "C'est le plan recommandé après test : pour 10 $ par mois, il donne environ 80 $ de travail sur les modèles ouverts, directement intégré à OpenCode, avec une clé API utilisable aussi ailleurs.",
   points: [
     "Prix fixe : environ 9 € par mois, connu à l'avance.",
-    "Amplification : environ ×6 (60 $ d'usage sur DeepSeek V4.1 Flash).",
+    "Amplification : environ ×8 sur DeepSeek V4.1 Flash (80 $ d'usage pour 10 $).",
     "Modèles : DeepSeek, GLM, Kimi, Qwen, MiniMax, MiMo, et GPT-6 Luna (plafonné).",
     "Intégration native dans OpenCode : aucune configuration compliquée.",
     "Fenêtres de consommation par tranches : étalez les gros travaux dans le temps.",
