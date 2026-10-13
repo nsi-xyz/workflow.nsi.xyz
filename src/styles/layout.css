@@ -222,7 +222,9 @@
 
 .shell {
   max-width: var(--maxw);
-  margin: 0 auto;
+  /* Centrage horizontal uniquement : une marge verticale explicite écraserait
+     le rythme entre sections (spécificité de classe > sélecteur d'éléments). */
+  margin-inline: auto;
   padding: 0 var(--pad);
 }
 
