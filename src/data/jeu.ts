@@ -4,7 +4,7 @@
  * Le test réalisé en classe consiste à publier un site. Le projet des vacances
  * consiste à créer un jeu vidéo de A à Z. Cette page explique ce qui change,
  * ce qui ne change pas, et comment le workflow s'adapte aux spécificités d'un
- * jeu — sans divulguer les règles du projet final, révélées le jour J.
+ * jeu — et rappelle où trouver le brief du projet final.
  */
 
 export interface Difference {
@@ -116,4 +116,4 @@ export const adaptations: Adaptation[] = [
 ];
 
 export const avertissement =
-  "Le sujet, les règles et les contraintes du projet final ne sont pas encore communiqués : ils seront révélés à la date annoncée sur la page du projet. Cette page explique seulement la différence entre un site et un jeu, pour que vous arriviez préparé à l'un comme à l'autre.";
+  "Le projet final est désormais dévoilé : créer un jeu vidéo de A à Z, à partir de zéro. Le brief complet — objectif, rendu attendu, règles et critères d'évaluation — est sur la page du projet. Cette page explique seulement ce qui distingue un site d'un jeu, pour l'aborder avec la bonne méthode.";

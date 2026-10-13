@@ -229,9 +229,9 @@ const groups: Array<Omit<NavGroup, "items"> & { items: Array<Omit<NavItem, "slug
         slug: "projet",
         title: "Le projet final",
         kicker: "Objectif",
-        lead: "Le sujet sera révélé le lundi de la dernière semaine avant les vacances de la Toussaint, à 8 h 42 : la création d'un jeu vidéo de A à Z. D'ici là, tout ce qu'il faut maîtriser est sur ce site.",
+        lead: "Créer un jeu vidéo de A à Z, en pilotant une IA. Le brief complet — objectif, rendu attendu, règles et critères d'évaluation — est sur cette page.",
         planned: [
-          "Le jeu à réaliser (verrouillé jusqu'à la révélation)",
+          "Le jeu à réaliser (sujet, règles, condition de victoire)",
           "Le rendu attendu",
           "Les règles du jeu",
           "Les critères d'évaluation",

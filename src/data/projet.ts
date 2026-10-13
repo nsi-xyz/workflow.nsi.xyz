@@ -26,7 +26,7 @@ export interface SectionProjet {
   contenu: string;
 }
 
-/** Le brief révélé le jour J : sujet libre, démarche et règles imposées. */
+/** Le brief du projet final : sujet libre, démarche et règles imposées. */
 export const briefProjet: SectionProjet[] = [
   {
     titre: "L'objectif",

@@ -1,6 +1,6 @@
 /**
  * Tests de la section « Du site au jeu vidéo ».
- * Le contenu doit rester complet sans jamais divulguer les règles du projet final.
+ * Le contenu doit rester complet et renvoyer au brief du projet final.
  */
 
 import test from "node:test";
@@ -36,8 +36,8 @@ test("les adaptations du workflow sont expliquées", () => {
   }
 });
 
-test("l'avertissement rappelle que le sujet reste verrouillé", () => {
+test("l'avertissement renvoie au brief du projet", () => {
   assert.ok(avertissement.trim().length > 40, "avertissement trop court");
   const texte = avertissement.toLowerCase();
-  assert.ok(texte.includes("révél"), "l'avertissement doit mentionner la révélation");
+  assert.ok(texte.includes("projet"), "l'avertissement doit renvoyer à la page du projet");
 });
