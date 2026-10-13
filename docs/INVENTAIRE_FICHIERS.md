@@ -1,37 +1,35 @@
 # Inventaire des fichiers — workflow.nsi.xyz
 
 > Fichier **généré** par `node scripts/generate-inventory.mjs` — ne pas éditer à la main.
-> Dernière génération : 2026-10-11
+> Dernière génération : 2026-10-13
 
 ## Synthèse
 
-- **113 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **14 757 lignes** au total.
+- **130 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **14 998 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 18 | 3 677 |
-| `src/data/` | 17 | 3 304 |
-| `src/styles/` | 4 | 2 387 |
-| `scripts/` | 27 | 2 117 |
+| `src/pages/` | 18 | 3 686 |
+| `src/data/` | 17 | 3 315 |
+| `src/styles/` | 21 | 2 575 |
+| `scripts/` | 27 | 2 123 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 10 | 826 |
-| `./` | 6 | 313 |
+| `./` | 6 | 324 |
 | `src/lib/` | 3 | 280 |
-| `template/` | 3 | 193 |
+| `template/` | 3 | 203 |
 | `src/client/` | 1 | 159 |
-| `public/` | 1 | 147 |
+| `public/` | 1 | 153 |
 | `src/layouts/` | 2 | 130 |
 | `docs/` | 2 | 110 |
 | `src/` | 1 | 6 |
 
 ## Fichiers les plus volumineux (> 400 lignes)
 
-| Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
-|---|---:|---:|---:|---:|---|
-| `src/styles/components.css` | 1984 | — | — | 1984 | Feuille de style |
+_Aucun fichier au-dessus de 400 lignes._
 
 ## Inventaire complet
 
@@ -42,11 +40,11 @@
 | `docs/workflow-classe.template.md` | 47 | Documentation |
 | `env.d.ts` | 2 | Racine / config |
 | `package.json` | 50 | Racine / config |
-| `PLAN.md` | 144 | Racine / config |
-| `public/workflow.md` | 147 | Racine / config |
+| `PLAN.md` | 155 | Racine / config |
+| `public/workflow.md` | 153 | Racine / config |
 | `README.md` | 87 | Racine / config |
 | `scripts/any-baseline.json` | 4 | Script outillage |
-| `scripts/audit-secrets.mjs` | 102 | Script outillage |
+| `scripts/audit-secrets.mjs` | 108 | Script outillage |
 | `scripts/check-debt.mjs` | 117 | Script outillage |
 | `scripts/check-nocheck.mjs` | 68 | Script outillage |
 | `scripts/check-secrets.mjs` | 98 | Script outillage |
@@ -84,7 +82,7 @@
 | `src/components/SpotTheLeak.astro` | 138 | Composant UI |
 | `src/components/ThemeToggle.astro` | 53 | Composant UI |
 | `src/data/cloudflare.ts` | 174 | Donnée éditoriale |
-| `src/data/couts.ts` | 255 | Donnée éditoriale |
+| `src/data/couts.ts` | 256 | Donnée éditoriale |
 | `src/data/depannage.ts` | 187 | Donnée éditoriale |
 | `src/data/git.ts` | 235 | Donnée éditoriale |
 | `src/data/glossaire.ts` | 270 | Donnée éditoriale |
@@ -94,7 +92,7 @@
 | `src/data/missions.ts` | 80 | Donnée éditoriale |
 | `src/data/navigation.ts` | 293 | Donnée éditoriale |
 | `src/data/opencode.ts` | 192 | Donnée éditoriale |
-| `src/data/projet.ts` | 96 | Donnée éditoriale |
+| `src/data/projet.ts` | 106 | Donnée éditoriale |
 | `src/data/prompt.ts` | 207 | Donnée éditoriale |
 | `src/data/promptotheque.ts` | 348 | Donnée éditoriale |
 | `src/data/quiz.ts` | 321 | Donnée éditoriale |
@@ -107,7 +105,7 @@
 | `src/lib/prompt.ts` | 80 | Racine / config |
 | `src/pages/[...slug].astro` | 45 | Page (route) |
 | `src/pages/cloudflare.astro` | 318 | Page (route) |
-| `src/pages/couts.astro` | 277 | Page (route) |
+| `src/pages/couts.astro` | 278 | Page (route) |
 | `src/pages/depannage.astro` | 191 | Page (route) |
 | `src/pages/git-github.astro` | 305 | Page (route) |
 | `src/pages/glossaire.astro` | 217 | Page (route) |
@@ -117,20 +115,37 @@
 | `src/pages/markdown.astro` | 196 | Page (route) |
 | `src/pages/missions.astro` | 156 | Page (route) |
 | `src/pages/opencode.astro` | 350 | Page (route) |
-| `src/pages/projet.astro` | 124 | Page (route) |
+| `src/pages/projet.astro` | 132 | Page (route) |
 | `src/pages/prompt.astro` | 200 | Page (route) |
 | `src/pages/prompts.astro` | 116 | Page (route) |
 | `src/pages/quiz.astro` | 124 | Page (route) |
 | `src/pages/securite.astro` | 322 | Page (route) |
 | `src/pages/workflow.astro` | 236 | Page (route) |
 | `src/styles/base.css` | 288 | Feuille de style |
-| `src/styles/components.css` | 1984 | Feuille de style |
-| `src/styles/global.css` | 8 | Feuille de style |
+| `src/styles/chrome.css` | 263 | Feuille de style |
+| `src/styles/couts.css` | 88 | Feuille de style |
+| `src/styles/depannage.css` | 54 | Feuille de style |
+| `src/styles/git.css` | 54 | Feuille de style |
+| `src/styles/global.css` | 27 | Feuille de style |
+| `src/styles/glossaire.css` | 54 | Feuille de style |
+| `src/styles/home.css` | 137 | Feuille de style |
+| `src/styles/layout.css` | 229 | Feuille de style |
+| `src/styles/missions.css` | 108 | Feuille de style |
+| `src/styles/opencode.css` | 119 | Feuille de style |
+| `src/styles/primitives.css` | 197 | Feuille de style |
+| `src/styles/projet.css` | 145 | Feuille de style |
+| `src/styles/prompt.css` | 146 | Feuille de style |
+| `src/styles/promptotheque.css` | 99 | Feuille de style |
+| `src/styles/quiz.css` | 72 | Feuille de style |
+| `src/styles/rhythm.css` | 28 | Feuille de style |
+| `src/styles/securite.css` | 154 | Feuille de style |
 | `src/styles/tokens.css` | 107 | Feuille de style |
+| `src/styles/utilities.css` | 43 | Feuille de style |
+| `src/styles/workflow.css` | 163 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
-| `template/AGENTS.md` | 38 | Modèle de dépôt élève |
+| `template/AGENTS.md` | 42 | Modèle de dépôt élève |
 | `template/projet.json` | 9 | Modèle de dépôt élève |
-| `template/workflow.md` | 146 | Modèle de dépôt élève |
+| `template/workflow.md` | 152 | Modèle de dépôt élève |
 | `tests/cloudflare.test.mjs` | 59 | Test |
 | `tests/content.test.mjs` | 51 | Test |
 | `tests/couts.test.mjs` | 99 | Test |

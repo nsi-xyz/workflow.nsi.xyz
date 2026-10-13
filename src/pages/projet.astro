@@ -31,21 +31,29 @@ const item = navItems.find((entry) => entry.slug === "projet")!;
   </section>
 
   <section class="projet-revele">
-    <h2>{messageRevele}</h2>
-    <div class="grid-cards">
+    <div class="section-title">
+      <h2>{messageRevele}</h2>
+      <small>le brief du projet final</small>
+    </div>
+    <div class="brief">
       {
-        briefProjet.map((section) => (
-          <article class="glass card">
-            <h3>{section.titre}</h3>
-            <p>{section.contenu}</p>
+        briefProjet.map((section, index) => (
+          <article class="glass brief-bloc">
+            <span class="brief-num" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            <div class="brief-corps">
+              <h3>{section.titre}</h3>
+              <p>{section.contenu}</p>
+            </div>
           </article>
         ))
       }
     </div>
-    <Callout type="info" title="Ces quatre blocs attendent le texte du sujet">
+    <Callout type="info" title="Un sujet libre, une démarche imposée">
       <p>
-        L'enseignant les remplace par le brief réel : objectif, rendu attendu, règles,
-        critères. Le reste de la page est déjà prêt.
+        Aucun thème ni titre n'est imposé : le jeu, c'est le vôtre. Ce qui est attendu,
+        c'est la méthode — cadrer avant de coder, tester en jouant, publier, et tout
+        consigner dans le journal du dépôt. Un petit jeu fini vaut mieux qu'un grand
+        jeu inachevé.
       </p>
     </Callout>
   </section>

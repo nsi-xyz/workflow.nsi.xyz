@@ -113,6 +113,12 @@ Valeurs autorisées — `mode` : `plan` \| `build` · `etape` : `decrire` \| `ge
 
 ## 5. Règles permanentes (à recopier dans `AGENTS.md`)
 
+- **Le workflow d'abord** : la mise en place (§ 1) est faite **avant** de commencer le
+  projet, et tout se construit dans **ce dossier** (celui qui contient ce `workflow.md`),
+  jamais à côté.
+- **Travail original** : aucun projet **recyclé** (déjà commencé ou terminé), aucun jeu
+  **tout fait** récupéré sur Internet, aucun tutoriel recopié. On part de zéro : c'est
+  l'objectif, apprendre à piloter l'IA.
 - Aucun secret (clé d'API, jeton, mot de passe) dans un fichier suivi par Git : la clé
   vit dans `.env`, ignoré par Git.
 - Le `.gitignore` s'écrit **avant** le premier commit, et se vérifie avec

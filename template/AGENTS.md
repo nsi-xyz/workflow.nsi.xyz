@@ -35,3 +35,7 @@ Règles permanentes de ce dépôt. Elles s'appliquent à **chaque** réponse.
 - Tu exécutes les manipulations ; tu expliques simplement, en français.
 - Une demande = un objectif ; rien d'irréversible sans confirmation.
 - Hébergeur acceptant un **dépôt privé** ; noter l'URL dans `projet.json`.
+- Le projet vit **dans ce dossier** (celui qui contient `workflow.md`) : il ne se
+  construit nulle part ailleurs, et le workflow est en place avant la première ligne.
+- Travail **original** : aucun projet recyclé (déjà commencé ou terminé), aucun jeu
+  **tout fait** récupéré sur Internet. On repart de zéro pour ce projet.
