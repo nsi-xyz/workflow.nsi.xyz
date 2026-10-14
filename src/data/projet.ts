@@ -51,7 +51,7 @@ export const briefProjet: SectionProjet[] = [
   {
     titre: "Les critères d'évaluation",
     contenu:
-      "Un jeu vraiment jouable et fini : on gagne, on perd, on recommence. La trace : journal/ raconte le projet, un commit par échange. La mise en ligne effective, l'URL renseignée dans projet.json. L'autonomie : savoir expliquer ce que fait le code et pourquoi. La qualité technique : fluidité, équilibrage, ressources légères. L'originalité. Et une présentation orale claire, vivante, surprenante et originale, qui donne envie de jouer.",
+      "Un jeu vraiment jouable et fini : on gagne, on perd, on recommence. La trace : journal/ raconte le projet, un commit par échange. La mise en ligne effective, l'URL renseignée dans projet.json. L'autonomie : savoir expliquer l'organisation du projet (le rôle des fichiers, la structure) et vos choix — sans lire le code ligne à ligne. La qualité technique : fluidité, équilibrage, ressources légères. L'originalité. Et une présentation orale claire, vivante, surprenante et originale, qui donne envie de jouer.",
   },
 ];
 

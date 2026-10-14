@@ -137,8 +137,30 @@ const item = navItems.find((entry) => entry.slug === "workflow")!;
     </div>
     <Callout type="warn" title="La ligne rouge">
       <p>
-        Quatre choses ne se délèguent jamais : <strong>choisir ce qu'on publie</strong>, <strong>protéger les secrets</strong>, <strong>les données personnelles</strong> et <strong>la compréhension</strong> du projet. Un travail que vous ne pouvez pas
-        expliquer n'est pas votre travail.
+        Quatre choses ne se délèguent jamais : <strong>choisir ce qu'on publie</strong>, <strong>protéger les secrets</strong>, <strong>les données personnelles</strong> et <strong>la compréhension</strong> du projet. On ne vous demandera pas de réciter le code — mais de savoir expliquer comment le projet est fait.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
+    <h2>Comprendre l'organisation, pas le code</h2>
+    <p>
+      Vous n'avez pas à lire le code ligne à ligne. Ce qu'on attend de vous, c'est de
+      comprendre <strong>l'architecture</strong> du projet : quel fichier fait quoi, où vit
+      chaque chose, comment les morceaux s'emboîtent. Le reste se demande à l'agent, en
+      langage clair.
+    </p>
+    <p>
+      Tout problème a une solution si la demande est précise : décrivez l'écart, collez le
+      message d'erreur entier, et laissez l'agent corriger. Et si une session part en vrille,
+      on la <a href="/opencode">compacte ou on repart d'une session neuve dans le même
+      dossier</a> — les fichiers, eux, ne bougent pas.
+    </p>
+    <Callout type="ok" title="Ce que vous devez pouvoir raconter">
+      <p>
+        Pas le code : l'organisation. « Ce fichier, c'est la page d'accueil ; celui-ci, les
+        styles ; ce dossier garde la trace des échanges. » Si vous savez dire cela, et montrer
+        que le résultat fonctionne, vous avez tout bon.
       </p>
     </Callout>
   </section>
@@ -165,7 +187,7 @@ const item = navItems.find((entry) => entry.slug === "workflow")!;
   </section>
 
   <section>
-    <h2>Les règles du jeu</h2>
+    <h2>Les règles à tenir</h2>
     <ol class="rules">
       {workflowRules.map((rule) => <li>{rule}</li>)}
     </ol>

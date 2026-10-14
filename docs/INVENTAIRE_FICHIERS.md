@@ -1,28 +1,28 @@
 # Inventaire des fichiers — workflow.nsi.xyz
 
 > Fichier **généré** par `node scripts/generate-inventory.mjs` — ne pas éditer à la main.
-> Dernière génération : 2026-10-13
+> Dernière génération : 2026-10-14
 
 ## Synthèse
 
 - **130 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **15 000 lignes** au total.
+- **15 085 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 18 | 3 686 |
-| `src/data/` | 17 | 3 315 |
+| `src/pages/` | 18 | 3 753 |
+| `src/data/` | 17 | 3 316 |
 | `src/styles/` | 21 | 2 577 |
 | `scripts/` | 27 | 2 123 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 10 | 826 |
 | `./` | 6 | 324 |
 | `src/lib/` | 3 | 280 |
-| `template/` | 3 | 203 |
+| `template/` | 3 | 214 |
+| `public/` | 1 | 159 |
 | `src/client/` | 1 | 159 |
-| `public/` | 1 | 153 |
 | `src/layouts/` | 2 | 130 |
 | `docs/` | 2 | 110 |
 | `src/` | 1 | 6 |
@@ -41,7 +41,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `env.d.ts` | 2 | Racine / config |
 | `package.json` | 50 | Racine / config |
 | `PLAN.md` | 155 | Racine / config |
-| `public/workflow.md` | 153 | Racine / config |
+| `public/workflow.md` | 159 | Racine / config |
 | `README.md` | 87 | Racine / config |
 | `scripts/any-baseline.json` | 4 | Script outillage |
 | `scripts/audit-secrets.mjs` | 108 | Script outillage |
@@ -97,7 +97,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/data/promptotheque.ts` | 348 | Donnée éditoriale |
 | `src/data/quiz.ts` | 321 | Donnée éditoriale |
 | `src/data/securite.ts` | 88 | Donnée éditoriale |
-| `src/data/workflow.ts` | 213 | Donnée éditoriale |
+| `src/data/workflow.ts` | 214 | Donnée éditoriale |
 | `src/layouts/BaseLayout.astro` | 63 | Gabarit de page |
 | `src/layouts/DocLayout.astro` | 67 | Gabarit de page |
 | `src/lib/cout.ts` | 189 | Racine / config |
@@ -114,13 +114,13 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/pages/llm.astro` | 210 | Page (route) |
 | `src/pages/markdown.astro` | 196 | Page (route) |
 | `src/pages/missions.astro` | 156 | Page (route) |
-| `src/pages/opencode.astro` | 350 | Page (route) |
+| `src/pages/opencode.astro` | 395 | Page (route) |
 | `src/pages/projet.astro` | 132 | Page (route) |
 | `src/pages/prompt.astro` | 200 | Page (route) |
 | `src/pages/prompts.astro` | 116 | Page (route) |
 | `src/pages/quiz.astro` | 124 | Page (route) |
 | `src/pages/securite.astro` | 322 | Page (route) |
-| `src/pages/workflow.astro` | 236 | Page (route) |
+| `src/pages/workflow.astro` | 258 | Page (route) |
 | `src/styles/base.css` | 288 | Feuille de style |
 | `src/styles/chrome.css` | 263 | Feuille de style |
 | `src/styles/couts.css` | 88 | Feuille de style |
@@ -143,9 +143,9 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/styles/utilities.css` | 43 | Feuille de style |
 | `src/styles/workflow.css` | 163 | Feuille de style |
 | `src/version.json` | 6 | Racine / config |
-| `template/AGENTS.md` | 42 | Modèle de dépôt élève |
+| `template/AGENTS.md` | 47 | Modèle de dépôt élève |
 | `template/projet.json` | 9 | Modèle de dépôt élève |
-| `template/workflow.md` | 152 | Modèle de dépôt élève |
+| `template/workflow.md` | 158 | Modèle de dépôt élève |
 | `tests/cloudflare.test.mjs` | 59 | Test |
 | `tests/content.test.mjs` | 51 | Test |
 | `tests/couts.test.mjs` | 99 | Test |

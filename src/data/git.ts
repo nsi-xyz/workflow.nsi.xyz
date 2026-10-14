@@ -161,7 +161,7 @@ export interface Interdit {
 
 export const interdits: Interdit[] = [
   { element: ".env et tout fichier de clés", raison: "Un secret dans un dépôt est un secret perdu (voir Sécurité)." },
-  { element: "Les identifiants pseudonymes des élèves", raison: "Ils relient un dépôt privé à un élève : ils restent dans codes.csv, hors du dépôt." },
+  { element: "Les noms et données réelles des élèves", raison: "Le dépôt ne porte que l'identifiant pseudonyme ; la correspondance avec le nom reste hors du dépôt, côté enseignant." },
   { element: "Les données personnelles", raison: "Noms, téléphones, adresses, photos : jamais dans un dépôt ni dans un prompt." },
   { element: "node_modules/ et dist/", raison: "Reconstructibles depuis le projet : ils alourdissent le dépôt pour rien." },
   { element: "Les fichiers énormes (vidéos, images non optimisées)", raison: "Git garde tout : un dépôt lourd reste lourd, pour toujours." },

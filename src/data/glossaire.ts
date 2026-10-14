@@ -113,7 +113,7 @@ export const termes: Terme[] = [
     theme: "Git et dépôt",
     definition:
       "Ligne de développement indépendante. Un projet d'élève vit très bien sur une seule branche : main.",
-    exemple: "GitHub Pages crée une URL de prévisualisation par branche, mais ce n'est pas nécessaire ici.",
+    exemple: "Cloudflare Pages crée une URL de prévisualisation par branche, mais un projet d'élève vit très bien sur main seule.",
   },
   {
     terme: "Dépôt distant (remote)",

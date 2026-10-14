@@ -119,6 +119,12 @@ Valeurs autorisées — `mode` : `plan` \| `build` · `etape` : `decrire` \| `ge
 - **Travail original** : aucun projet **recyclé** (déjà commencé ou terminé), aucun jeu
   **tout fait** récupéré sur Internet, aucun tutoriel recopié. On part de zéro : c'est
   l'objectif, apprendre à piloter l'IA.
+- **Explique l'organisation, pas le code** : décris le rôle des fichiers et la structure du
+  projet. L'élève doit pouvoir raconter **l'organisation** et les choix, pas réciter le code
+  ligne à ligne — c'est cela, être autonome.
+- **Session qui patine** : propose `/compact`. Si elle reste confuse, reprends une session
+  neuve **dans ce même dossier** (relance `opencode` ici), après avoir relu `AGENTS.md` et
+  ce document. Les fichiers ne bougent pas.
 - Aucun secret (clé d'API, jeton, mot de passe) dans un fichier suivi par Git : la clé
   vit dans `.env`, ignoré par Git.
 - Le `.gitignore` s'écrit **avant** le premier commit, et se vérifie avec

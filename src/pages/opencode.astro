@@ -295,6 +295,51 @@ brew install anomalyco/tap/opencode-v2</code></pre>
   </section>
 
   <section>
+    <h2>Comprendre l'organisation, pas le code</h2>
+    <p>
+      Vous n'avez pas à lire ni à comprendre le code ligne à ligne. Ce qui compte, c'est
+      l'<strong>organisation du projet</strong> : quel fichier fait quoi, où vit chaque chose,
+      comment le tout tient debout. Cette carte-là, vous devez pouvoir la raconter — le
+      détail, l'agent peut toujours vous l'expliquer.
+    </p>
+    <p>
+      Et un problème se règle presque toujours en <strong>demandant bien</strong> : décrivez ce
+      qui ne va pas et ce que vous attendiez, puis collez le message d'erreur <em>entier</em>.
+      L'agent sait faire le reste. Vous, vous vérifiez le résultat : la page s'affiche, le jeu
+      se joue.
+    </p>
+
+    <h3>Quand la session patine : compacter, ou repartir propre</h3>
+    <p>
+      Une session trop longue relit sans arrêt les mêmes fichiers et les mêmes erreurs : elle
+      répond moins bien et coûte plus cher. Ce n'est pas une panne. Deux gestes, dans cet
+      ordre.
+    </p>
+    <ol class="rules rules-steps">
+      <li>
+        <strong><code>/compact</code> d'abord.</strong> La conversation est résumée : le fil
+        est conservé, le contexte s'allège, la facture baisse. À essayer en premier.
+      </li>
+      <li>
+        <strong>Sinon, une session neuve dans le même dossier.</strong> Quittez OpenCode
+        (<code>/exit</code>), puis relancez-le depuis le dossier du projet : <code>cd mon-projet &amp;&amp; opencode</code>.
+        Vos fichiers, votre dépôt et le dossier <code>journal/</code> sont toujours là : rien n'est perdu.
+      </li>
+      <li>
+        <strong>Pour repartir du bon pied,</strong> demandez : « lis <code>AGENTS.md</code> et <code>workflow.md</code>,
+        puis fais le point sur le projet sans rien modifier ».
+      </li>
+    </ol>
+    <Callout type="info" title="Pourquoi ça marche">
+      <p>
+        L'agent ne se souvient de rien d'une session à l'autre : à chaque tour, il ne connaît
+        que le contexte qu'on lui donne. Une session neuve lui redonne un contexte propre — le
+        projet, lui, n'a pas bougé.
+      </p>
+    </Callout>
+  </section>
+
+  <section>
     <h2>La première heure sans stress</h2>
     <ol class="rules">
       {

@@ -39,3 +39,8 @@ Règles permanentes de ce dépôt. Elles s'appliquent à **chaque** réponse.
   construit nulle part ailleurs, et le workflow est en place avant la première ligne.
 - Travail **original** : aucun projet recyclé (déjà commencé ou terminé), aucun jeu
   **tout fait** récupéré sur Internet. On repart de zéro pour ce projet.
+- Explique **l'organisation** du projet (rôle des fichiers, structure) plutôt que le code
+  ligne à ligne : l'élève doit pouvoir raconter l'organisation et ses choix, pas réciter le
+  code.
+- Si la session s'alourdit ou patine : propose <code>/compact</code>, ou reprends une session
+  neuve **dans ce même dossier** après avoir relu ce fichier et `workflow.md`.

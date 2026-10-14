@@ -144,7 +144,7 @@ export const humanDuties: string[] = [
   "Choisir le sujet, le public et le message : l'IA n'a ni goût ni intention.",
   "Décider ce qui est acceptable : un texte, une image, une couleur se valident.",
   "Vérifier la sécurité : aucun secret dans le dépôt, aucune donnée personnelle publiée.",
-  "Comprendre ce qui est écrit : on ne signe pas un projet qu'on ne peut pas expliquer.",
+  "Comprendre l'organisation du projet — quel fichier fait quoi, comment le tout est structuré — sans lire le code ligne à ligne.",
   "Publier et assumer : c'est votre nom qui est derrière l'URL.",
 ];
 
@@ -158,7 +158,8 @@ export const agentStrengths: string[] = [
 
 export const workflowRules: string[] = [
   "Une demande = un objectif. Deux objectifs dans un même prompt, c'est deux fois plus de chances de tout casser.",
-  "Toujours lire avant de valider : ce que vous acceptez sans lire devient votre responsabilité.",
+  "Relire ce qui change avant de valider — fichiers modifiés et résultat à l'écran — pas le code ligne à ligne.",
+  "Comprendre l'organisation, pas le code : sachez à quoi sert chaque fichier ; le détail, l'agent l'explique ou le corrige à la demande.",
   "Tester après chaque modification, même petite : le rendu, pas l'impression.",
   "Committer avant les grosses demandes : un commit est un point de retour.",
   "Journaliser les prompts : sans trace, le travail devient invisible.",
