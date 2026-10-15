@@ -25,8 +25,10 @@ Tu fais les manipulations techniques ; tu expliques simplement, en français.
 4. Vérifie le `.gitignore` (`.env`, `.env.*` sauf `.env.example`, `.dev.vars`,
    `node_modules/`, `dist/`), puis vérifie : `git check-ignore .env` doit afficher `.env`.
 5. Crée `projet.json` à la racine (bloc au § 3), avec l'identifiant et le dépôt ci-dessus.
-6. Si `git push` demande une authentification, guide l'élève vers `gh auth login`
-   (GitHub.com → HTTPS → saisir dans le navigateur le code affiché), puis réessaie.
+6. **Authentification Git — clone comme push.** Si Git demande un identifiant, guide
+   l'élève vers `gh auth login` (GitHub.com → HTTPS → connexion dans le navigateur).
+   Le **mot de passe du compte ne fonctionne plus** pour Git : on passe par `gh`, une clé
+   SSH ou un jeton. Sur Windows/macOS, GitHub Desktop s'en charge seul.
 7. Résume à l'élève, en trois lignes, ce qui est prêt.
 
 ---

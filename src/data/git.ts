@@ -227,8 +227,8 @@ export const piegesGit: PiegeGit[] = [
       "La publication d'un dépôt est un clic : relisez la checklist avant chaque changement de visibilité.",
   },
   {
-    titre: "Push refusé pour authentification",
+    titre: "Push (ou clone) refusé pour authentification",
     texte:
-      "GitHub n'accepte plus le mot de passe du compte en ligne de commande : il faut une clé SSH ou un jeton à portée limitée. Ce n'est pas une panne.",
+      "GitHub n'accepte plus le mot de passe du compte en ligne de commande. Connectez-vous une fois avec gh auth login, ou utilisez une clé SSH ou un jeton. Ce n'est pas une panne, et GitHub Desktop s'en charge seul sur Windows/macOS.",
   },
 ];

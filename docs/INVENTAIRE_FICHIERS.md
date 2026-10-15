@@ -1,27 +1,27 @@
 # Inventaire des fichiers — workflow.nsi.xyz
 
 > Fichier **généré** par `node scripts/generate-inventory.mjs` — ne pas éditer à la main.
-> Dernière génération : 2026-10-14
+> Dernière génération : 2026-10-15
 
 ## Synthèse
 
 - **130 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **15 085 lignes** au total.
+- **15 103 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
 | `src/pages/` | 18 | 3 753 |
-| `src/data/` | 17 | 3 316 |
+| `src/data/` | 17 | 3 330 |
 | `src/styles/` | 21 | 2 577 |
 | `scripts/` | 27 | 2 123 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 10 | 826 |
 | `./` | 6 | 324 |
 | `src/lib/` | 3 | 280 |
-| `template/` | 3 | 214 |
-| `public/` | 1 | 159 |
+| `template/` | 3 | 216 |
+| `public/` | 1 | 161 |
 | `src/client/` | 1 | 159 |
 | `src/layouts/` | 2 | 130 |
 | `docs/` | 2 | 110 |
@@ -41,7 +41,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `env.d.ts` | 2 | Racine / config |
 | `package.json` | 50 | Racine / config |
 | `PLAN.md` | 155 | Racine / config |
-| `public/workflow.md` | 159 | Racine / config |
+| `public/workflow.md` | 161 | Racine / config |
 | `README.md` | 87 | Racine / config |
 | `scripts/any-baseline.json` | 4 | Script outillage |
 | `scripts/audit-secrets.mjs` | 108 | Script outillage |
@@ -83,7 +83,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/components/ThemeToggle.astro` | 53 | Composant UI |
 | `src/data/cloudflare.ts` | 174 | Donnée éditoriale |
 | `src/data/couts.ts` | 256 | Donnée éditoriale |
-| `src/data/depannage.ts` | 187 | Donnée éditoriale |
+| `src/data/depannage.ts` | 201 | Donnée éditoriale |
 | `src/data/git.ts` | 235 | Donnée éditoriale |
 | `src/data/glossaire.ts` | 270 | Donnée éditoriale |
 | `src/data/jeu.ts` | 120 | Donnée éditoriale |
@@ -145,7 +145,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/version.json` | 6 | Racine / config |
 | `template/AGENTS.md` | 47 | Modèle de dépôt élève |
 | `template/projet.json` | 9 | Modèle de dépôt élève |
-| `template/workflow.md` | 158 | Modèle de dépôt élève |
+| `template/workflow.md` | 160 | Modèle de dépôt élève |
 | `tests/cloudflare.test.mjs` | 59 | Test |
 | `tests/content.test.mjs` | 51 | Test |
 | `tests/couts.test.mjs` | 99 | Test |

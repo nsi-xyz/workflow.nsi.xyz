@@ -89,11 +89,25 @@ export const pannes: Panne[] = [
   {
     id: "auth-supprimee",
     famille: "Git et GitHub",
-    message: "Support for password authentication was removed",
-    traduction: "GitHub n'accepte plus le mot de passe du compte en ligne de commande.",
+    message:
+      "Password authentication is not supported for Git operations / Support for password authentication was removed",
+    traduction:
+      "GitHub n'accepte plus le mot de passe du compte pour Git. Le terminal vous demande un mot de passe, puis le refuse : ce n'est pas votre faute, ce n'est simplement pas la bonne chose à saisir.",
     correction:
-      "Configurer une clé SSH (ssh-keygen puis ajout de la clé publique sur GitHub) ou utiliser gh auth login.",
-    prevention: "Faire cette configuration une fois, au début du projet, et la noter dans le README.",
+      "Se connecter une fois avec gh auth login (GitHub.com → HTTPS → connexion dans le navigateur), ou utiliser une clé SSH, ou un jeton d'accès personnel à la place du mot de passe. Sur Windows ou macOS, GitHub Desktop règle la connexion tout seul.",
+    prevention:
+      "Configurer gh auth login (ou une clé SSH) une fois, au tout début, AVANT de cloner : le clone comme le push en ont besoin. Jamais le mot de passe du compte.",
+  },
+  {
+    id: "ksshaskpass",
+    famille: "Git et GitHub",
+    message: "cannot exec '/usr/bin/ksshaskpass': No such file or directory",
+    traduction:
+      "Git cherche un assistant graphique de mot de passe (ksshaskpass) qui n'est pas installé : il bascule alors sur la saisie au terminal. Ce n'est qu'un message d'environnement, pas la vraie erreur.",
+    correction:
+      "Rien de bloquant : répondre dans le terminal. Pour le faire disparaître, installer le paquet (ksshaskpass sous KDE) ou retirer GIT_ASKPASS. L'erreur qui compte est celle de l'authentification, juste après.",
+    prevention:
+      "Passer par gh auth login : la connexion ne dépend alors plus de ksshaskpass ni d'aucun assistant graphique.",
   },
   {
     id: "push-rejete",

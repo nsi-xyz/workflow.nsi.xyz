@@ -132,9 +132,16 @@
 
   <h2><span class="n">4</span>Récupérer mon dépôt et commencer</h2>
   <p><strong>D'abord, accepte l'invitation GitHub</strong> : ouvre la <strong>cloche</strong> en haut de github.com, ou ton e-mail, et accepte l'invitation à <code>projet-{{ALIAS}}</code>. Sans ça, le dépôt restera inaccessible.</p>
-  <p>Ensuite, le plus simple : <strong>GitHub Desktop</strong> (<code>https://github.com/apps/desktop</code>) →
-  connecte-toi à GitHub → <strong>« Clone repository »</strong> → <code>projet-{{ALIAS}}</code>.
-  En terminal, c'est <code>git clone {{URL_DEPOT}}</code> (GitHub te demande de te connecter dans le navigateur).</p>
+  <p>Ensuite, selon ta machine :</p>
+  <ul>
+    <li><strong>Windows / macOS — GitHub Desktop</strong> (<code>https://github.com/apps/desktop</code>) :
+      connecte-toi → <strong>« Clone repository »</strong> → <code>projet-{{ALIAS}}</code>. Il gère la connexion à ta place.</li>
+    <li><strong>Linux ou terminal :</strong> GitHub Desktop n'existe pas sur Linux. Connecte-toi une
+      fois avec <code>gh auth login</code> (GitHub.com → HTTPS → connexion dans le navigateur),
+      puis <code>git clone {{URL_DEPOT}}</code>.</li>
+  </ul>
+  <p class="muted small"><strong>N'utilise jamais ton mot de passe GitHub</strong> dans le terminal : il ne
+  fonctionne plus pour Git. On passe par <code>gh</code>, une clé SSH ou un jeton.</p>
 
   <div class="repo">
     <div class="bar">📁 projet-{{ALIAS}}</div>
