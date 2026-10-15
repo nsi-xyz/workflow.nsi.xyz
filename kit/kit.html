@@ -6,12 +6,12 @@
 <style>
   * { box-sizing: border-box; }
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  @page { size: A4; margin: 9mm 11mm; }
+  @page { size: A4; margin: 8mm 10mm; }
   body {
     margin: 0;
     font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-    font-size: 9.8pt;
-    line-height: 1.3;
+    font-size: 8.8pt;
+    line-height: 1.24;
     color: #12181f;
   }
   .page { page-break-after: always; }
@@ -19,10 +19,10 @@
 
   header {
     display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 10px; padding: 10px 12px; border-radius: 10px; color: #fff;
+    gap: 10px; padding: 7px 10px; border-radius: 10px; color: #fff;
     background: linear-gradient(120deg, #1d3a8a, #2f6bd8);
   }
-  header h1 { margin: 0; font-size: 15pt; }
+  header h1 { margin: 0; font-size: 13pt; }
   header .sub { font-size: 8.8pt; opacity: .92; margin-top: 2px; }
   header .id { text-align: right; font-size: 9pt; line-height: 1.3; }
   header .id b { font-size: 11pt; letter-spacing: .04em; }
@@ -32,7 +32,7 @@
   }
 
   h2 {
-    font-size: 11.2pt; margin: 12px 0 5px; padding-bottom: 3px;
+    font-size: 10.2pt; margin: 8px 0 3px; padding-bottom: 2px;
     border-bottom: 2px solid #dbe4f3; color: #1d3a8a;
   }
   h2 .n {
@@ -40,29 +40,29 @@
     background: #2f6bd8; color: #fff; border-radius: 50%;
     text-align: center; font-size: 10.5pt; line-height: 19px;
   }
-  p { margin: 4px 0; }
-  ul { margin: 4px 0; padding-left: 20px; }
-  li { margin: 2px 0; }
+  p { margin: 2px 0; }
+  ul { margin: 2px 0; padding-left: 16px; }
+  li { margin: 1px 0; }
   code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; background: #eef2f9; padding: 0 3px; border-radius: 4px; font-size: 9.2pt; }
   a { color: #1d3a8a; text-decoration: none; }
   pre {
-    margin: 5px 0; padding: 7px 9px; background: #0f172a; color: #e6edf7;
-    border-radius: 8px; font-size: 8.8pt; line-height: 1.35; white-space: pre-wrap;
+    margin: 3px 0; padding: 5px 7px; background: #0f172a; color: #e6edf7;
+    border-radius: 8px; font-size: 8pt; line-height: 1.3; white-space: pre-wrap;
     font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
   }
-  .box { border: 1px solid #dbe4f3; border-left: 4px solid #2f6bd8; border-radius: 8px; padding: 6px 10px; margin: 6px 0; background: #f7faff; }
+  .box { border: 1px solid #dbe4f3; border-left: 4px solid #2f6bd8; border-radius: 8px; padding: 4px 8px; margin: 4px 0; background: #f7faff; }
   .box.warn { border-left-color: #d97706; background: #fff8ee; }
   .box.ok { border-left-color: #17915a; background: #f1fbf6; }
   .box .t { font-weight: 700; }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .muted { color: #5a6675; }
-  .small { font-size: 8.9pt; }
-  .footer-note { margin-top: 9px; font-size: 8.4pt; color: #5a6675; border-top: 1px solid #e3e9f3; padding-top: 6px; }
+  .small { font-size: 8.4pt; }
+  .footer-note { margin-top: 7px; font-size: 8.4pt; color: #5a6675; border-top: 1px solid #e3e9f3; padding-top: 5px; }
   strong { color: #0f1b2d; }
 
   /* illustration « contenu du dépôt » à l'étape 4 */
   .repo {
-    border: 1px solid #cfd9ea; border-radius: 8px; overflow: hidden; margin: 6px 0;
+    border: 1px solid #cfd9ea; border-radius: 8px; overflow: hidden; margin: 4px 0;
     font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 8.8pt;
   }
   .repo .bar { background: #eef2f9; padding: 3px 8px; color: #3a4658; border-bottom: 1px solid #cfd9ea; }
