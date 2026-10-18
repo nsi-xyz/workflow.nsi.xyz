@@ -84,3 +84,39 @@
   border-color: color-mix(in srgb, var(--ok) 45%, transparent);
   color: var(--ok);
 }
+
+.nomination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+}
+
+.nomination input {
+  flex: 1 1 16rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-hi);
+  color: var(--text);
+  font: inherit;
+}
+
+.admins {
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.admins li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: var(--glass);
+}

@@ -30,7 +30,14 @@ interface Projet {
 }
 
 interface ReponseMoi {
-  profil: { sub: string; name?: string | null; email?: string | null; role: string; picture?: string | null };
+  profil: {
+    sub: string;
+    name?: string | null;
+    email?: string | null;
+    role: string;
+    canAppoint?: boolean;
+    picture?: string | null;
+  };
   projets: Projet[];
 }
 
@@ -57,6 +64,17 @@ interface Message {
   subject: string | null;
   body: string | null;
   created_at: string;
+}
+
+interface AdminItem {
+  userId: string;
+  nom: string | null;
+  email: string | null;
+}
+
+interface ReponseAdmins {
+  canAppoint: boolean;
+  admins: AdminItem[];
 }
 
 const LIBELLES_JALONS: Record<string, string> = {
@@ -198,6 +216,78 @@ function afficherInvite(): void {
   if (sous) sous.textContent = "Connecte-toi pour voir ton projet et l’avancement de la classe.";
 }
 
+/** Envoi JSON vers login (POST). */
+async function posterJson(chemin: string, corps: unknown): Promise<boolean> {
+  try {
+    const reponse = await fetch(`${LOGIN}${chemin}`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(corps),
+    });
+    return reponse.ok;
+  } catch (erreur) {
+    console.warn("espace : envoi impossible", erreur);
+    return false;
+  }
+}
+
+/** Bloc de nomination des administrateurs (superadmin uniquement). */
+async function rendreNomination(conteneur: HTMLElement, canAppoint: boolean): Promise<void> {
+  if (!canAppoint) {
+    conteneur.innerHTML = `<p class="muet">Seul le superadmin peut nommer ou révoquer des administrateurs.</p>`;
+    return;
+  }
+
+  const chargerListe = async (): Promise<void> => {
+    const reponse = await chargerJson<ReponseAdmins>("/api/admin/admins");
+    const admins = reponse ? reponse.admins : [];
+    const items = admins
+      .map(
+        (a) => `<li>
+          <span>${echapper(a.nom || a.email || a.userId)}${a.email ? ` <span class="muet">${echapper(a.email)}</span>` : ""}</span>
+          <button class="btn btn-ghost" type="button" data-revoquer="${echapper(a.userId)}">Révoquer</button>
+        </li>`,
+      )
+      .join("");
+    conteneur.innerHTML =
+      `<form class="nomination" data-nomination>` +
+      `<input type="email" name="email" placeholder="adresse Google du futur admin" required>` +
+      `<button class="btn btn-primary" type="submit">Nommer</button>` +
+      `</form>` +
+      `<p class="muet" data-nomination-etat role="status" aria-live="polite"></p>` +
+      `<ul class="admins">${items}</ul>`;
+
+    const formulaire = conteneur.querySelector<HTMLFormElement>("[data-nomination]");
+    const etat = conteneur.querySelector<HTMLElement>("[data-nomination-etat]");
+    formulaire?.addEventListener("submit", async (evenement) => {
+      evenement.preventDefault();
+      const email = String(new FormData(formulaire).get("email") || "").trim();
+      if (!email) return;
+      if (etat) etat.textContent = "Enregistrement…";
+      const ok = await posterJson("/api/admin/nommer", { email });
+      if (etat) {
+        etat.textContent = ok
+          ? `${email} est désormais administrateur.`
+          : "Échec : compte introuvable (ou déjà superadmin).";
+      }
+      if (ok) await chargerListe();
+    });
+
+    for (const bouton of conteneur.querySelectorAll<HTMLButtonElement>("[data-revoquer]")) {
+      bouton.addEventListener("click", async () => {
+        const userId = bouton.dataset.revoquer || "";
+        if (!userId) return;
+        const ok = await posterJson("/api/admin/revoquer", { userId });
+        if (etat) etat.textContent = ok ? "Administrateur révoqué." : "Échec de la révocation.";
+        if (ok) await chargerListe();
+      });
+    }
+  };
+
+  await chargerListe();
+}
+
 async function initialiser(): Promise<void> {
   const racine = qs<HTMLElement>("[data-espace]");
   if (!racine) return;
@@ -234,6 +324,8 @@ async function initialiser(): Promise<void> {
   // Contenu réservé à l'administration (vue nominative).
   const adminBloc = qs<HTMLElement>("[data-espace-admin]");
   if (adminBloc) adminBloc.hidden = !admin;
+  const nomination = qs<HTMLElement>("[data-espace-nomination]");
+  if (nomination && admin) await rendreNomination(nomination, Boolean(moi.profil.canAppoint));
 
   const contenu = qs<HTMLElement>("[data-espace-contenu]");
   if (contenu) contenu.hidden = false;
