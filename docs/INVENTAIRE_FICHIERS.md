@@ -1,12 +1,12 @@
 # Inventaire des fichiers — workflow.nsi.xyz
 
 > Fichier **généré** par `node scripts/generate-inventory.mjs` — ne pas éditer à la main.
-> Dernière génération : 2026-10-15
+> Dernière génération : 2026-10-18
 
 ## Synthèse
 
-- **130 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **15 103 lignes** au total.
+- **132 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **15 416 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -14,15 +14,15 @@
 |---|---:|---:|
 | `src/pages/` | 18 | 3 753 |
 | `src/data/` | 17 | 3 330 |
-| `src/styles/` | 21 | 2 577 |
+| `src/styles/` | 21 | 2 702 |
 | `scripts/` | 27 | 2 123 |
 | `tests/` | 18 | 1 108 |
-| `src/components/` | 10 | 826 |
+| `src/components/` | 11 | 854 |
 | `./` | 6 | 324 |
+| `src/client/` | 2 | 319 |
 | `src/lib/` | 3 | 280 |
 | `template/` | 3 | 216 |
 | `public/` | 1 | 161 |
-| `src/client/` | 1 | 159 |
 | `src/layouts/` | 2 | 130 |
 | `docs/` | 2 | 110 |
 | `src/` | 1 | 6 |
@@ -70,13 +70,15 @@ _Aucun fichier au-dessus de 400 lignes._
 | `scripts/sync-workflow.mjs` | 83 | Script outillage |
 | `scripts/verif-journal.mjs` | 137 | Script outillage |
 | `scripts/wrangler.mjs` | 58 | Script outillage |
+| `src/client/auth.ts` | 160 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
 | `src/components/AgentPeutToutFaire.astro` | 21 | Composant UI |
+| `src/components/AuthWidget.astro` | 26 | Composant UI |
 | `src/components/Callout.astro` | 14 | Composant UI |
 | `src/components/CompteARebours.astro` | 85 | Composant UI |
 | `src/components/CostCalculator.astro` | 133 | Composant UI |
 | `src/components/Footer.astro` | 43 | Composant UI |
-| `src/components/Header.astro` | 52 | Composant UI |
+| `src/components/Header.astro` | 54 | Composant UI |
 | `src/components/PromptBuilder.astro` | 160 | Composant UI |
 | `src/components/Promptotheque.astro` | 127 | Composant UI |
 | `src/components/SpotTheLeak.astro` | 138 | Composant UI |
@@ -122,7 +124,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/pages/securite.astro` | 322 | Page (route) |
 | `src/pages/workflow.astro` | 258 | Page (route) |
 | `src/styles/base.css` | 288 | Feuille de style |
-| `src/styles/chrome.css` | 263 | Feuille de style |
+| `src/styles/chrome.css` | 388 | Feuille de style |
 | `src/styles/couts.css` | 88 | Feuille de style |
 | `src/styles/depannage.css` | 54 | Feuille de style |
 | `src/styles/git.css` | 54 | Feuille de style |

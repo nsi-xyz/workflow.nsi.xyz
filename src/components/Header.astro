@@ -1,6 +1,7 @@
 ---
 import { navGroups, primaryNav } from "../data/navigation";
 import ThemeToggle from "./ThemeToggle.astro";
+import AuthWidget from "./AuthWidget.astro";
 
 const current = Astro.url.pathname.replace(/\/$/, "") || "/";
 const isCurrent = (href: string) => current === href || current.startsWith(`${href}/`);
@@ -26,6 +27,7 @@ const isCurrent = (href: string) => current === href || current.startsWith(`${hr
     </nav>
 
     <div class="header-tools">
+      <AuthWidget />
       <ThemeToggle />
       <details class="menu-mobile">
         <summary aria-label="Ouvrir le menu complet">

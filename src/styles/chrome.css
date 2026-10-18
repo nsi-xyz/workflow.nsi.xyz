@@ -260,3 +260,128 @@
   align-items: center;
 }
 
+/* --------------------------------------------------------------------------
+   Identification — widget d'en-tête (avatar / bouton)
+   -------------------------------------------------------------------------- */
+.auth {
+  position: relative;
+}
+
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.32rem 0.7rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-full);
+  background: var(--glass);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  background: var(--glass-hi);
+  border-color: var(--glass-border-hi);
+}
+
+.auth-svg {
+  color: var(--accent);
+}
+
+.auth-nom {
+  white-space: nowrap;
+}
+
+.auth-avatar {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.auth-initiales {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--accent-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.auth-menu {
+  position: relative;
+}
+
+.auth-menu summary {
+  list-style: none;
+  padding: 0.22rem;
+}
+
+.auth-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.auth-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 60;
+  min-width: 210px;
+  padding: 0.5rem;
+  border: 1px solid var(--glass-border-hi);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-deep) 92%, transparent);
+  backdrop-filter: blur(calc(var(--glass-blur) + 8px));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 8px));
+  box-shadow: var(--shadow-2);
+}
+
+.auth-entete {
+  display: block;
+  margin-bottom: 0.35rem;
+  padding: 0.4rem 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--text-mute);
+  font-size: 0.8rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.auth-panel a {
+  display: block;
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--r-sm);
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-panel a:hover {
+  background: var(--glass-hi);
+  color: var(--text);
+}
+
+@media (max-width: 520px) {
+  .auth-nom {
+    display: none;
+  }
+
+  .auth-btn {
+    padding: 0.4rem;
+  }
+}
+
