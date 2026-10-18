@@ -6,19 +6,19 @@
 ## Synthèse
 
 - **135 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **15 966 lignes** au total.
+- **15 869 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 19 | 3 818 |
+| `src/pages/` | 19 | 3 819 |
 | `src/data/` | 17 | 3 330 |
-| `src/styles/` | 22 | 2 826 |
+| `src/styles/` | 22 | 2 790 |
 | `scripts/` | 27 | 2 123 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 11 | 854 |
-| `src/client/` | 3 | 677 |
+| `src/client/` | 3 | 615 |
 | `./` | 6 | 324 |
 | `src/lib/` | 3 | 280 |
 | `template/` | 3 | 216 |
@@ -71,7 +71,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `scripts/verif-journal.mjs` | 137 | Script outillage |
 | `scripts/wrangler.mjs` | 58 | Script outillage |
 | `src/client/auth.ts` | 162 | Racine / config |
-| `src/client/monProjet.ts` | 356 | Racine / config |
+| `src/client/monProjet.ts` | 294 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
 | `src/components/AgentPeutToutFaire.astro` | 21 | Composant UI |
 | `src/components/AuthWidget.astro` | 26 | Composant UI |
@@ -117,7 +117,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/pages/llm.astro` | 210 | Page (route) |
 | `src/pages/markdown.astro` | 196 | Page (route) |
 | `src/pages/missions.astro` | 156 | Page (route) |
-| `src/pages/mon-projet.astro` | 65 | Page (route) |
+| `src/pages/mon-projet.astro` | 66 | Page (route) |
 | `src/pages/opencode.astro` | 395 | Page (route) |
 | `src/pages/projet.astro` | 132 | Page (route) |
 | `src/pages/prompt.astro` | 200 | Page (route) |
@@ -129,7 +129,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/styles/chrome.css` | 388 | Feuille de style |
 | `src/styles/couts.css` | 88 | Feuille de style |
 | `src/styles/depannage.css` | 54 | Feuille de style |
-| `src/styles/espace.css` | 123 | Feuille de style |
+| `src/styles/espace.css` | 87 | Feuille de style |
 | `src/styles/git.css` | 54 | Feuille de style |
 | `src/styles/global.css` | 28 | Feuille de style |
 | `src/styles/glossaire.css` | 54 | Feuille de style |

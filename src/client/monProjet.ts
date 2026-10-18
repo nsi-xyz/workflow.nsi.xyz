@@ -66,24 +66,19 @@ interface Message {
   created_at: string;
 }
 
-interface AdminItem {
-  userId: string;
-  nom: string | null;
-  email: string | null;
-}
-
-interface ReponseAdmins {
-  canAppoint: boolean;
-  admins: AdminItem[];
-}
-
 const LIBELLES_JALONS: Record<string, string> = {
-  depot: "Dépôt accessible",
   contrat: "Contrat en place",
   premier_journal: "Premier échange",
-  echanges: "5 échanges",
   publie: "Publié en ligne",
 };
+
+/** `journal/009-2026-10-15T….json` → `2026-10-15`. */
+function dateJournal(valeur: string | null): string {
+  if (!valeur) return "—";
+  const tiret = valeur.indexOf("-");
+  const brut = tiret >= 0 ? valeur.slice(tiret + 1) : valeur;
+  return brut.slice(0, 10);
+}
 
 function qs<T extends Element>(selecteur: string): T | null {
   return document.querySelector<T>(selecteur);
@@ -146,10 +141,11 @@ function carteProjet(projet: Projet): string {
     </div>
     ${barre(p.pourcentage)}
     <p class="mention-ligne"><strong>${p.pourcentage} %</strong> · ${p.journalCount} échange${p.journalCount > 1 ? "s" : ""} journalisé${p.journalCount > 1 ? "s" : ""}${
-      p.lastEntryAt ? ` · dernier : ${echapper(p.lastEntryAt)}` : ""
+      p.lastEntryAt ? ` · dernier : ${echapper(dateJournal(p.lastEntryAt))}` : ""
     }</p>
     <p class="mention-ligne">Publié : ${lien}</p>
     <div class="jalons">${jalons(p)}</div>
+    ${p.erreur ? `<p class="mention-ligne muet">Lecture du dépôt : ${echapper(p.erreur)}</p>` : ""}
     <p class="mention-ligne"><a href="${repo}" target="_blank" rel="noopener noreferrer">Voir le dépôt</a></p>
   </article>`;
 }
@@ -163,11 +159,12 @@ function ligneListe(ligne: LigneProjet, admin: boolean): string {
   const url = p.url
     ? ` <a href="${echapper(p.url)}" target="_blank" rel="noopener noreferrer">lien</a>`
     : "";
+  const err = p.erreur ? ` <span class="muet" title="lecture du dépôt">(${echapper(p.erreur)})</span>` : "";
   return `<tr>
     <td><span class="pill">${echapper(ligne.code)}</span>${moi}${nom ? `<br>${nom}${github}${email}` : ""}</td>
-    <td>${p.pourcentage} %${url}</td>
+    <td>${p.pourcentage} %${url}${err}</td>
     <td>${p.journalCount}</td>
-    <td>${p.lastEntryAt ? echapper(p.lastEntryAt.slice(0, 10)) : "—"}</td>
+    <td>${echapper(dateJournal(p.lastEntryAt))}</td>
   </tr>`;
 }
 
@@ -233,62 +230,6 @@ async function posterJson<T>(chemin: string, corps: unknown): Promise<{ ok: bool
   }
 }
 
-/** Bloc de nomination des administrateurs (superadmin uniquement). */
-async function rendreNomination(conteneur: HTMLElement, canAppoint: boolean): Promise<void> {
-  if (!canAppoint) {
-    conteneur.innerHTML = `<p class="muet">Seul le superadmin peut nommer ou révoquer des administrateurs.</p>`;
-    return;
-  }
-
-  const chargerListe = async (): Promise<void> => {
-    const reponse = await chargerJson<ReponseAdmins>("/api/admin/admins");
-    const admins = reponse ? reponse.admins : [];
-    const items = admins
-      .map(
-        (a) => `<li>
-          <span>${echapper(a.nom || a.email || a.userId)}${a.email ? ` <span class="muet">${echapper(a.email)}</span>` : ""}</span>
-          <button class="btn btn-ghost" type="button" data-revoquer="${echapper(a.userId)}">Révoquer</button>
-        </li>`,
-      )
-      .join("");
-    conteneur.innerHTML =
-      `<form class="nomination" data-nomination>` +
-      `<input type="email" name="email" placeholder="adresse Google du futur admin" required>` +
-      `<button class="btn btn-primary" type="submit">Nommer</button>` +
-      `</form>` +
-      `<p class="muet" data-nomination-etat role="status" aria-live="polite"></p>` +
-      `<ul class="admins">${items}</ul>`;
-
-    const formulaire = conteneur.querySelector<HTMLFormElement>("[data-nomination]");
-    const etat = conteneur.querySelector<HTMLElement>("[data-nomination-etat]");
-    formulaire?.addEventListener("submit", async (evenement) => {
-      evenement.preventDefault();
-      const email = String(new FormData(formulaire).get("email") || "").trim();
-      if (!email) return;
-      if (etat) etat.textContent = "Enregistrement…";
-      const { ok } = await posterJson<{ ok: boolean }>("/api/admin/nommer", { email });
-      if (etat) {
-        etat.textContent = ok
-          ? `${email} est désormais administrateur.`
-          : "Échec : compte introuvable (ou déjà superadmin).";
-      }
-      if (ok) await chargerListe();
-    });
-
-    for (const bouton of conteneur.querySelectorAll<HTMLButtonElement>("[data-revoquer]")) {
-      bouton.addEventListener("click", async () => {
-        const userId = bouton.dataset.revoquer || "";
-        if (!userId) return;
-        const ok = await posterJson<{ ok: boolean }>("/api/admin/revoquer", { userId });
-        if (etat) etat.textContent = ok.ok ? "Administrateur révoqué." : "Échec de la révocation.";
-        if (ok.ok) await chargerListe();
-      });
-    }
-  };
-
-  await chargerListe();
-}
-
 async function initialiser(): Promise<void> {
   const racine = qs<HTMLElement>("[data-espace]");
   if (!racine) return;
@@ -325,9 +266,6 @@ async function initialiser(): Promise<void> {
   // Contenu réservé à l'administration (vue nominative).
   const adminBloc = qs<HTMLElement>("[data-espace-admin]");
   if (adminBloc) adminBloc.hidden = !admin;
-  const nomination = qs<HTMLElement>("[data-espace-nomination]");
-  if (nomination && admin) await rendreNomination(nomination, Boolean(moi.profil.canAppoint));
-
   if (admin) {
     const boutonRaf = qs<HTMLButtonElement>("[data-espace-refresh]");
     const etatRaf = qs<HTMLElement>("[data-espace-refresh-etat]");
