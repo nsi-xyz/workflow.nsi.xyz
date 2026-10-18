@@ -217,7 +217,7 @@ function afficherInvite(): void {
 }
 
 /** Envoi JSON vers login (POST). */
-async function posterJson(chemin: string, corps: unknown): Promise<boolean> {
+async function posterJson<T>(chemin: string, corps: unknown): Promise<{ ok: boolean; data: T | null }> {
   try {
     const reponse = await fetch(`${LOGIN}${chemin}`, {
       method: "POST",
@@ -225,10 +225,11 @@ async function posterJson(chemin: string, corps: unknown): Promise<boolean> {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(corps),
     });
-    return reponse.ok;
+    const data = (await reponse.json().catch(() => null)) as T | null;
+    return { ok: reponse.ok, data };
   } catch (erreur) {
     console.warn("espace : envoi impossible", erreur);
-    return false;
+    return { ok: false, data: null };
   }
 }
 
@@ -265,7 +266,7 @@ async function rendreNomination(conteneur: HTMLElement, canAppoint: boolean): Pr
       const email = String(new FormData(formulaire).get("email") || "").trim();
       if (!email) return;
       if (etat) etat.textContent = "Enregistrement…";
-      const ok = await posterJson("/api/admin/nommer", { email });
+      const { ok } = await posterJson<{ ok: boolean }>("/api/admin/nommer", { email });
       if (etat) {
         etat.textContent = ok
           ? `${email} est désormais administrateur.`
@@ -278,9 +279,9 @@ async function rendreNomination(conteneur: HTMLElement, canAppoint: boolean): Pr
       bouton.addEventListener("click", async () => {
         const userId = bouton.dataset.revoquer || "";
         if (!userId) return;
-        const ok = await posterJson("/api/admin/revoquer", { userId });
-        if (etat) etat.textContent = ok ? "Administrateur révoqué." : "Échec de la révocation.";
-        if (ok) await chargerListe();
+        const ok = await posterJson<{ ok: boolean }>("/api/admin/revoquer", { userId });
+        if (etat) etat.textContent = ok.ok ? "Administrateur révoqué." : "Échec de la révocation.";
+        if (ok.ok) await chargerListe();
       });
     }
   };
@@ -332,11 +333,15 @@ async function initialiser(): Promise<void> {
     const etatRaf = qs<HTMLElement>("[data-espace-refresh-etat]");
     boutonRaf?.addEventListener("click", async () => {
       if (etatRaf) etatRaf.textContent = "Agrégation en cours…";
-      const ok = await posterJson("/api/admin/refresh", {});
+      const { ok, data } = await posterJson<{ total: number; ok: number; raison?: string }>(
+        "/api/admin/refresh",
+        {},
+      );
       if (etatRaf) {
-        etatRaf.textContent = ok
-          ? "Avancement rafraîchi. Recharge la page pour voir les résultats."
-          : "Échec : vérifie le jeton GitHub ou le quota.";
+        etatRaf.textContent =
+          ok && data
+            ? `Agrégation terminée : ${data.ok}/${data.total} dépôts lus${data.raison ? ` (${data.raison})` : ""}. Recharge la page.`
+            : "Échec : vérifie le jeton GitHub ou le quota.";
       }
     });
   }

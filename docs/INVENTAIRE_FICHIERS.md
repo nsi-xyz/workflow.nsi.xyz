@@ -6,7 +6,7 @@
 ## Synthèse
 
 - **135 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **15 961 lignes** au total.
+- **15 966 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -18,7 +18,7 @@
 | `scripts/` | 27 | 2 123 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 11 | 854 |
-| `src/client/` | 3 | 672 |
+| `src/client/` | 3 | 677 |
 | `./` | 6 | 324 |
 | `src/lib/` | 3 | 280 |
 | `template/` | 3 | 216 |
@@ -71,7 +71,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `scripts/verif-journal.mjs` | 137 | Script outillage |
 | `scripts/wrangler.mjs` | 58 | Script outillage |
 | `src/client/auth.ts` | 162 | Racine / config |
-| `src/client/monProjet.ts` | 351 | Racine / config |
+| `src/client/monProjet.ts` | 356 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
 | `src/components/AgentPeutToutFaire.astro` | 21 | Composant UI |
 | `src/components/AuthWidget.astro` | 26 | Composant UI |
