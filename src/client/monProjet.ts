@@ -15,6 +15,7 @@ interface Progression {
   journalCount: number;
   lastEntryAt: string | null;
   url: string | null;
+  urlOk: boolean;
   hebergeur: string | null;
   jalons: string[];
   pourcentage: number;
@@ -69,7 +70,8 @@ interface Message {
 const LIBELLES_JALONS: Record<string, string> = {
   contrat: "Contrat en place",
   premier_journal: "Premier échange",
-  publie: "Publié en ligne",
+  publie: "URL déclarée",
+  publie_ok: "En ligne (200)",
 };
 
 /** `journal/009-2026-10-15T….json` → `2026-10-15`. */
@@ -131,7 +133,9 @@ function jalons(progression: Progression): string {
 function carteProjet(projet: Projet): string {
   const p = projet.progression;
   const lien = p.url
-    ? `<a href="${echapper(p.url)}" target="_blank" rel="noopener noreferrer">${echapper(p.url)}</a>`
+    ? `<a href="${echapper(p.url)}" target="_blank" rel="noopener noreferrer">${echapper(p.url)}</a> ${
+        p.urlOk ? `<span class="muet">(200)</span>` : `<span class="muet">(non vérifié)</span>`
+      }`
     : `<span class="muet">pas encore publié</span>`;
   const repo = `https://github.com/nsi-xyz-projets/projet-${projet.code}`;
   return `<article class="glass mention">
@@ -178,12 +182,12 @@ function tableauListe(liste: LigneProjet[], admin: boolean): string {
 
 function resumeClasse(liste: LigneProjet[]): string {
   const total = liste.length || 1;
-  const publies = liste.filter((l) => l.progression.url).length;
+  const publies = liste.filter((l) => l.progression.urlOk).length;
   const cinq = liste.filter((l) => l.progression.journalCount >= 5).length;
   const moyenne = Math.round(liste.reduce((somme, l) => somme + l.progression.pourcentage, 0) / total);
   const cartes = [
     ["Projets suivis", `${liste.length}`],
-    ["Publiés en ligne", `${publies}`],
+    ["En ligne (200)", `${publies}`],
     ["≥ 5 échanges", `${cinq}`],
     ["Avancement moyen", `${moyenne} %`],
   ];
