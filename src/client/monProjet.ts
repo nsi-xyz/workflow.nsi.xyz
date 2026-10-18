@@ -327,6 +327,20 @@ async function initialiser(): Promise<void> {
   const nomination = qs<HTMLElement>("[data-espace-nomination]");
   if (nomination && admin) await rendreNomination(nomination, Boolean(moi.profil.canAppoint));
 
+  if (admin) {
+    const boutonRaf = qs<HTMLButtonElement>("[data-espace-refresh]");
+    const etatRaf = qs<HTMLElement>("[data-espace-refresh-etat]");
+    boutonRaf?.addEventListener("click", async () => {
+      if (etatRaf) etatRaf.textContent = "Agrégation en cours…";
+      const ok = await posterJson("/api/admin/refresh", {});
+      if (etatRaf) {
+        etatRaf.textContent = ok
+          ? "Avancement rafraîchi. Recharge la page pour voir les résultats."
+          : "Échec : vérifie le jeton GitHub ou le quota.";
+      }
+    });
+  }
+
   const contenu = qs<HTMLElement>("[data-espace-contenu]");
   if (contenu) contenu.hidden = false;
 }

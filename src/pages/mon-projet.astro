@@ -49,6 +49,10 @@ const lien = `${LOGIN}/login?redirect_uri=${encodeURIComponent(retour)}`;
       <section data-espace-admin hidden>
         <div class="section-title"><h2>Administration</h2></div>
         <p class="muet">Vue nominative ci-dessus (noms, GitHub, e-mails).</p>
+        <p>
+          <button class="btn btn-ghost" type="button" data-espace-refresh>Rafraîchir l’avancement</button>
+          <span class="muet" data-espace-refresh-etat role="status" aria-live="polite"></span>
+        </p>
         <div data-espace-nomination></div>
       </section>
     </div>
