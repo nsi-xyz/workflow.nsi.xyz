@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const LOGIN = "https://login.nsi.xyz";
+const retour = "https://workflow.nsi.xyz/mon-projet";
+const lien = `${LOGIN}/login?redirect_uri=${encodeURIComponent(retour)}`;
+---
+
+<BaseLayout title="Mon espace" robots="noindex, nofollow">
+  <div class="shell espace" data-espace>
+    <header class="page-hero">
+      <span class="kicker">Espace privé</span>
+      <h1>Mon espace</h1>
+      <p class="lead" data-espace-sous>Chargement…</p>
+    </header>
+
+    <div class="callout callout-info" data-espace-invite hidden>
+      <span class="callout-title">Identification requise</span>
+      <p>
+        Cet espace est réservé aux membres du projet. Connecte-toi avec ton compte <a href={lien}>nsi.xyz</a>
+        pour voir ton avancement.
+      </p>
+    </div>
+
+    <div data-espace-contenu hidden>
+      <section>
+        <div class="section-title"><h2>Mon projet</h2></div>
+        <div class="grid-cards" data-espace-monprojet></div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>Avancement des projets</h2>
+          <small>anonymisé pour les élèves</small>
+        </div>
+        <div data-espace-liste></div>
+      </section>
+
+      <section>
+        <div class="section-title"><h2>Progression de la classe</h2></div>
+        <div data-espace-classe></div>
+      </section>
+
+      <section>
+        <div class="section-title"><h2>Messages</h2></div>
+        <div data-espace-messages></div>
+      </section>
+
+      <section data-espace-admin hidden>
+        <div class="section-title"><h2>Administration</h2></div>
+        <p class="muet">
+          Vue nominative ci-dessus (noms, GitHub, e-mails). La nomination d’administrateurs
+          arrive à l’étape suivante.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    import "../client/monProjet";
+  </script>
+</BaseLayout>

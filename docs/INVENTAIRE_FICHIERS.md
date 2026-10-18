@@ -5,25 +5,25 @@
 
 ## Synthèse
 
-- **132 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **15 416 lignes** au total.
+- **135 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
+- **15 817 lignes** au total.
 
 ## Volumétrie par répertoire
 
 | Répertoire | Fichiers | Lignes |
 |---|---:|---:|
-| `src/pages/` | 18 | 3 753 |
+| `src/pages/` | 19 | 3 816 |
 | `src/data/` | 17 | 3 330 |
-| `src/styles/` | 21 | 2 702 |
+| `src/styles/` | 22 | 2 790 |
 | `scripts/` | 27 | 2 123 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 11 | 854 |
+| `src/client/` | 3 | 566 |
 | `./` | 6 | 324 |
-| `src/client/` | 2 | 319 |
 | `src/lib/` | 3 | 280 |
 | `template/` | 3 | 216 |
 | `public/` | 1 | 161 |
-| `src/layouts/` | 2 | 130 |
+| `src/layouts/` | 2 | 133 |
 | `docs/` | 2 | 110 |
 | `src/` | 1 | 6 |
 
@@ -70,7 +70,8 @@ _Aucun fichier au-dessus de 400 lignes._
 | `scripts/sync-workflow.mjs` | 83 | Script outillage |
 | `scripts/verif-journal.mjs` | 137 | Script outillage |
 | `scripts/wrangler.mjs` | 58 | Script outillage |
-| `src/client/auth.ts` | 160 | Racine / config |
+| `src/client/auth.ts` | 162 | Racine / config |
+| `src/client/monProjet.ts` | 245 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
 | `src/components/AgentPeutToutFaire.astro` | 21 | Composant UI |
 | `src/components/AuthWidget.astro` | 26 | Composant UI |
@@ -100,7 +101,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/data/quiz.ts` | 321 | Donnée éditoriale |
 | `src/data/securite.ts` | 88 | Donnée éditoriale |
 | `src/data/workflow.ts` | 214 | Donnée éditoriale |
-| `src/layouts/BaseLayout.astro` | 63 | Gabarit de page |
+| `src/layouts/BaseLayout.astro` | 66 | Gabarit de page |
 | `src/layouts/DocLayout.astro` | 67 | Gabarit de page |
 | `src/lib/cout.ts` | 189 | Racine / config |
 | `src/lib/fr.ts` | 11 | Racine / config |
@@ -116,6 +117,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/pages/llm.astro` | 210 | Page (route) |
 | `src/pages/markdown.astro` | 196 | Page (route) |
 | `src/pages/missions.astro` | 156 | Page (route) |
+| `src/pages/mon-projet.astro` | 63 | Page (route) |
 | `src/pages/opencode.astro` | 395 | Page (route) |
 | `src/pages/projet.astro` | 132 | Page (route) |
 | `src/pages/prompt.astro` | 200 | Page (route) |
@@ -127,8 +129,9 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/styles/chrome.css` | 388 | Feuille de style |
 | `src/styles/couts.css` | 88 | Feuille de style |
 | `src/styles/depannage.css` | 54 | Feuille de style |
+| `src/styles/espace.css` | 87 | Feuille de style |
 | `src/styles/git.css` | 54 | Feuille de style |
-| `src/styles/global.css` | 27 | Feuille de style |
+| `src/styles/global.css` | 28 | Feuille de style |
 | `src/styles/glossaire.css` | 54 | Feuille de style |
 | `src/styles/home.css` | 137 | Feuille de style |
 | `src/styles/layout.css` | 231 | Feuille de style |

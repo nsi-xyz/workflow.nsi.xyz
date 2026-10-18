@@ -6,11 +6,14 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  /** Contenu de la balise robots (les pages privées passent `noindex, nofollow`). */
+  robots?: string;
 }
 
 const {
   title,
   description = "Apprendre à piloter une IA pour construire, versionner et publier un site — puis créer un jeu vidéo de A à Z : le workflow du projet NSI.",
+  robots = "index, follow",
 } = Astro.props;
 
 const pageTitle =
@@ -26,7 +29,7 @@ const pageTitle =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <title>{pageTitle}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
