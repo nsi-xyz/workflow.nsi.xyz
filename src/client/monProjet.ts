@@ -198,8 +198,12 @@ function ligneListe(ligne: LigneProjet, admin: boolean): string {
     : "";
   const err = p.erreur ? ` <span class="muet" title="lecture du dépôt">(${echapper(p.erreur)})</span>` : "";
   const slug = slugDe(ligne);
+  const codeComplet = admin ? `<br><span class="muet">${echapper(ligne.code)}</span>` : "";
+  const depot = admin
+    ? `<br><a class="lien-depot" href="https://github.com/nsi-xyz-projets/projet-${encodeURIComponent(ligne.code)}" target="_blank" rel="noopener noreferrer">Dépôt GitHub ↗</a>`
+    : "";
   return `<tr>
-    <td><span class="pill" title="${echapper(ligne.code)}">${echapper(slug)}</span>${moi}${nom ? `<br>${nom}${github}${email}` : ""}</td>
+    <td><span class="pill" title="${echapper(ligne.code)}">${echapper(slug)}</span>${moi}${nom ? `<br>${nom}${github}${email}` : ""}${codeComplet}${depot}</td>
     <td>${p.pourcentage} %${url}${err}</td>
     <td>${p.journalCount}</td>
     <td>${p.journalDates.length}</td>

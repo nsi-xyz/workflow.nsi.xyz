@@ -111,6 +111,11 @@
   border-color: color-mix(in srgb, var(--ok) 45%, transparent);
 }
 
+.lien-depot {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
 /* Calendrier d'activité */
 .calendrier {
   border-collapse: separate;

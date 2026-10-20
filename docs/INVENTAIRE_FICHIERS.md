@@ -6,7 +6,7 @@
 ## Synthèse
 
 - **135 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **16 072 lignes** au total.
+- **16 081 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -14,11 +14,11 @@
 |---|---:|---:|
 | `src/pages/` | 19 | 3 830 |
 | `src/data/` | 17 | 3 330 |
-| `src/styles/` | 22 | 2 859 |
+| `src/styles/` | 22 | 2 864 |
 | `scripts/` | 27 | 2 146 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 11 | 854 |
-| `src/client/` | 3 | 715 |
+| `src/client/` | 3 | 719 |
 | `./` | 6 | 324 |
 | `src/lib/` | 3 | 280 |
 | `template/` | 3 | 216 |
@@ -71,7 +71,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `scripts/verif-journal.mjs` | 137 | Script outillage |
 | `scripts/wrangler.mjs` | 58 | Script outillage |
 | `src/client/auth.ts` | 162 | Racine / config |
-| `src/client/monProjet.ts` | 394 | Racine / config |
+| `src/client/monProjet.ts` | 398 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
 | `src/components/AgentPeutToutFaire.astro` | 21 | Composant UI |
 | `src/components/AuthWidget.astro` | 26 | Composant UI |
@@ -129,7 +129,7 @@ _Aucun fichier au-dessus de 400 lignes._
 | `src/styles/chrome.css` | 388 | Feuille de style |
 | `src/styles/couts.css` | 88 | Feuille de style |
 | `src/styles/depannage.css` | 54 | Feuille de style |
-| `src/styles/espace.css` | 156 | Feuille de style |
+| `src/styles/espace.css` | 161 | Feuille de style |
 | `src/styles/git.css` | 54 | Feuille de style |
 | `src/styles/global.css` | 28 | Feuille de style |
 | `src/styles/glossaire.css` | 54 | Feuille de style |
