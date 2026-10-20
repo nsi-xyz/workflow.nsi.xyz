@@ -206,12 +206,16 @@ function ligneListe(ligne: LigneProjet, admin: boolean): string {
   const depot = admin
     ? `<br><a class="lien-depot" href="https://github.com/nsi-xyz-projets/projet-${encodeURIComponent(ligne.code)}" target="_blank" rel="noopener noreferrer">Dépôt GitHub ↗</a>${voirComme}`
     : "";
+  const retard = (p.journalDates || []).filter((d) => d > FIN_SUIVI).length;
+  const retardHtml = retard
+    ? ` <span class="late" title="Contributions après le 2 novembre">+${retard} hors délais</span>`
+    : "";
   return `<tr>
     <td><span class="pill" title="${echapper(ligne.code)}">${echapper(slug)}</span>${moi}${nom ? `<br>${nom}${github}${email}` : ""}${codeComplet}${depot}</td>
     <td>${p.pourcentage} %${url}${err}</td>
     <td>${p.journalCount}</td>
     <td>${p.journalDates.length}</td>
-    <td>${echapper(dateJournal(p.lastEntryAt))}</td>
+    <td>${echapper(dateJournal(p.lastEntryAt))}${retardHtml}</td>
     <td>${bareme(p)}</td>
   </tr>`;
 }
@@ -240,36 +244,78 @@ function resumeClasse(liste: LigneProjet[]): string {
     .join("")}</div>`;
 }
 
-/** Les `nb` derniers jours, au format AAAA-MM-JJ (heure locale). */
-function joursRecents(nb: number): string[] {
+/** Fenêtre de suivi : du 13 octobre au 2 novembre 2026. */
+const DEBUT_SUIVI = "2026-10-13";
+const FIN_SUIVI = "2026-11-02";
+const MOIS_COURT = [
+  "janv.",
+  "févr.",
+  "mars",
+  "avr.",
+  "mai",
+  "juin",
+  "juil.",
+  "août",
+  "sept.",
+  "oct.",
+  "nov.",
+  "déc.",
+];
+
+function dateLocale(iso: string): Date {
+  const [annee, mois, jour] = iso.split("-").map(Number);
+  return new Date(annee, mois - 1, jour);
+}
+
+function isoLocal(d: Date): string {
+  const mois = String(d.getMonth() + 1).padStart(2, "0");
+  const jour = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${mois}-${jour}`;
+}
+
+function aujourdhui(): string {
+  return isoLocal(new Date());
+}
+
+/** Tous les jours entre deux dates incluses. */
+function joursEntre(debut: string, fin: string): string[] {
   const jours: string[] = [];
-  const base = new Date();
-  for (let i = nb - 1; i >= 0; i -= 1) {
-    const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() - i);
-    const mois = String(d.getMonth() + 1).padStart(2, "0");
-    const jour = String(d.getDate()).padStart(2, "0");
-    jours.push(`${d.getFullYear()}-${mois}-${jour}`);
+  const courant = dateLocale(debut);
+  const cible = dateLocale(fin);
+  while (courant <= cible) {
+    jours.push(isoLocal(courant));
+    courant.setDate(courant.getDate() + 1);
   }
   return jours;
 }
 
-/** Calendrier d'activité : une ligne par slug, une colonne par jour. */
+/** Calendrier d'activité : une ligne par slug, une colonne par jour de suivi.
+ *  Les contributions postérieures au 2 novembre sont affichées en rouge (« hors délais »). */
 function rendreCalendrier(liste: LigneProjet[]): string {
-  const jours = joursRecents(21);
-  const aujourdhui = jours[jours.length - 1];
-  const semaine = new Set(jours.slice(-7));
+  const finAffichee = aujourdhui() > FIN_SUIVI ? aujourdhui() : FIN_SUIVI;
+  const jours = joursEntre(DEBUT_SUIVI, finAffichee);
+  const entete = jours
+    .map((jour) => {
+      const [, mois, num] = jour.split("-");
+      const debutMois = num === "01" || jour === jours[0];
+      return `<th title="${jour}">${num}${debutMois ? `<small>${MOIS_COURT[Number(mois) - 1]}</small>` : ""}</th>`;
+    })
+    .join("");
 
-  const entete = jours.map((jour) => `<th title="${jour}">${jour.slice(8, 10)}</th>`).join("");
   const lignes = liste
     .map((ligne) => {
       const slug = slugDe(ligne);
       const dates = new Set(ligne.progression.journalDates || []);
       const cases = jours
-        .map((jour) =>
-          dates.has(jour)
-            ? `<td class="cal-on" title="${echapper(slug)} — ${jour} : a travaillé">•</td>`
-            : `<td class="cal-off" title="${echapper(slug)} — ${jour} : rien"></td>`,
-        )
+        .map((jour) => {
+          if (!dates.has(jour)) {
+            return `<td class="cal-off" title="${echapper(slug)} — ${jour} : rien"></td>`;
+          }
+          const retard = jour > FIN_SUIVI;
+          return `<td class="${retard ? "cal-late" : "cal-on"}" title="${echapper(slug)} — ${jour} : ${
+            retard ? "hors délais" : "a travaillé"
+          }">•</td>`;
+        })
         .join("");
       return `<tr><th scope="row"><span class="pill">${echapper(slug)}</span>${
         ligne.moi ? ` <span class="muet">moi</span>` : ""
@@ -277,21 +323,25 @@ function rendreCalendrier(liste: LigneProjet[]): string {
     })
     .join("");
 
-  const actifsAujourdhui = liste
-    .filter((l) => (l.progression.journalDates || []).includes(aujourdhui))
-    .map(slugDe);
-  const actifsSemaine = new Set(
-    liste
-      .filter((l) => (l.progression.journalDates || []).some((d) => semaine.has(d)))
-      .map(slugDe),
+  const { dansDelais, retard } = liste.reduce(
+    (acc, l) => {
+      for (const jour of l.progression.journalDates || []) {
+        if (jour > FIN_SUIVI) acc.retard += 1;
+        else if (jour >= DEBUT_SUIVI) acc.dansDelais += 1;
+      }
+      return acc;
+    },
+    { dansDelais: 0, retard: 0 },
   );
-  const cumul = liste.reduce((n, l) => n + (l.progression.journalDates || []).length, 0);
+  const actifsAujourdhui = liste
+    .filter((l) => (l.progression.journalDates || []).includes(aujourdhui()))
+    .map(slugDe);
 
-  return `<p class="muet">Actifs aujourd’hui : <strong>${
+  return `<p class="muet">Suivi du <strong>13 octobre</strong> au <strong>2 novembre 2026</strong> · actifs aujourd’hui : <strong>${
     actifsAujourdhui.length ? actifsAujourdhui.map(echapper).join(", ") : "—"
-  }</strong> · cette semaine : <strong>${actifsSemaine.size}</strong> ${
-    actifsSemaine.size > 1 ? "projets actifs" : "projet actif"
-  } · <strong>${cumul}</strong> jours-actifs cumulés.</p>
+  }</strong> · <strong>${dansDelais}</strong> jours-actifs dans les délais${
+    retard ? ` · <span class="late">${retard} hors délais</span>` : ""
+  }.</p>
     <div class="table-scroll"><table class="calendrier">
       <thead><tr><th></th>${entete}</tr></thead>
       <tbody>${lignes}</tbody>

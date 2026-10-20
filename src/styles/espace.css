@@ -85,7 +85,7 @@
   color: var(--ok);
 }
 
-/* Checklist du barème (tableau) */
+/* Checklist d'avancement (tableau) */
 .bareme {
   display: inline-flex;
   flex-wrap: wrap;
@@ -117,9 +117,24 @@
 }
 
 /* Calendrier d'activité */
-.calendrier {
+.table-scroll table.calendrier {
+  width: auto;
+  min-width: 0;
   border-collapse: separate;
   border-spacing: 3px;
+}
+
+.calendrier thead th:first-child,
+.calendrier tbody th {
+  width: 4.5rem;
+  white-space: nowrap;
+}
+
+.calendrier thead th small {
+  display: block;
+  font-size: 0.56rem;
+  font-weight: 600;
+  opacity: 0.8;
 }
 
 .calendrier th,
@@ -157,4 +172,14 @@
 
 .cal-off {
   background: var(--glass);
+}
+
+.cal-late {
+  background: var(--danger);
+  color: #fff;
+}
+
+.late {
+  color: var(--danger);
+  font-weight: 700;
 }
