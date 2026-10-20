@@ -84,3 +84,72 @@
   border-color: color-mix(in srgb, var(--ok) 45%, transparent);
   color: var(--ok);
 }
+
+/* Checklist du barème (tableau) */
+.bareme {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.b {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-sm);
+  color: var(--text-mute);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: help;
+}
+
+.b-ok {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 45%, transparent);
+}
+
+/* Calendrier d'activité */
+.calendrier {
+  border-collapse: separate;
+  border-spacing: 3px;
+}
+
+.calendrier th,
+.calendrier td {
+  padding: 0;
+  border: 0;
+}
+
+.calendrier thead th {
+  color: var(--text-mute);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.calendrier tbody th {
+  padding-right: 0.6rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.cal-on,
+.cal-off {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.cal-on {
+  background: var(--gradient-accent);
+  color: var(--accent-ink);
+  font-size: 0.7rem;
+  line-height: 1.15rem;
+}
+
+.cal-off {
+  background: var(--glass);
+}

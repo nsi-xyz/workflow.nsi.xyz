@@ -14,6 +14,7 @@ interface Progression {
   contratOk: boolean;
   journalCount: number;
   lastEntryAt: string | null;
+  journalDates: string[];
   url: string | null;
   urlOk: boolean;
   hebergeur: string | null;
@@ -27,6 +28,7 @@ interface Projet {
   project: string;
   nom?: string | null;
   code: string;
+  slug?: string;
   progression: Progression;
 }
 
@@ -45,6 +47,7 @@ interface ReponseMoi {
 interface LigneProjet {
   project: string;
   code: string;
+  slug?: string;
   moi: boolean;
   progression: Progression;
   nom?: string | null;
@@ -130,6 +133,35 @@ function jalons(progression: Progression): string {
     .join("");
 }
 
+/** Slug de 2 caractères (D24X-… → D2) ; repli sur le code si absent. */
+function slugDe(ligne: { code: string; slug?: string }): string {
+  return ligne.slug || ligne.code.slice(0, 2).toUpperCase();
+}
+
+/** Checklist du barème : 5 cases, aide au survol. */
+function bareme(p: Progression): string {
+  const bonus = Math.min(Math.max(p.journalCount - 1, 0), 42);
+  const items: Array<{ ok: boolean; label: string; aide: string }> = [
+    { ok: p.contratOk, label: "Contrat", aide: "Contrat en place (AGENTS.md + workflow.md) : +21 %" },
+    { ok: p.journalCount >= 1, label: "1er", aide: "Premier échange journalisé : +15 %" },
+    {
+      ok: bonus >= 42,
+      label: "Journal+",
+      aide: `Bonus journal : 1 % par échange au-delà du premier, plafonné à 42 % (actuel : ${bonus} %).`,
+    },
+    { ok: Boolean(p.url), label: "URL", aide: "URL déclarée dans projet.json : +21 %" },
+    { ok: Boolean(p.urlOk), label: "200", aide: "URL qui répond HTTP 200 : +42 %" },
+  ];
+  return `<span class="bareme">${items
+    .map(
+      (item) =>
+        `<span class="b ${item.ok ? "b-ok" : ""}" title="${echapper(item.aide)}" aria-label="${echapper(item.aide)}">${
+          item.ok ? "☑" : "☐"
+        } ${item.label}</span>`,
+    )
+    .join("")}</span>`;
+}
+
 function carteProjet(projet: Projet): string {
   const p = projet.progression;
   const lien = p.url
@@ -165,18 +197,21 @@ function ligneListe(ligne: LigneProjet, admin: boolean): string {
     ? ` <a href="${echapper(p.url)}" target="_blank" rel="noopener noreferrer">lien</a>`
     : "";
   const err = p.erreur ? ` <span class="muet" title="lecture du dépôt">(${echapper(p.erreur)})</span>` : "";
+  const slug = slugDe(ligne);
   return `<tr>
-    <td><span class="pill">${echapper(ligne.code)}</span>${moi}${nom ? `<br>${nom}${github}${email}` : ""}</td>
+    <td><span class="pill" title="${echapper(ligne.code)}">${echapper(slug)}</span>${moi}${nom ? `<br>${nom}${github}${email}` : ""}</td>
     <td>${p.pourcentage} %${url}${err}</td>
     <td>${p.journalCount}</td>
+    <td>${p.journalDates.length}</td>
     <td>${echapper(dateJournal(p.lastEntryAt))}</td>
+    <td>${bareme(p)}</td>
   </tr>`;
 }
 
 function tableauListe(liste: LigneProjet[], admin: boolean): string {
   const corps = liste.map((ligne) => ligneListe(ligne, admin)).join("");
   return `<div class="table-scroll"><table>
-    <thead><tr><th>Projet</th><th>Avancement</th><th>Échanges</th><th>Dernière</th></tr></thead>
+    <thead><tr><th>Projet</th><th>Avancement</th><th>Échanges</th><th>Jours</th><th>Dernière</th><th>Barème</th></tr></thead>
     <tbody>${corps}</tbody>
   </table></div>`;
 }
@@ -195,6 +230,64 @@ function resumeClasse(liste: LigneProjet[]): string {
   return `<div class="grid-cards">${cartes
     .map(([titre, valeur]) => `<article class="glass card"><span class="card-kicker">${titre}</span><h3>${valeur}</h3></article>`)
     .join("")}</div>`;
+}
+
+/** Les `nb` derniers jours, au format AAAA-MM-JJ (heure locale). */
+function joursRecents(nb: number): string[] {
+  const jours: string[] = [];
+  const base = new Date();
+  for (let i = nb - 1; i >= 0; i -= 1) {
+    const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() - i);
+    const mois = String(d.getMonth() + 1).padStart(2, "0");
+    const jour = String(d.getDate()).padStart(2, "0");
+    jours.push(`${d.getFullYear()}-${mois}-${jour}`);
+  }
+  return jours;
+}
+
+/** Calendrier d'activité : une ligne par slug, une colonne par jour. */
+function rendreCalendrier(liste: LigneProjet[]): string {
+  const jours = joursRecents(21);
+  const aujourdhui = jours[jours.length - 1];
+  const semaine = new Set(jours.slice(-7));
+
+  const entete = jours.map((jour) => `<th title="${jour}">${jour.slice(8, 10)}</th>`).join("");
+  const lignes = liste
+    .map((ligne) => {
+      const slug = slugDe(ligne);
+      const dates = new Set(ligne.progression.journalDates || []);
+      const cases = jours
+        .map((jour) =>
+          dates.has(jour)
+            ? `<td class="cal-on" title="${echapper(slug)} — ${jour} : a travaillé">•</td>`
+            : `<td class="cal-off" title="${echapper(slug)} — ${jour} : rien"></td>`,
+        )
+        .join("");
+      return `<tr><th scope="row"><span class="pill">${echapper(slug)}</span>${
+        ligne.moi ? ` <span class="muet">moi</span>` : ""
+      }</th>${cases}</tr>`;
+    })
+    .join("");
+
+  const actifsAujourdhui = liste
+    .filter((l) => (l.progression.journalDates || []).includes(aujourdhui))
+    .map(slugDe);
+  const actifsSemaine = new Set(
+    liste
+      .filter((l) => (l.progression.journalDates || []).some((d) => semaine.has(d)))
+      .map(slugDe),
+  );
+  const cumul = liste.reduce((n, l) => n + (l.progression.journalDates || []).length, 0);
+
+  return `<p class="muet">Actifs aujourd’hui : <strong>${
+    actifsAujourdhui.length ? actifsAujourdhui.map(echapper).join(", ") : "—"
+  }</strong> · cette semaine : <strong>${actifsSemaine.size}</strong> ${
+    actifsSemaine.size > 1 ? "projets actifs" : "projet actif"
+  } · <strong>${cumul}</strong> jours-actifs cumulés.</p>
+    <div class="table-scroll"><table class="calendrier">
+      <thead><tr><th></th>${entete}</tr></thead>
+      <tbody>${lignes}</tbody>
+    </table></div>`;
 }
 
 function rendreMessages(messages: Message[]): string {
@@ -262,6 +355,8 @@ async function initialiser(): Promise<void> {
     if (conteneurListe) conteneurListe.innerHTML = tableauListe(liste.liste, admin);
     const classe = qs<HTMLElement>("[data-espace-classe]");
     if (classe) classe.innerHTML = resumeClasse(liste.liste);
+    const calendrier = qs<HTMLElement>("[data-espace-calendrier]");
+    if (calendrier) calendrier.innerHTML = rendreCalendrier(liste.liste);
   }
 
   const messages = await chargerJson<{ messages: Message[] }>("/api/messages");
