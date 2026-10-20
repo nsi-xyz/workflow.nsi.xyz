@@ -116,17 +116,19 @@
   font-weight: 600;
 }
 
-/* Calendrier d'activité */
+/* Calendrier d'activité — fluide : les jours se partagent la largeur restante */
 .table-scroll table.calendrier {
-  width: auto;
+  width: 100%;
   min-width: 0;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 3px;
 }
 
 .calendrier thead th:first-child,
 .calendrier tbody th {
-  width: 4.5rem;
+  width: 4.25rem;
+  max-width: 4.25rem;
   white-space: nowrap;
 }
 
@@ -157,8 +159,7 @@
 
 .cal-on,
 .cal-off {
-  width: 1.15rem;
-  height: 1.15rem;
+  height: 1.4rem;
   border-radius: 4px;
   text-align: center;
 }
@@ -167,7 +168,7 @@
   background: var(--gradient-accent);
   color: var(--accent-ink);
   font-size: 0.7rem;
-  line-height: 1.15rem;
+  line-height: 1.4rem;
 }
 
 .cal-off {

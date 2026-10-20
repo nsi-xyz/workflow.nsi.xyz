@@ -6,7 +6,7 @@
 ## Synthèse
 
 - **135 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **16 185 lignes** au total.
+- **16 186 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -14,7 +14,7 @@
 |---|---:|---:|
 | `src/pages/` | 19 | 3 832 |
 | `src/data/` | 17 | 3 330 |
-| `src/styles/` | 22 | 2 889 |
+| `src/styles/` | 22 | 2 890 |
 | `scripts/` | 27 | 2 146 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 11 | 854 |
@@ -131,7 +131,7 @@
 | `src/styles/chrome.css` | 388 | Feuille de style |
 | `src/styles/couts.css` | 88 | Feuille de style |
 | `src/styles/depannage.css` | 54 | Feuille de style |
-| `src/styles/espace.css` | 186 | Feuille de style |
+| `src/styles/espace.css` | 187 | Feuille de style |
 | `src/styles/git.css` | 54 | Feuille de style |
 | `src/styles/global.css` | 28 | Feuille de style |
 | `src/styles/glossaire.css` | 54 | Feuille de style |
