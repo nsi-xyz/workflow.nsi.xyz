@@ -34,16 +34,27 @@ if (fs.existsSync(CSV) && !forcer) {
   process.exit(1)
 }
 
-/** 12 caractères en trois groupes de quatre : ABCD-EFGH-JKMN */
-function tirerCode() {
-  let brut = ''
-  for (let i = 0; i < 12; i += 1) brut += ALPHABET[randomInt(ALPHABET.length)]
-  return `${brut.slice(0, 4)}-${brut.slice(4, 8)}-${brut.slice(8, 12)}`
+/** 12 caractères en trois groupes de quatre : ABCD-EFGH-JKMN.
+ *  Garantit l'unicité du code ET de ses 2 premiers caractères (slug des stats). */
+function tirerCode(prefixes, codes) {
+  for (let essai = 0; essai < 10000; essai += 1) {
+    let brut = ''
+    for (let i = 0; i < 12; i += 1) brut += ALPHABET[randomInt(ALPHABET.length)]
+    const code = `${brut.slice(0, 4)}-${brut.slice(4, 8)}-${brut.slice(8, 12)}`
+    const prefixe = code.slice(0, 2)
+    if (prefixes.has(prefixe) || codes.has(code)) continue
+    prefixes.add(prefixe)
+    codes.add(code)
+    return code
+  }
+  throw new Error('Préfixes épuisés : impossible de garantir un identifiant unique.')
 }
 
 const lignes = ['label;code']
+const prefixes = new Set()
+const codes = new Set()
 for (let index = 1; index <= nombre; index += 1) {
-  lignes.push(`élève ${String(index).padStart(2, '0')};${tirerCode()}`)
+  lignes.push(`élève ${String(index).padStart(2, '0')};${tirerCode(prefixes, codes)}`)
 }
 
 fs.writeFileSync(CSV, `${lignes.join('\n')}\n`, { mode: 0o600 })

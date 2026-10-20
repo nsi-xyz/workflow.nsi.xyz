@@ -61,6 +61,18 @@ const extra = option('extra', '')
 
 const eleves = [...depuisCsv, ...extra.filter(({ alias }) => !depuisCsv.some((eleve) => eleve.alias === alias))]
 
+/** Les 2 premiers caractères servent de slug dans les statistiques : unicité requise. */
+const prefixes = new Map()
+for (const { alias } of eleves) {
+  const prefixe = alias.slice(0, 2)
+  if (prefixes.has(prefixe)) {
+    console.error(`❌ Préfixe « ${prefixe} » en double : ${prefixes.get(prefixe)} et ${alias}.`)
+    console.error('   Régénère les codes (codes:init --force) ou renomme un identifiant.')
+    process.exit(1)
+  }
+  prefixes.set(prefixe, alias)
+}
+
 /** Fichiers du modèle recopiés et personnalisés pour chaque élève. */
 const FICHIERS = ['workflow.md', 'AGENTS.md', 'projet.json', '.gitignore']
 

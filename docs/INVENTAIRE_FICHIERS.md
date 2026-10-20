@@ -6,7 +6,7 @@
 ## Synthèse
 
 - **135 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **16 049 lignes** au total.
+- **16 072 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -15,7 +15,7 @@
 | `src/pages/` | 19 | 3 830 |
 | `src/data/` | 17 | 3 330 |
 | `src/styles/` | 22 | 2 859 |
-| `scripts/` | 27 | 2 123 |
+| `scripts/` | 27 | 2 146 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 11 | 854 |
 | `src/client/` | 3 | 715 |
@@ -50,8 +50,8 @@ _Aucun fichier au-dessus de 400 lignes._
 | `scripts/check-secrets.mjs` | 98 | Script outillage |
 | `scripts/check-size.mjs` | 148 | Script outillage |
 | `scripts/check-whitespace.mjs` | 80 | Script outillage |
-| `scripts/classes-init.mjs` | 134 | Script outillage |
-| `scripts/codes-init.mjs` | 54 | Script outillage |
+| `scripts/classes-init.mjs` | 146 | Script outillage |
+| `scripts/codes-init.mjs` | 65 | Script outillage |
 | `scripts/contrat-sync.mjs` | 97 | Script outillage |
 | `scripts/dev-url.mjs` | 142 | Script outillage |
 | `scripts/dev.mjs` | 96 | Script outillage |
