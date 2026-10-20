@@ -42,6 +42,7 @@ interface ReponseMoi {
     picture?: string | null;
   };
   projets: Projet[];
+  apercu?: { code: string; nom?: string | null };
 }
 
 interface LigneProjet {
@@ -138,7 +139,7 @@ function slugDe(ligne: { code: string; slug?: string }): string {
   return ligne.slug || ligne.code.slice(0, 2).toUpperCase();
 }
 
-/** Checklist du barème : 5 cases, aide au survol. */
+/** Checklist d'avancement : 5 cases, aide au survol. */
 function bareme(p: Progression): string {
   const bonus = Math.min(Math.max(p.journalCount - 1, 0), 42);
   const items: Array<{ ok: boolean; label: string; aide: string }> = [
@@ -199,8 +200,11 @@ function ligneListe(ligne: LigneProjet, admin: boolean): string {
   const err = p.erreur ? ` <span class="muet" title="lecture du dépôt">(${echapper(p.erreur)})</span>` : "";
   const slug = slugDe(ligne);
   const codeComplet = admin ? `<br><span class="muet">${echapper(ligne.code)}</span>` : "";
+  const voirComme = admin
+    ? ` · <a class="lien-depot" href="/mon-projet?comme=${encodeURIComponent(ligne.code)}">Voir comme</a>`
+    : "";
   const depot = admin
-    ? `<br><a class="lien-depot" href="https://github.com/nsi-xyz-projets/projet-${encodeURIComponent(ligne.code)}" target="_blank" rel="noopener noreferrer">Dépôt GitHub ↗</a>`
+    ? `<br><a class="lien-depot" href="https://github.com/nsi-xyz-projets/projet-${encodeURIComponent(ligne.code)}" target="_blank" rel="noopener noreferrer">Dépôt GitHub ↗</a>${voirComme}`
     : "";
   return `<tr>
     <td><span class="pill" title="${echapper(ligne.code)}">${echapper(slug)}</span>${moi}${nom ? `<br>${nom}${github}${email}` : ""}${codeComplet}${depot}</td>
@@ -215,7 +219,7 @@ function ligneListe(ligne: LigneProjet, admin: boolean): string {
 function tableauListe(liste: LigneProjet[], admin: boolean): string {
   const corps = liste.map((ligne) => ligneListe(ligne, admin)).join("");
   return `<div class="table-scroll"><table>
-    <thead><tr><th>Projet</th><th>Avancement</th><th>Échanges</th><th>Jours</th><th>Dernière</th><th>Barème</th></tr></thead>
+    <thead><tr><th>Projet</th><th>Score</th><th>Échanges</th><th>Jours</th><th>Dernière</th><th>Avancement</th></tr></thead>
     <tbody>${corps}</tbody>
   </table></div>`;
 }
@@ -336,10 +340,33 @@ async function initialiser(): Promise<void> {
   const racine = qs<HTMLElement>("[data-espace]");
   if (!racine) return;
 
-  const moi = await chargerJson<ReponseMoi>("/api/me");
+  const params = new URLSearchParams(location.search);
+  const comme = params.get("comme");
+  const suffixe = comme ? `?comme=${encodeURIComponent(comme)}` : "";
+
+  const moi = await chargerJson<ReponseMoi>(`/api/me${suffixe}`);
   if (!moi) {
+    if (comme) {
+      // Paramètre d'aperçu invalide ou non autorisé : on revient à sa propre vue.
+      location.replace("/mon-projet");
+      return;
+    }
     afficherInvite();
     return;
+  }
+
+  const bandeau = qs<HTMLElement>("[data-espace-apercu]");
+  if (bandeau) {
+    if (moi.apercu) {
+      bandeau.hidden = false;
+      bandeau.innerHTML = `<span class="callout-title">Aperçu de la vue élève</span><p>Tu vois la page comme <strong>${echapper(
+        moi.apercu.code,
+      )}</strong>${
+        moi.apercu.nom ? ` (${echapper(moi.apercu.nom)})` : ""
+      }, sans les noms des autres élèves. <a href="/mon-projet">Revenir à ma vue d’administration</a>.</p>`;
+    } else {
+      bandeau.hidden = true;
+    }
   }
 
   const sous = qs<HTMLElement>("[data-espace-sous]");
@@ -352,7 +379,7 @@ async function initialiser(): Promise<void> {
       : `<p class="muet">Aucun code de projet déclaré. Va sur <a href="${LOGIN}/projet">login.nsi.xyz/projet</a> pour déclarer le code reçu en classe.</p>`;
   }
 
-  const liste = await chargerJson<ReponseListe>("/api/projets");
+  const liste = await chargerJson<ReponseListe>(`/api/projets${suffixe}`);
   const admin = moi.profil.role === "admin";
   if (liste) {
     const conteneurListe = qs<HTMLElement>("[data-espace-liste]");
@@ -363,7 +390,7 @@ async function initialiser(): Promise<void> {
     if (calendrier) calendrier.innerHTML = rendreCalendrier(liste.liste);
   }
 
-  const messages = await chargerJson<{ messages: Message[] }>("/api/messages");
+  const messages = await chargerJson<{ messages: Message[] }>(`/api/messages${suffixe}`);
   const boiteMessages = qs<HTMLElement>("[data-espace-messages]");
   if (boiteMessages) boiteMessages.innerHTML = rendreMessages(messages ? messages.messages : []);
 
