@@ -149,6 +149,7 @@ function carteProjet(projet: Projet): string {
     }</p>
     <p class="mention-ligne">Publié : ${lien}</p>
     <div class="jalons">${jalons(p)}</div>
+    ${!p.urlOk && p.pourcentage >= 90 ? `<p class="mention-ligne muet">Plafonné à 90 % : le site doit répondre 200 pour dépasser.</p>` : ""}
     ${p.erreur ? `<p class="mention-ligne muet">Lecture du dépôt : ${echapper(p.erreur)}</p>` : ""}
     <p class="mention-ligne"><a href="${repo}" target="_blank" rel="noopener noreferrer">Voir le dépôt</a></p>
   </article>`;
