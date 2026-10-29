@@ -157,3 +157,5 @@ async function initialiser(): Promise<void> {
 }
 
 void initialiser();
+
+export {};
