@@ -125,6 +125,19 @@ function barre(pourcentage: number): string {
   return `<div class="prog" role="img" aria-label="${sur} %"><span style="width:${sur}%"></span></div>`;
 }
 
+/** Message lisible quand la lecture GitHub échoue (réseau, quota, 5xx…). */
+function messageLecture(erreur: string, valeurConnue: boolean): string {
+  const suite = valeurConnue
+    ? "dernières valeurs connues conservées"
+    : "nouvelle tentative automatique";
+  if (erreur === "reseau") return `Réseau GitHub indisponible — ${suite}.`;
+  if (erreur === "jeton_absent") return `Jeton GitHub absent — ${suite}.`;
+  if (erreur === "http_429") return `Quota GitHub atteint — ${suite}.`;
+  if (/^http_5\d\d$/.test(erreur)) return `GitHub indisponible (${erreur}) — ${suite}.`;
+  if (erreur === "absent") return "Dépôt introuvable sur GitHub.";
+  return `Lecture du dépôt : ${erreur} — ${suite}.`;
+}
+
 function jalons(progression: Progression): string {
   return Object.entries(LIBELLES_JALONS)
     .map(
@@ -180,10 +193,11 @@ function carteProjet(projet: Projet): string {
     <p class="mention-ligne"><strong>${p.pourcentage} %</strong> · ${p.journalCount} échange${p.journalCount > 1 ? "s" : ""} journalisé${p.journalCount > 1 ? "s" : ""}${
       p.lastEntryAt ? ` · dernier : ${echapper(dateJournal(p.lastEntryAt))}` : ""
     }</p>
+    ${p.pourcentage > 100 ? `<p class="mention-ligne muet">Score bonus : le barème monte jusqu’à 120 % avec un journal très complet.</p>` : ""}
     <p class="mention-ligne">Publié : ${lien}</p>
     <div class="jalons">${jalons(p)}</div>
     ${!p.urlOk && p.pourcentage >= 90 ? `<p class="mention-ligne muet">Plafonné à 90 % : le site doit répondre 200 pour dépasser.</p>` : ""}
-    ${p.erreur ? `<p class="mention-ligne muet">Lecture du dépôt : ${echapper(p.erreur)}</p>` : ""}
+    ${p.erreur ? `<p class="mention-ligne muet">${echapper(messageLecture(p.erreur, Boolean(p.fetchedAt)))}</p>` : ""}
     <p class="mention-ligne"><a href="${repo}" target="_blank" rel="noopener noreferrer">Voir le dépôt</a></p>
   </article>`;
 }
@@ -197,7 +211,9 @@ function ligneListe(ligne: LigneProjet, admin: boolean): string {
   const url = p.url
     ? ` <a href="${echapper(p.url)}" target="_blank" rel="noopener noreferrer">lien</a>`
     : "";
-  const err = p.erreur ? ` <span class="muet" title="lecture du dépôt">(${echapper(p.erreur)})</span>` : "";
+  const err = p.erreur
+    ? ` <span class="muet" title="${echapper(messageLecture(p.erreur, Boolean(p.fetchedAt)))}">(lecture indisponible)</span>`
+    : "";
   const slug = slugDe(ligne);
   const codeComplet = admin ? `<br><span class="muet">${echapper(ligne.code)}</span>` : "";
   const voirComme = admin
