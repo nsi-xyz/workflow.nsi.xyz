@@ -467,17 +467,40 @@ async function initialiser(): Promise<void> {
     const boutonRaf = qs<HTMLButtonElement>("[data-espace-refresh]");
     const etatRaf = qs<HTMLElement>("[data-espace-refresh-etat]");
     boutonRaf?.addEventListener("click", async () => {
-      if (etatRaf) etatRaf.textContent = "Agrégation en cours…";
-      const { ok, data } = await posterJson<{ total: number; ok: number; raison?: string }>(
-        "/api/admin/refresh",
-        {},
-      );
-      if (etatRaf) {
-        etatRaf.textContent =
-          ok && data
-            ? `Agrégation terminée : ${data.ok}/${data.total} dépôts lus${data.raison ? ` (${data.raison})` : ""}. Recharge la page.`
-            : "Échec : vérifie le jeton GitHub ou le quota.";
+      boutonRaf.disabled = true;
+      let traites = 0;
+      let lus = 0;
+      let echecs = 0;
+      let restants = 1;
+      let tours = 0;
+      while (restants > 0 && tours < 20) {
+        if (etatRaf) {
+          etatRaf.textContent = `Agrégation en cours… ${traites} ${
+            traites === 1 ? "dépôt traité" : "dépôts traités"
+          }`;
+        }
+        const { ok, data } = await posterJson<{
+          total: number;
+          ok: number;
+          erreurs?: number;
+          restants?: number;
+          raison?: string;
+        }>("/api/admin/refresh", {});
+        if (!ok || !data) break;
+        traites += data.total;
+        lus += data.ok;
+        echecs += data.erreurs || 0;
+        restants = data.restants ?? 0;
+        tours += 1;
       }
+      if (etatRaf) {
+        etatRaf.textContent = traites
+          ? `Agrégation terminée : ${lus} ${lus === 1 ? "dépôt lu" : "dépôts lus"}, ${echecs} ${
+              echecs === 1 ? "échec" : "échecs"
+            } sur ${traites}. Recharge la page.`
+          : "Échec : vérifie le jeton GitHub ou le quota.";
+      }
+      boutonRaf.disabled = false;
     });
   }
 

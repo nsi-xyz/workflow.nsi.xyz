@@ -6,7 +6,7 @@
 ## Synthèse
 
 - **135 fichiers** suivis (hors `node_modules`, `dist`, `.git`, lockfiles).
-- **16 202 lignes** au total.
+- **16 225 lignes** au total.
 
 ## Volumétrie par répertoire
 
@@ -18,7 +18,7 @@
 | `scripts/` | 27 | 2 146 |
 | `tests/` | 18 | 1 108 |
 | `src/components/` | 11 | 854 |
-| `src/client/` | 3 | 812 |
+| `src/client/` | 3 | 835 |
 | `./` | 6 | 324 |
 | `src/lib/` | 3 | 280 |
 | `template/` | 3 | 216 |
@@ -31,7 +31,7 @@
 
 | Fichier | Lignes | Frontmatter | Script inline | Template | Rôle |
 |---|---:|---:|---:|---:|---|
-| `src/client/monProjet.ts` | 491 | — | — | 491 | Racine / config |
+| `src/client/monProjet.ts` | 514 | — | — | 514 | Racine / config |
 
 ## Inventaire complet
 
@@ -73,7 +73,7 @@
 | `scripts/verif-journal.mjs` | 137 | Script outillage |
 | `scripts/wrangler.mjs` | 58 | Script outillage |
 | `src/client/auth.ts` | 162 | Racine / config |
-| `src/client/monProjet.ts` | 491 | Racine / config |
+| `src/client/monProjet.ts` | 514 | Racine / config |
 | `src/client/quiz.ts` | 159 | Racine / config |
 | `src/components/AgentPeutToutFaire.astro` | 21 | Composant UI |
 | `src/components/AuthWidget.astro` | 26 | Composant UI |
